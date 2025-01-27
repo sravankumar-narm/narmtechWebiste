@@ -11,8 +11,9 @@ export const navLinks = [
   { id: 3, text: "Consulting", url: "/Consulting" },
   { id: 4, text: "About us", url: "/Aboutus" },
   { id: 5, text: "Our Team", url: "/Ourteam" },
+  { id: 6, text: "Internship", url: "/internship" },
   {
-    id: 6,
+    id: 7,
     text: "Contact us",
     url: "/Contactus",
     // dropdown: [
@@ -24,7 +25,7 @@ export const navLinks = [
   },
 ];
 
-const Navbar = ({ isHero,onClose }) => {
+const Navbar = ({ isHero, onClose }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false); // State for controlling dropdown visibility
 
@@ -119,10 +120,10 @@ const Navbar = ({ isHero,onClose }) => {
                           ? "text-white bg-white/10 hover:bg-white/20"
                           : "text-[#005886] bg-gray/20 hover:bg-gray/50"
                       }`}
-                 
+
                       to={url}
                       onClick={onClose}
-                      // onClick={handleNavLinkClick} 
+                      // onClick={handleNavLinkClick}
                     >
                       {text}
                     </NavLink>

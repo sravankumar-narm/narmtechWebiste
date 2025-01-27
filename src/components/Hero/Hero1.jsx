@@ -32,6 +32,13 @@ const testimonialData = [
     text4:
       "Our QuizifAI empowers organizations through the integration of AI-powered Quiz & Exam companions.",
   },
+  {
+    id: 5,
+    title2: "Generative AI Internship Program",
+    text: `Orientation: Intro to Generative AI, web app development, project planning & team setup.<br/>
+          6-Week Development: Project mentorship & documentation guidance.<br/>
+          Closing Ceremony: Project presentations, certificates, and feedback.`,
+  }
 ];
 
 function SampleNextArrow(props) {
@@ -39,7 +46,7 @@ function SampleNextArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", borderRadius:"50%" }}
+      style={{ ...style, display: "block", background: "black", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -50,7 +57,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black",borderRadius:"50%" }}
+      style={{ ...style, display: "block", background: "black", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -60,7 +67,7 @@ const GoalTestimonial = () => {
   var settings = {
     dots: true,
     arrows: true,
-    
+
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     infinite: true,
@@ -102,7 +109,18 @@ const GoalTestimonial = () => {
                       <h1 className="text-3xl font-extrabold text-secondary">
                         {title2}
                       </h1>
-                      <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p>
+                      {/* <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p> */}
+                      <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary space-y-2">
+                        {text && text.includes("<br/>") ? (
+                          text.split("<br/>").map((line, index) => (
+                            <span key={index} className="block">
+                              <span className="text-primary text-lg">🔹</span> {line.trim()}
+                            </span>
+                          ))
+                        ) : (
+                          <span>{text}</span> // Render normally if no <br/> is found
+                        )}
+                      </p>
                       <div>
                         <img src={image} alt="" className="w-[350px]" />
                       </div>
