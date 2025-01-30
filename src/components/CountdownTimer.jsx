@@ -29,7 +29,7 @@ const CountdownTimer = ({ endDate, currentPath }) => { // Added currentPath prop
 
   const { days, hours, minutes, seconds, ended } = timeLeft;
 
- let bgColorClass = 'bg-gradient-to-br from-blue-500 to-blue-700 text-white p-3 rounded-lg shadow-md hover:bg-gradient-to-tr hover:from-blue-700 hover:to-blue-900 hover:shadow-lg transition-all duration-300 cursor-pointer z-20'; // Mid blue gradient for normal days
+ let bgColorClass = 'bg-gradient-to-br from-[#f05030] to-[#d03c27] text-white p-3 rounded-lg shadow-md hover:bg-gradient-to-tr hover:from-orange-700 hover:to-orange-900 hover:shadow-lg transition-all duration-300 cursor-pointer z-20'; // Mid blue gradient for normal days
   // if(days > 3){
   //   bgColorClass = ''; // 3 days or less
   // }
