@@ -7,6 +7,13 @@ import Quizifi from "../../assets/offerings/Quizifai3.png";
 const testimonialData = [
   {
     id: 1,
+    title2: "Generative AI Internship Program",
+    text: `Orientation: Intro to Generative AI, web app development, project planning & team setup.<br/>
+          6-Week Development: Project mentorship & documentation guidance.<br/>
+          Closing Ceremony: Project presentations, certificates, and feedback.`,
+  },
+  {
+    id: 2,
     title: "Transforming ",
     title1: "Business Operations ",
     title2: "AI & LLM Empowered ",
@@ -14,30 +21,23 @@ const testimonialData = [
     and Intuitive User Interface (UI) to provide a truly transformative and user-friendly experience with unparalleled efficiency and effectiveness.`,
   },
   {
-    id: 2,
+    id: 3,
     image: Nyayah,
     text3:
       "This powerful AI solution revolutionizes the Legal landscape by empowering Legal Practitioners and Law Firms with advanced automation and organization capabilities.",
   },
   {
-    id: 3,
+    id: 4,
     image: Adhyayn,
     text3:
       "Our ADHYAYN empowers educational institutions through the integration of AI and LLM Model Technologies.",
   },
   {
-    id: 4,
+    id: 5,
     image1: Quizifi,
     title3: "QuizifiAI",
     text4:
       "Our QuizifAI empowers organizations through the integration of AI-powered Quiz & Exam companions.",
-  },
-  {
-    id: 5,
-    title2: "Generative AI Internship Program",
-    text: `Orientation: Intro to Generative AI, web app development, project planning & team setup.<br/>
-          6-Week Development: Project mentorship & documentation guidance.<br/>
-          Closing Ceremony: Project presentations, certificates, and feedback.`,
   }
 ];
 

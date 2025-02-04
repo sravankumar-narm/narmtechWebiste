@@ -1,95 +1,360 @@
-import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import loginImage from '../assets/brand/hero-robot.png'; // Placeholder image
+
+// Payment Integration Component
+const PaymentIntegration = ({ handlePaymentSuccess }) => {
+  return (
+    <div className="p-8 bg-gray-50 rounded-lg flex flex-col justify-between">
+      <h3 className="text-xl font-semibold text-center mb-4">Pay Nominal Fee</h3>
+      <p className="text-sm text-center mb-4">
+        Please pay the nominal fee to complete your registration.
+      </p>
+      <div className="flex flex-col items-center space-y-4">
+        <p className="text-lg font-semibold">Amount: ₹500</p>
+        <button
+          type="button"
+          onClick={handlePaymentSuccess}
+          className="w-full bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition"
+        >
+          Pay Now
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Intern = () => {
   const location = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  const navigate = useNavigate(); // Define navigate function
+  // Progress Bar Data
+  const stages = [
+    { name: 'Start', date: new Date('2025-02-01') },
+    { name: 'End', date: new Date('2025-02-25') },
+    { name: 'W1', date: new Date('2025-02-26') },
+    { name: 'W2', date: new Date('2025-03-05') },
+    { name: 'W3', date: new Date('2025-03-12') },
+    { name: 'W4', date: new Date('2025-03-19') },
+    { name: 'W5', date: new Date('2025-03-26') },
+    { name: 'W6', date: new Date('2025-04-02') },
+    { name: 'Certification', date: new Date('2025-04-09') }
+  ];
 
+  const today = new Date();
+
+  // State to track which stage is being hovered
+  const [hoveredStageIndex, setHoveredStageIndex] = useState(null);
+
+  // Form state
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    mobile: '',
+    otp: '',
+  });
+
+  // Validation state
+  const [errors, setErrors] = useState({});
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+  // State to track registration and payment status
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+
+  // Handle form input changes with real-time validation
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // Real-time validation for each field
+    let newErrors = { ...errors };
+
+    if (name === 'name') {
+      if (!value.trim()) {
+        newErrors.name = 'Name is required';
+      } else if (value.length < 3) {
+        newErrors.name = 'Name must be at least 3 characters';
+      } else if (/\d/.test(value)) {
+        newErrors.name = 'Name should not contain numbers';
+      } else {
+        delete newErrors.name;
+      }
+    }
+
+    if (name === 'email') {
+      if (!value.trim()) {
+        newErrors.email = 'Email is required';
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        newErrors.email = 'Invalid email format';
+      } else {
+        delete newErrors.email;
+      }
+    }
+
+    if (name === 'mobile') {
+      if (!value.trim()) {
+        newErrors.mobile = 'Mobile number is required';
+      } else if (!/^\d+$/.test(value)) {
+        newErrors.mobile = 'Mobile number should only contain digits';
+      } else if (value.length !== 10) {
+        newErrors.mobile = 'Mobile number must be 10 digits';
+      } else {
+        delete newErrors.mobile;
+      }
+    }
+
+    if (name === 'otp') {
+      if (!value.trim()) {
+        newErrors.otp = 'OTP is required';
+      } else if (value !== '123456') { // Mock OTP validation
+        newErrors.otp = 'Invalid OTP';
+      } else {
+        delete newErrors.otp;
+      }
+    }
+
+    setErrors(newErrors);
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle OTP sending
+  const handleSendOtp = () => {
+    if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
+      setIsOtpSent(true);
+      alert('OTP sent successfully!'); // Mock OTP sending
+    } else {
+      setErrors({ ...errors, mobile: 'Enter a valid 10-digit mobile number' });
+    }
+  };
+
+  // Handle OTP verification
+  const handleVerifyOtp = () => {
+    if (formData.otp === '123456') { // Mock OTP verification
+      setIsOtpVerified(true);
+      alert('OTP verified successfully!');
+    } else {
+      setErrors({ ...errors, otp: 'Invalid OTP' });
+    }
+  };
+
+  // Handle registration
   const handleRegisterClick = () => {
-    navigate('/internship/signup'); // Updated route here
+    alert('Registration successful!');
+    setIsRegistered(true);
+  };
+
+  // Handle payment success
+  const handlePaymentSuccess = () => {
+    alert('Payment successful!');
+    setIsPaymentSuccessful(true);
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen font-sans">
       <Navbar />
       <div className="container mx-auto py-10 px-5">
-        <div className="flex flex-col sm:flex-row rounded-lg shadow-xl overflow-hidden bg-white">
-          {/* Left side - Internship Details */}
-<div className="sm:w-7/12 p-8 bg-[#ffecca]">
-            <h2 className="text-2xl font-bold mb-4">Virtual Internship Program on Creating Generative AI-Powered Web Applications</h2>
-            <p className="text-gray-700 mb-4">📅 <strong>Start Date:</strong> February 1, 2025 (Tentative)</p>
-            <p className="text-gray-700 mb-4">⏳ <strong>Duration:</strong> 6 Weeks</p>
-            <p className="text-gray-700 mb-4">💰 <strong>Nominal Fee:</strong> ₹199</p>
-            
-            <h3 className="text-xl font-semibold mt-6">📌 Internship Details</h3>
-            <ul className="ml-6 text-gray-700 space-y-2">
-              <li><strong>Orientation Program (Online):</strong>
-                <ul className="ml-4 space-y-1">
-                  <li>🔹 Introductory session on Generative AI technologies (Database, Python, ReactJS, etc.)</li>
-                  <li>🔹 Training on building web applications using Generative AI</li>
-                  <li>🔹 Overview of project management techniques</li>
-                  <li>🔹 Use case discussions and planning sessions</li>
-                  <li>🔹 Setting up Teams</li>
-                </ul>
-              </li>
-              <li><strong>6 Weeks of Development:</strong>
-                <ul className="ml-4 space-y-1">
-                  <li>🔹 Project mentorship</li>
-                  <li>🔹 Guidance on documentation</li>
-                </ul>
-              </li>
-              <li><strong>Internship Closing Ceremony (Offline):</strong>
-                <ul className="ml-4 space-y-1">
-                  <li>🔹 Project presentations</li>
-                  <li>🔹 Awarding of internship certificates</li>
-                  <li>🔹 Feedback via Google Form</li>
-                </ul>
-              </li>
-            </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
+          {/* Left Section - Progress Bar */}
+          <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
+            <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on Generative AI Powered Web Applications</h2>
+            <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
+            <p className="mt-2 text-sm">Generative AI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply generative AI technology for real-time problems and how we can build consumer applications to embed the power of generative AI.</p>
+            <h3 className="text-xl font-semibold mt-4">What you are going to learn?</h3>
+            <p className="mt-2 text-sm">Generative AI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply generative AI technology for real-time problems and how we can build consumer applications to embed the power of generative AI.</p>
+            <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
+            <div className="mt-4">
+              <p className="font-semibold">📍 Internship Progress</p>
+              {/* Responsive Progress Bar */}
+              <div className="flex flex-col items-center justify-between mt-4 relative sm:flex-row">
+                {stages.map((stage, index) => {
+                  const isCompleted = today >= stage.date;
+                  const nextStageDate = stages[index + 1]?.date;
 
-            <h3 className="text-xl font-semibold mt-6">📝 Prerequisites for Participation</h3>
-            <ul className="ml-6 text-gray-700 space-y-2">
-              <li>💻 Personal laptop</li>
-              <li>🌐 Stable internet connection</li>
-              <li>⏰ Daily attendance at online stand-up meetings</li>
-            </ul>
-          </div>
+                  // Calculate progress percentage for the line between stages
+                  const progressPercentage = nextStageDate
+                    ? Math.min(
+                        100,
+                        ((today - stage.date) / (nextStageDate - stage.date)) * 100
+                      )
+                    : 100;
 
-          {/* Right side - Advantages and Registration */}
-          <div className="sm:w-5/12 p-8 bg-gray-50 flex flex-col justify-between">
-            <div>
-              <h3 className="text-xl font-semibold">🎯 Why Join This Internship?</h3>
-              <ul className="ml-6 text-gray-700 mt-4 space-y-2">
-                <li>🚀 Hands-on experience in Generative AI-powered web development</li>
-                <li>📈 Gain mentorship from industry experts</li>
-                <li>🛠 Learn full-stack development with ReactJS, Python, and AI technologies</li>
-                <li>📜 Receive an internship certificate for career growth</li>
-                <li>🎤 Get a platform to present your project in the closing ceremony</li>
-              </ul>
+                  return (
+                    <React.Fragment key={index}>
+                      {/* Circle */}
+                      <div
+                        className="flex flex-col items-center relative"
+                        onMouseEnter={() => setHoveredStageIndex(index)}
+                        onMouseLeave={() => setHoveredStageIndex(null)}
+                      >
+                        <div
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${
+                            isCompleted ? 'bg-blue-600' : 'bg-slate-400'
+                          }`}
+                        >
+                          {isCompleted && '✓'}
+                        </div>
+                        {/* Label below circle */}
+                        <p className="text-xs mt-2 text-center font-semibold">
+                          {stage.name}
+                        </p>
+                        {/* Hover Date Tooltip */}
+                        {hoveredStageIndex === index && (
+                          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                            {stage.date.toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
 
-              <h3 className="text-xl font-semibold mt-6">📅 Important Dates</h3>
-              <ul className="ml-6 text-gray-700 mt-4 space-y-2">
-                <li>📢 <strong>Registration Starts:</strong> February 1, 2025</li>
-                <li>🛑 <strong>Registration Deadline:</strong> February 15, 2025</li>
-                <li>📩 Emails will include instructions and prerequisites for participation.</li>
-              </ul>
-
-              {/* Registration Button after Important Dates */}
-              <div className="text-center mt-6">
-                <button onClick={handleRegisterClick} className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition">
-                  Register Now
-                </button>
+                      {/* Line connecting circles */}
+                      {index < stages.length - 1 && (
+                        <div
+                          className="sm:flex-grow sm:h-1 w-1 sm:w-auto h-8 bg-gray-300 relative"
+                          style={{
+                            marginTop: '-25px',
+                            marginLeft: '0px',
+                            marginRight: '0px',
+                          }}
+                        >
+                          {/* Blue progress bar overlay */}
+                          <div
+                            className="absolute top-0 left-0 h-full w-full bg-blue-600 transition-all duration-500"
+                            style={{
+                              width: `${progressPercentage}%`,
+                              height: '100%',
+                              display: today < stage.date ? 'none' : 'block',
+                            }}
+                          ></div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
               </div>
+              <p className="mt-4">Register for the internship with a nominal fee. For more information, <a href="#" className="text-blue-600 font-semibold">contact us</a>.</p>
             </div>
           </div>
+
+          {/* Right Section - Conditional Rendering */}
+          {!isRegistered ? (
+            <div className="p-8 bg-gray-50 rounded-lg flex flex-col">
+              <h3 className="text-xl font-semibold text-center mb-4">Register for Internship Program</h3>
+              <form className="space-y-4">
+                {/* Name Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Name:</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.name ? 'border-red-500' : 'focus:ring-blue-500'
+                    }`}
+                  />
+                  {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+                </div>
+
+                {/* Email Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Email:</label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.email ? 'border-red-500' : 'focus:ring-blue-500'
+                    }`}
+                  />
+                  {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                </div>
+
+                {/* Mobile Field */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Mobile:</label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      name="mobile"
+                      placeholder="Enter your mobile number"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                        errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      className={`px-4 py-2 rounded-lg transition ${
+                        formData.mobile.length === 10 && !errors.mobile
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-slate-400 cursor-not-allowed text-white'
+                      }`}
+                      disabled={formData.mobile.length !== 10 || !!errors.mobile}
+                    >
+                      Send OTP
+                    </button>
+                  </div>
+                  {errors.mobile && <p className="text-red-500 text-xs">{errors.mobile}</p>}
+                </div>
+
+                {/* OTP Field */}
+                {isOtpSent && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">OTP:</label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        name="otp"
+                        placeholder="Enter OTP"
+                        value={formData.otp}
+                        onChange={handleChange}
+                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                          errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleVerifyOtp}
+                        className={`px-4 py-2 rounded-lg transition ${
+                          formData.otp && !errors.otp
+                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                            : 'bg-slate-400 text-white cursor-not-allowed'
+                        }`}
+                        disabled={!formData.otp || !!errors.otp}
+                      >
+                        Verify OTP
+                      </button>
+                    </div>
+                    {errors.otp && <p className="text-red-500 text-xs">{errors.otp}</p>}
+                  </div>
+                )}
+
+                {/* Register Button */}
+                <button
+                  type="button"
+                  onClick={handleRegisterClick}
+                  className={`w-full px-6 py-3 rounded-lg shadow-md transition ${
+                    isOtpVerified && Object.keys(errors).length === 0
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-slate-400 cursor-not-allowed'
+                  }`}
+                  disabled={!isOtpVerified || Object.keys(errors).length > 0}
+                >
+                  Register Now
+                </button>
+              </form>
+            </div>
+          ) : (
+            <PaymentIntegration handlePaymentSuccess={handlePaymentSuccess} />
+          )}
         </div>
       </div>
       <Footer />

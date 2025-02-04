@@ -4,6 +4,7 @@ import ResponsiveMenu from "./ResponsiveMenu";
 import { HiMenuAlt1, HiMenuAlt3 } from "react-icons/hi";
 import { Link, NavLink } from "react-router-dom";
 import Aibot from "../../pages/Aibot";
+import { motion } from "framer-motion";
 
 export const navLinks = [
   { id: 1, text: "Home", url: "/" },
@@ -68,7 +69,7 @@ const Navbar = ({ isHero, onClose }) => {
   // }, [history, isAibotOpen]);
   return (
     <>
-       <nav className="relative z-50 py-3">
+      <nav className="relative z-50 py-3">
         <div className="container flex items-center justify-between">
           {/* Logo section */}
           <div>
@@ -78,10 +79,10 @@ const Navbar = ({ isHero, onClose }) => {
           </div>
           {/* NavLinks section */}
           <ul className="hidden lg:flex items-center gap-4">
-            {navLinks.map((link) => {
+            {/* {navLinks.map((link) => {
               const { id, text, url, dropdown } = link;
               return (
-                <li key={id} onMouseLeave={hideDropdown}> {/* Hide dropdown on mouse leave */}
+                <li key={id} onMouseLeave={hideDropdown}>
                   {dropdown ? (
                     <div className="relative">
                       <NavLink
@@ -128,7 +129,39 @@ const Navbar = ({ isHero, onClose }) => {
                       {text}
                     </NavLink>
                   )}
-                   {/* {isAibotOpen && <Aibot onClose={handleOpenAIChat} />} */}
+                </li>
+              );
+            })} */}
+            {navLinks.map((link) => {
+              const { id, text, url, dropdown } = link;
+              return (
+                <li key={id} onMouseLeave={hideDropdown} className="relative">
+                  {text === "Internship" ? (
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }} // Continuous grow and shrink
+                      whileHover={{ scale: 1 }} // Stop animation on hover
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <NavLink
+                        className="text-sm lg:text-base font-medium inline-block px-3 lg:px-4 py-2 lg:py-3 rounded-full bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-lg transition-all hover:shadow-xl hover:from-purple-600 hover:to-blue-500"
+                        to={url}
+                        onClick={onClose}
+                      >
+                        {text}
+                      </NavLink>
+                    </motion.div>
+                  ) : (
+                    <NavLink
+                      className={`text-sm lg:text-base font-medium inline-block px-3 lg:px-4 py-2 lg:py-3 rounded-full dark:bg-dark/20 dark:text-white dark:hover:bg-dark/40 ${isHero
+                          ? "text-white bg-white/10 hover:bg-white/20"
+                          : "text-[#005886] bg-gray/20 hover:bg-gray/50"
+                        }`}
+                      to={url}
+                      onClick={onClose}
+                    >
+                      {text}
+                    </NavLink>
+                  )}
                 </li>
               );
             })}
