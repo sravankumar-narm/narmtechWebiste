@@ -52,7 +52,7 @@ const CountdownTimer = ({ endDate, currentPath }) => { // Added currentPath prop
   } else {
     return (
       <div onClick={() => navigate('/internship')} className={`fixed left-4 bottom-4 ${bgColorClass} text-white p-3 rounded-lg shadow-md hover:bg-gray-800 hover:shadow-lg transition-all duration-300 cursor-pointer z-20`}>
-        <div className="text-base font-bold">Virtual Internship Program on Creating Generative AI-Powered Web Applications</div>
+        <div className="text-base font-bold">Virtual Internship Program on Generative AI Powered Web Applications</div>
         <div className="text-sm text-gray-300">
           <span>{days}d {hours}h {minutes}m {seconds}s</span>&nbsp;&nbsp;
           <span>({new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })})</span>

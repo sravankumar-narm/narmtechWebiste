@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
+
 
 // Payment Integration Component
 const PaymentIntegration = ({ handlePaymentSuccess }) => {
@@ -12,11 +16,11 @@ const PaymentIntegration = ({ handlePaymentSuccess }) => {
         Please pay the nominal fee to complete your registration.
       </p>
       <div className="flex flex-col items-center space-y-4">
-        <p className="text-lg font-semibold">Amount: ₹500</p>
+        <p className="text-lg font-semibold">Amount: ₹199</p>
         <button
           type="button"
           onClick={handlePaymentSuccess}
-          className="w-full bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition"
+          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
         >
           Pay Now
         </button>
@@ -33,14 +37,14 @@ const Intern = () => {
 
   // Progress Bar Data
   const stages = [
-    { name: 'Start', date: new Date('2025-02-01') },
-    { name: 'End', date: new Date('2025-02-25') },
-    { name: 'W1', date: new Date('2025-02-26') },
-    { name: 'W2', date: new Date('2025-03-05') },
-    { name: 'W3', date: new Date('2025-03-12') },
-    { name: 'W4', date: new Date('2025-03-19') },
-    { name: 'W5', date: new Date('2025-03-26') },
-    { name: 'W6', date: new Date('2025-04-02') },
+    { name: 'Registration Start', date: new Date('2025-02-01') },
+    { name: 'Registration End', date: new Date('2025-02-25') },
+    { name: 'Week 1', date: new Date('2025-02-26') },
+    { name: 'Week 2', date: new Date('2025-03-05') },
+    { name: 'Week 3', date: new Date('2025-03-12') },
+    { name: 'Week 4', date: new Date('2025-03-19') },
+    { name: 'Week 5', date: new Date('2025-03-26') },
+    { name: 'Week 6', date: new Date('2025-04-02') },
     { name: 'Certification', date: new Date('2025-04-09') }
   ];
 
@@ -125,31 +129,40 @@ const Intern = () => {
   const handleSendOtp = () => {
     if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
       setIsOtpSent(true);
-      alert('OTP sent successfully!'); // Mock OTP sending
+      setIsSendOtpDisabled(true); // Disable the button
+      toast.success('OTP sent successfully!');
+
+      // Re-enable the button after 1 minute
+      setTimeout(() => {
+        setIsSendOtpDisabled(false);
+      }, 60000); // 60000 milliseconds = 1 minute
     } else {
       setErrors({ ...errors, mobile: 'Enter a valid 10-digit mobile number' });
+      toast.error('Please enter a valid 10-digit mobile number.');
     }
   };
 
   // Handle OTP verification
   const handleVerifyOtp = () => {
-    if (formData.otp === '123456') { // Mock OTP verification
+    if (formData.otp === '123456') {
       setIsOtpVerified(true);
-      alert('OTP verified successfully!');
+      setIsSendOtpDisabled(true); // Disable the button permanently after OTP is verified
+      toast.success('OTP verified successfully!');
     } else {
       setErrors({ ...errors, otp: 'Invalid OTP' });
+      toast.error('Invalid OTP. Please try again.');
     }
   };
 
   // Handle registration
   const handleRegisterClick = () => {
-    alert('Registration successful!');
+    toast.success('Registration successful!');
     setIsRegistered(true);
   };
 
   // Handle payment success
   const handlePaymentSuccess = () => {
-    alert('Payment successful!');
+    toast.success('Payment successful!');
     setIsPaymentSuccessful(true);
   };
 
@@ -157,7 +170,7 @@ const Intern = () => {
     <div className="bg-gray-100 min-h-screen font-sans">
       <Navbar />
       <div className="container mx-auto py-10 px-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
+        <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
             <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on Generative AI Powered Web Applications</h2>
@@ -177,9 +190,9 @@ const Intern = () => {
                   // Calculate progress percentage for the line between stages
                   const progressPercentage = nextStageDate
                     ? Math.min(
-                        100,
-                        ((today - stage.date) / (nextStageDate - stage.date)) * 100
-                      )
+                      100,
+                      ((today - stage.date) / (nextStageDate - stage.date)) * 100
+                    )
                     : 100;
 
                   return (
@@ -191,9 +204,8 @@ const Intern = () => {
                         onMouseLeave={() => setHoveredStageIndex(null)}
                       >
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${
-                            isCompleted ? 'bg-blue-600' : 'bg-slate-400'
-                          }`}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${isCompleted ? 'bg-blue-600' : 'bg-slate-400'
+                            }`}
                         >
                           {isCompleted && '✓'}
                         </div>
@@ -234,7 +246,7 @@ const Intern = () => {
                   );
                 })}
               </div>
-              <p className="mt-4">Register for the internship with a nominal fee. For more information, <a href="#" className="text-blue-600 font-semibold">contact us</a>.</p>
+              <p className="mt-4">Register for the internship with a nominal fee. For more information, <Link to="/contactus" className="text-blue-600 font-semibold">contact us</Link>.</p>
             </div>
           </div>
 
@@ -252,9 +264,9 @@ const Intern = () => {
                     placeholder="Enter your name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.name ? 'border-red-500' : 'focus:ring-blue-500'
-                    }`}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : 'focus:ring-blue-500'
+                      }`}
+                    autoComplete='off'
                   />
                   {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
                 </div>
@@ -268,9 +280,9 @@ const Intern = () => {
                     placeholder="Enter your email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                      errors.email ? 'border-red-500' : 'focus:ring-blue-500'
-                    }`}
+                    className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'focus:ring-blue-500'
+                      }`}
+                    autoComplete='off'
                   />
                   {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                 </div>
@@ -285,18 +297,17 @@ const Intern = () => {
                       placeholder="Enter your mobile number"
                       value={formData.mobile}
                       onChange={handleChange}
-                      className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                        errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
-                      }`}
+                      className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
+                        }`}
+                      autoComplete='off'
                     />
                     <button
                       type="button"
                       onClick={handleSendOtp}
-                      className={`px-4 py-2 rounded-lg transition ${
-                        formData.mobile.length === 10 && !errors.mobile
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-slate-400 cursor-not-allowed text-white'
-                      }`}
+                      className={`px-2 py-1 rounded-lg transition ${formData.mobile.length === 10 && !errors.mobile
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-slate-400 cursor-not-allowed text-white'
+                        }`}
                       disabled={formData.mobile.length !== 10 || !!errors.mobile}
                     >
                       Send OTP
@@ -316,18 +327,17 @@ const Intern = () => {
                         placeholder="Enter OTP"
                         value={formData.otp}
                         onChange={handleChange}
-                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                          errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
-                        }`}
+                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
+                          }`}
+                        autoComplete='off'
                       />
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
-                        className={`px-4 py-2 rounded-lg transition ${
-                          formData.otp && !errors.otp
-                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                            : 'bg-slate-400 text-white cursor-not-allowed'
-                        }`}
+                        className={`px-2 py-1 rounded-lg transition ${formData.otp && !errors.otp
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-slate-400 text-white cursor-not-allowed'
+                          }`}
                         disabled={!formData.otp || !!errors.otp}
                       >
                         Verify OTP
@@ -341,11 +351,10 @@ const Intern = () => {
                 <button
                   type="button"
                   onClick={handleRegisterClick}
-                  className={`w-full px-6 py-3 rounded-lg shadow-md transition ${
-                    isOtpVerified && Object.keys(errors).length === 0
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-slate-400 cursor-not-allowed'
-                  }`}
+                  className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isOtpVerified && Object.keys(errors).length === 0
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-slate-400 text-white cursor-not-allowed'
+                    }`}
                   disabled={!isOtpVerified || Object.keys(errors).length > 0}
                 >
                   Register Now
@@ -357,7 +366,9 @@ const Intern = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
       <Footer />
+      {/* Toast Container */}
     </div>
   );
 };
