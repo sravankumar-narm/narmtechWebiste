@@ -183,11 +183,11 @@ const Intern = () => {
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
-            <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on Generative AI Powered Web Applications</h2>
+            <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on GenAI Powered Web Applications</h2>
             <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
-            <p className="mt-2 text-sm">Generative AI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply generative AI technology for real-time problems and how we can build consumer applications to embed the power of generative AI.</p>
+            <p className="mt-2 text-sm">GenAI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply GenAI technology for real-time problems and how we can build consumer applications to embed the power of GenAI.</p>
             <h3 className="text-xl font-semibold mt-4">What you are going to learn?</h3>
-            <p className="mt-2 text-sm">Generative AI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply generative AI technology for real-time problems and how we can build consumer applications to embed the power of generative AI.</p>
+            <p className="mt-2 text-sm">GenAI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply GenAI technology for real-time problems and how we can build consumer applications to embed the power of GenAI.</p>
             <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
             <div className="mt-4">
               <p className="font-semibold">📍 Internship Progress</p>

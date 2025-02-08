@@ -7,8 +7,8 @@ import Quizifi from "../../assets/offerings/Quizifai3.png";
 const testimonialData = [
   {
     id: 1,
-    title2: "Generative AI Internship Program",
-    text: `Orientation: Intro to Generative AI, web app development, project planning & team setup.<br/>
+    title2: "GenAI Internship Program",
+    text: `Orientation: Intro to GenAI, web app development, project planning & team setup.<br/>
           6-Week Development: Project mentorship & documentation guidance.<br/>
           Closing Ceremony: Project presentations, certificates, and feedback.`,
   },

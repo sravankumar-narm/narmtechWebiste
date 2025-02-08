@@ -64,7 +64,7 @@ const CountdownTimer = ({ endDate, currentPath }) => {
         onClick={() => navigate('/internship')}
       >
         <div className="text-base font-bold">
-          Virtual Internship Program on Generative AI Powered Web Applications
+          Virtual Internship Program on GenAI Powered Web Applications
         </div>
         <div className="text-sm text-gray-300">
           <span>{days}d {hours}h {minutes}m {seconds}s</span>&nbsp;&nbsp;

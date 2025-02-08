@@ -24,7 +24,7 @@ const Intern = () => {
         <div className="flex flex-col sm:flex-row rounded-lg shadow-xl overflow-hidden bg-white">
           {/* Left side - Internship Details */}
 <div className="sm:w-7/12 p-8 bg-[#ffecca]">
-            <h2 className="text-2xl font-bold mb-4">Virtual Internship Program on Creating Generative AI-Powered Web Applications</h2>
+            <h2 className="text-2xl font-bold mb-4">Virtual Internship Program on Creating GenAI-Powered Web Applications</h2>
             <p className="text-gray-700 mb-4">📅 <strong>Start Date:</strong> February 1, 2025 (Tentative)</p>
             <p className="text-gray-700 mb-4">⏳ <strong>Duration:</strong> 6 Weeks</p>
             <p className="text-gray-700 mb-4">💰 <strong>Nominal Fee:</strong> ₹199</p>
@@ -33,8 +33,8 @@ const Intern = () => {
             <ul className="ml-6 text-gray-700 space-y-2">
               <li><strong>Orientation Program (Online):</strong>
                 <ul className="ml-4 space-y-1">
-                  <li>🔹 Introductory session on Generative AI technologies (Database, Python, ReactJS, etc.)</li>
-                  <li>🔹 Training on building web applications using Generative AI</li>
+                  <li>🔹 Introductory session on GenAI technologies (Database, Python, ReactJS, etc.)</li>
+                  <li>🔹 Training on building web applications using GenAI</li>
                   <li>🔹 Overview of project management techniques</li>
                   <li>🔹 Use case discussions and planning sessions</li>
                   <li>🔹 Setting up Teams</li>
@@ -68,7 +68,7 @@ const Intern = () => {
             <div>
               <h3 className="text-xl font-semibold">🎯 Why Join This Internship?</h3>
               <ul className="ml-6 text-gray-700 mt-4 space-y-2">
-                <li>🚀 Hands-on experience in Generative AI-powered web development</li>
+                <li>🚀 Hands-on experience in GenAI-powered web development</li>
                 <li>📈 Gain mentorship from industry experts</li>
                 <li>🛠 Learn full-stack development with ReactJS, Python, and AI technologies</li>
                 <li>📜 Receive an internship certificate for career growth</li>
