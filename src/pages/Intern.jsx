@@ -5,7 +5,26 @@ import Footer from '../components/Footer/Footer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import ProgressBar from '../components/Intern/ProgressBar';
+import PersonalAcademicForm from '../components/Intern/PersonalAcademicForm';
+import Confetti from 'react-confetti';
 
+const CelebrationPopup = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-md">
+        <h2 className="text-3xl font-bold text-green-600">🎉 Congratulations! 🎉</h2>
+        <p className="text-lg mt-2">Your details have been successfully submitted.</p>
+        <button 
+          onClick={onClose} 
+          className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
 
 // Payment Integration Component
 const PaymentIntegration = ({ handlePaymentSuccess }) => {
@@ -34,25 +53,6 @@ const Intern = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-
-  // Progress Bar Data
-  const stages = [
-    { name: 'Registration Start', date: new Date('2025-02-01') },
-    { name: 'Registration End', date: new Date('2025-02-25') },
-    { name: 'Week 1', date: new Date('2025-02-26') },
-    { name: 'Week 2', date: new Date('2025-03-05') },
-    { name: 'Week 3', date: new Date('2025-03-12') },
-    { name: 'Week 4', date: new Date('2025-03-19') },
-    { name: 'Week 5', date: new Date('2025-03-26') },
-    { name: 'Week 6', date: new Date('2025-04-02') },
-    { name: 'Certification', date: new Date('2025-04-09') }
-  ];
-
-  const today = new Date();
-
-  // State to track which stage is being hovered
-  const [hoveredStageIndex, setHoveredStageIndex] = useState(null);
-
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -69,6 +69,16 @@ const Intern = () => {
   // State to track registration and payment status
   const [isRegistered, setIsRegistered] = useState(false);
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+  const [isDetailsSubmitted, setIsDetailsSubmitted] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
+
+  // Show confetti & modal for 5 seconds when registration completes
+  useEffect(() => {
+    if (isDetailsSubmitted) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 10000);
+    }
+  }, [isDetailsSubmitted]);
 
   // Handle form input changes with real-time validation
   const handleChange = (e) => {
@@ -183,68 +193,7 @@ const Intern = () => {
               <p className="font-semibold">📍 Internship Progress</p>
               {/* Responsive Progress Bar */}
               <div className="flex flex-col items-center justify-between mt-4 relative sm:flex-row">
-                {stages.map((stage, index) => {
-                  const isCompleted = today >= stage.date;
-                  const nextStageDate = stages[index + 1]?.date;
-
-                  // Calculate progress percentage for the line between stages
-                  const progressPercentage = nextStageDate
-                    ? Math.min(
-                      100,
-                      ((today - stage.date) / (nextStageDate - stage.date)) * 100
-                    )
-                    : 100;
-
-                  return (
-                    <React.Fragment key={index}>
-                      {/* Circle */}
-                      <div
-                        className="flex flex-col items-center relative"
-                        onMouseEnter={() => setHoveredStageIndex(index)}
-                        onMouseLeave={() => setHoveredStageIndex(null)}
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm ${isCompleted ? 'bg-blue-600' : 'bg-slate-400'
-                            }`}
-                        >
-                          {isCompleted && '✓'}
-                        </div>
-                        {/* Label below circle */}
-                        <p className="text-xs mt-2 text-center font-semibold">
-                          {stage.name}
-                        </p>
-                        {/* Hover Date Tooltip */}
-                        {hoveredStageIndex === index && (
-                          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
-                            {stage.date.toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Line connecting circles */}
-                      {index < stages.length - 1 && (
-                        <div
-                          className="sm:flex-grow sm:h-1 w-1 sm:w-auto h-8 bg-gray-300 relative"
-                          style={{
-                            marginTop: '-25px',
-                            marginLeft: '0px',
-                            marginRight: '0px',
-                          }}
-                        >
-                          {/* Blue progress bar overlay */}
-                          <div
-                            className="absolute top-0 left-0 h-full w-full bg-blue-600 transition-all duration-500"
-                            style={{
-                              width: `${progressPercentage}%`,
-                              height: '100%',
-                              display: today < stage.date ? 'none' : 'block',
-                            }}
-                          ></div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+                <ProgressBar />
               </div>
               <p className="mt-4">Register for the internship with a nominal fee. For more information, <Link to="/contactus" className="text-blue-600 font-semibold">contact us</Link>.</p>
             </div>
@@ -253,11 +202,11 @@ const Intern = () => {
           {/* Right Section - Conditional Rendering */}
           {!isRegistered ? (
             <div className="p-8 bg-gray-50 rounded-lg flex flex-col">
-              <h3 className="text-xl font-semibold text-center mb-4">Register for Internship Program</h3>
+              <h3 className="text-xl font-semibold text-center mb-4">Sign Up for Internship Program</h3>
               <form className="space-y-4">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Name:</label>
+                  <label className="block text-sm font-medium text-gray-700">Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
                   <input
                     type="text"
                     name="name"
@@ -273,7 +222,7 @@ const Intern = () => {
 
                 {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email:</label>
+                  <label className="block text-sm font-medium text-gray-700">Email</label>
                   <input
                     type="email"
                     name="email"
@@ -289,29 +238,20 @@ const Intern = () => {
 
                 {/* Mobile Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Mobile:</label>
-                  <div className="flex items-center space-x-2">
+                  <label className="block text-sm font-medium text-gray-700">Mobile</label>
+                  <div className="flex items-center justify-between space-x-2">
                     <input
                       type="text"
                       name="mobile"
                       placeholder="Enter your mobile number"
                       value={formData.mobile}
                       onChange={handleChange}
-                      className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
+                      className={`w-[70%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
                         }`}
                       autoComplete='off'
                     />
-                    <button
-                      type="button"
-                      onClick={handleSendOtp}
-                      className={`px-2 py-1 rounded-lg transition ${formData.mobile.length === 10 && !errors.mobile
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-slate-400 cursor-not-allowed text-white'
-                        }`}
-                      disabled={formData.mobile.length !== 10 || !!errors.mobile}
-                    >
-                      Send OTP
-                    </button>
+                    <button type="button" onClick={handleSendOtp} className={`p-3 rounded-lg transition ${formData.mobile.length === 10 && !errors.mobile ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-400 cursor-not-allowed text-white'}`} disabled={formData.mobile.length !== 10 || !!errors.mobile}>Send OTP</button>
+
                   </div>
                   {errors.mobile && <p className="text-red-500 text-xs">{errors.mobile}</p>}
                 </div>
@@ -320,21 +260,21 @@ const Intern = () => {
                 {isOtpSent && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700">OTP:</label>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center justify-between space-x-2">
                       <input
                         type="text"
                         name="otp"
                         placeholder="Enter OTP"
                         value={formData.otp}
                         onChange={handleChange}
-                        className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
+                        className={`w-[70%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
                           }`}
                         autoComplete='off'
                       />
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
-                        className={`px-2 py-1 rounded-lg transition ${formData.otp && !errors.otp
+                        className={`p-3 rounded-lg transition ${formData.otp && !errors.otp
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-slate-400 text-white cursor-not-allowed'
                           }`}
@@ -361,11 +301,25 @@ const Intern = () => {
                 </button>
               </form>
             </div>
+          ) : !isPaymentSuccessful ? (
+            <PaymentIntegration handlePaymentSuccess={() => setIsPaymentSuccessful(true)} />
+          ) : !isDetailsSubmitted ? (
+            <PersonalAcademicForm handleSubmitDetails={() => setIsDetailsSubmitted(true)} />
           ) : (
-            <PaymentIntegration handlePaymentSuccess={handlePaymentSuccess} />
+            <div className="text-center p-8 bg-green-100 rounded-lg">
+              <h2 className="text-2xl font-bold text-green-700">🎉 Registration Complete!</h2>
+              <p className="mt-2 text-green-600">Your details have been successfully submitted.</p>
+            </div>
           )}
         </div>
       </div>
+      {/* Celebration Popup & Confetti */}
+      {showCelebration && (
+        <>
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+          <CelebrationPopup onClose={() => setShowCelebration(false)} />
+        </>
+      )}
       <ToastContainer />
       <Footer />
       {/* Toast Container */}

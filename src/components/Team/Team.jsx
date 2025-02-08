@@ -6,30 +6,36 @@ import linkedIn from "../../assets/brand/linkedIn.png";
 const AdvisoryTeamData = [
   {
     id: 1,
-    name: "Narsimha Reddy",
-    position: "Program Manager",
+    name: "Dr. Samantha S",
+    position: "Product Management & Delivery Lead",
     image: UserIcon,
-    socialLinks: "",
+    socialLinks: "https://www.linkedin.com/in/samanthasunkara/",
     about:
-      "Program Manager, TATA Consultancy Services, Chicago, USA, 25 years of IT Experience in Data and Analytics, AI & ML",
+      `Dr. Samantha S, a seasoned professional with over a decade of experience, leads Product Management and Delivery at NARM Tech. With a strong academic background and expertise spanning the Education and IT industries, she plays a pivotal role in driving innovative product development and ensuring seamless delivery. 
+    
+    Her deep understanding of the educational domain, combined with her extensive product management experience, empowers her to craft impactful solutions for global markets. Dr. Samantha is a key force behind NARM Tech’s commitment to quality and excellence. `,
   },
   {
     id: 2,
-    name: "Sasi K",
-    position: "AI&ML Expert",
+    name: "Deepika Reddy",
+    position: "Human Resources, Sales & Marketing Lead",
     image: UserIcon,
-    socialLinks: "",
+    socialLinks: "https://www.linkedin.com/in/deepika-reddy-04b24838/",
     about:
-      "Research Associate, AI Center of Excellence, TATA Consultancy Services, Bangalore, India, 17 years of Professional Experience in AI, Data Science & IT Infrastructure Management.",
+      `Deepika Reddy, with a Master’s in Business Administration specializing in Human Resources, brings nearly a decade of experience in talent acquisition, human resource management, and sales & marketing. At NARM Tech, she plays a critical role in fostering a people-first culture while driving sales and marketing strategies that support business growth. 
+    
+    Her expertise in HR operations and team-building ensures a robust and dynamic workforce, while her strategic insights into sales and marketing contribute to expanding NARM Tech’s footprint across industries and markets. `,
   },
   {
     id: 3,
     name: "Dr M Padma Lalitha",
-    position: "Professor and HOD, AITS",
+    position: "Advisor",
     image: UserIcon,
-    socialLinks: "",
+    socialLinks: "https://www.linkedin.com/in/padmalalitha-mareddy-86393b17/",
     about:
-      "Professor and Head of Department,AITS, Rajampet, Andhra Pradesh, India 25 years of Professional Experience, Research and Development Experience in various subjects and technologies, and AI/ML.",
+      `Dr. M Padma Lalitha, a distinguished academic and industry expert, serves as an Advisor to NARM Tech. With 25 years of professional experience, she is a Professor and Head of Department at AITS, Rajampet, Andhra Pradesh, India. 
+    
+    Her extensive background spans Research and Development in cutting-edge fields, including Artificial Intelligence (AI) and Machine Learning (ML), along with various other technologies. Dr. Lalitha’s guidance and expertise are invaluable in shaping NARM Tech’s innovation roadmap and advancing its R&D initiatives. `,
   },
 ];
 const Team = () => {
@@ -66,17 +72,17 @@ const Team = () => {
                 </div>
                 <div className="col-span-3 xl:w-[830px] 2xl:w-[831px]">
                   <p className="leading-6">
-                    Ram M Reddy, Founder & CEO of NARM Tech Private Ltd,
-                    oversees all business operations of the company. With over
-                    21 years of experience in the IT industry, he combines his
-                    expertise in technology, legal matters, and business acumen
-                    gained through diverse roles in multinational corporations.{" "}
-                    <br /> <br /> Throughout his career, he has excelled in
-                    areas such as Data & Analytics, Software Products
-                    Development, Portfolio Management, Project Management, and
-                    IT Strategy for global markets. Under his guidance,
-                    companies have achieved remarkable success in building
-                    robust product pipelines for the USA and EU markets.
+                    As the Founder and CEO of NARM Tech Private Ltd, Ram M Reddy 
+                    drives the company’s strategic vision and oversees all business operations. 
+                    With over 23 years of expertise in the IT industry, he combines deep 
+                    technological knowledge, a strong legal understanding, and strategic 
+                    business insights gained through leadership roles 
+                    at multinational corporations. {" "}
+                    <br /> <br /> Ram specializes in areas such as Data & Analytics,
+                     Software Product Development, Portfolio Management, Project Management, 
+                     and IT Strategy for global markets. His leadership has been instrumental 
+                     in building high-performing product pipelines for the USA and EU markets, 
+                     consistently achieving business excellence. 
                   </p>
                 </div>
               </div>
@@ -92,7 +98,7 @@ const Team = () => {
                 {AdvisoryTeamData.map(({ id, icon, name, about, position }) => (
                   <div
                     key={id}
-                    className="flex flex-col  rounded-xl bg-white p-8 space-y-4 shadow-md 2xl:h-[377px]"
+                    className="flex flex-col  rounded-xl bg-white p-8 space-y-4 shadow-md 2xl:h-[520px]"
                   >
 
                     <div className="flex items-center gap-4 bg-darkBlue p-4 rounded-xl text-white w-fit float-end">
