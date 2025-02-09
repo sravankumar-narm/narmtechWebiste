@@ -97,7 +97,7 @@ const Intern = () => {
     script.onload = () => console.log("Razorpay SDK Loaded");
     document.body.appendChild(script);
   }, []);
-  
+
 
   // Handle form input changes with real-time validation
   const handleChange = (e) => {
@@ -302,7 +302,7 @@ const Intern = () => {
       toast.error("Razorpay SDK failed to load. Please refresh the page.");
       return;
     }
-  
+
     const options = {
       key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
       amount: 199 * 100, // Convert ₹199 to paise
@@ -313,7 +313,7 @@ const Intern = () => {
       handler: function (response) {
         toast.success("Payment successful!");
         setIsPaymentSuccessful(true);
-  
+
         // Store payment status to persist after refresh
         localStorage.setItem("paymentCompleted", "true");
       },
@@ -330,7 +330,7 @@ const Intern = () => {
     const razorpay = new window.Razorpay(options);
     razorpay.open();
   };
-  
+
 
 
   return (
@@ -352,13 +352,19 @@ const Intern = () => {
               <div className="flex flex-col items-center justify-between mt-4 relative sm:flex-row">
                 <ProgressBar />
               </div>
-              <p className="mt-4">Register for the internship with a nominal fee. For more information, <Link to="/contactus" className="text-blue-600 font-semibold">contact us</Link>.</p>
+              <p className="mt-4">
+                Register for the internship with a nominal fee. Need more details?
+                <span className="text-blue-600 font-semibold"> Ask MONICA </span>
+                or email us at
+                <a href="mailto:internship@narmtech.com" className="text-blue-600 font-semibold"> internship@narmtech.com</a>.
+              </p>
+
             </div>
           </div>
 
           {/* Right Section - Conditional Rendering */}
           {!isRegistered ? (
-            <div className="p-8 bg-gray-50 rounded-lg flex flex-col">
+            <div className="p-8 bg-zinc-100 rounded-lg flex flex-col">
               <h3 className="text-xl font-semibold text-center mb-4">Sign Up for Internship Program</h3>
               <form className="space-y-4">
                 {/* Name Field */}
@@ -502,7 +508,7 @@ const Intern = () => {
           <CelebrationPopup onClose={() => setShowCelebration(false)} />
         </>
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <Footer />
       {/* Toast Container */}
     </div>

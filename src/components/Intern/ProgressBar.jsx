@@ -2,15 +2,15 @@ import React from 'react';
 import '../Intern/progressBar.css';
 
 const stages = [
-  { name: 'Reg Start', icon: '📝', date: new Date('2025-01-01'), color: 'bg-[#14ab61]' },
-  { name: 'Reg End', icon: '🔒', date: new Date('2025-01-15'), color: 'bg-red-500' },
-  { name: 'Week 1', icon: '📅', date: new Date('2025-01-20'), color: 'bg-blue-500' },
-  { name: 'Week 2', icon: '📚', date: new Date('2025-01-27'), color: 'bg-[#1a11a4]' },
-  { name: 'Week 3', icon: '📊', date: new Date('2025-02-03'), color: 'bg-purple-500' },
-  { name: 'Week 4', icon: '💡', date: new Date('2025-02-10'), color: 'bg-pink-500' },
-  { name: 'Week 5', icon: '🎯', date: new Date('2025-02-17'), color: 'bg-orange-500' },
-  { name: 'Week 6', icon: '🚀', date: new Date('2025-02-24'), color: 'bg-teal-500' },
-  { name: 'Credential', icon: '🎓', date: new Date('2025-03-01'), color: 'bg-indigo-500' }
+  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-15'), color: 'bg-[#14ab61]' },
+  { name: 'Reg End', icon: '🔒', date: new Date('2025-02-25'), color: 'bg-red-500' },
+  { name: 'Week 1', icon: '📅', date: new Date('2025-03-03'), color: 'bg-blue-500' },
+  { name: 'Week 2', icon: '📚', date: new Date('2025-03-10'), color: 'bg-[#1a11a4]' },
+  { name: 'Week 3', icon: '📊', date: new Date('2025-03-17'), color: 'bg-purple-500' },
+  { name: 'Week 4', icon: '💡', date: new Date('2025-03-24'), color: 'bg-pink-500' },
+  { name: 'Week 5', icon: '🎯', date: new Date('2025-03-31'), color: 'bg-orange-500' },
+  { name: 'Week 6', icon: '🚀', date: new Date('2025-04-07'), color: 'bg-teal-500' },
+  { name: 'Credential', icon: '🎓', date: new Date('2025-04-14'), color: 'bg-indigo-500' }
 ];
 
 const today = new Date();
@@ -96,7 +96,7 @@ const ProgressBar = () => {
                 className={`flex ${index === 0 ? 'md:flex-grow' : 'flex-grow'} h-10 md:h-1 w-1 md:w-full relative`}
               >
                 {/* Line Background */}
-                <div className="absolute left-0 top-0 h-full w-full bg-gray-400"></div>
+                <div className="absolute left-0 top-0 h-full w-full bg-white"></div>
                 {/* Progress Indicator */}
                 <div
                   className="absolute left-0 top-0 transition-all duration-500"
