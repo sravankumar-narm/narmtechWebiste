@@ -511,6 +511,18 @@ const Intern = () => {
       {/* <ToastContainer /> */}
       <Footer />
       {/* Toast Container */}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={1} // Ensures only one toast is displayed at a time
+      />
     </div>
   );
 };
