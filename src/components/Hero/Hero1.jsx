@@ -10,7 +10,7 @@ const testimonialData = [
     title2: "GenAI Internship Program",
     text: `Orientation: Intro to GenAI, web app development, project planning & team setup.<br/>
           6-Week Development: Project mentorship & documentation guidance.<br/>
-          Closing Ceremony: Project presentations, certificates, and feedback.`,
+          Closing Ceremony: Project presentations, certification, and feedback.`,
   },
   {
     id: 2,
