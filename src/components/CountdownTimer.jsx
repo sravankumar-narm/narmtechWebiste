@@ -30,9 +30,9 @@ const CountdownTimer = ({ endDate, currentPath }) => {
 
   // Dynamic background color based on days left
   let bgColorClass = 'bg-gradient-to-br from-[#f05030] to-[#d03c27] text-white p-3 rounded-lg shadow-md';
-  if (days <= 5 && !ended) {
-    bgColorClass = 'bg-gradient-to-br from-white to-blue-50 border-2 border-blue-200 rounded-lg shadow-md';
-  }
+  // if (days <= 5 && !ended) {
+  //   bgColorClass = 'bg-gradient-to-br from-white to-blue-50 border-2 border-blue-200 rounded-lg shadow-md';
+  // }
   if (days <= 2 && !ended) {
     bgColorClass = 'bg-gradient-to-br from-white to-purple-50 border-2 border-purple-200 rounded-lg shadow-md';
   }

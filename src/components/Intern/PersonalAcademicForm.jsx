@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const PersonalAcademicForm = ({ handleSubmitDetails }) => {
+    // Fetch stored email & mobile from Registration Page
+    // Fetch stored email & mobile from Registration Page
+    const storedData = JSON.parse(localStorage.getItem("formData")) || {};
+
     const [formData, setFormData] = useState({
         firstName: "",
         middleName: "",
@@ -10,10 +14,16 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         gender: "",
         college: "",
         university: "",
-        course: "",  // ✅ Course field added
+        course: "",
         specialization: "",
-        yearSemester: "",
+        pursuingYear: "",
+        pursuingSemester: "",
         examStartDate: "",
+        email: storedData.email || "",
+        mobile: storedData.mobile || "",
+        password: "",
+        confirmPassword: "",
+        pincode: "",
     });
 
     const [errors, setErrors] = useState({});
@@ -35,40 +45,135 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
 
         if (!formData.firstName.trim()) newErrors.firstName = "First Name is required";
         if (!formData.lastName.trim()) newErrors.lastName = "Last Name is required";
-        if (!formData.dob) newErrors.dob = "Date of Birth is required";
+        // Validate Date of Birth (Must be at least 18 years old)
+        const today = new Date();
+        const minDOB = new Date();
+        minDOB.setFullYear(today.getFullYear() - 18); // Must be at least 18 years old
+
+        if (!formData.dob) {
+            newErrors.dob = "Date of Birth is required";
+        } else if (new Date(formData.dob) > minDOB) {
+            newErrors.dob = "You must be at least 18 years old";
+        }
+        // if (!formData.dob) newErrors.dob = "Date of Birth is required";
         if (!formData.gender) newErrors.gender = "Gender is required";
         if (!formData.college.trim()) newErrors.college = "College Name is required";
         if (!formData.university.trim()) newErrors.university = "University is required";
-        if (!formData.course) newErrors.course = "Course selection is required"; // ✅ Added validation for Course
+        if (!formData.course) newErrors.course = "Course selection is required";
         if (!formData.specialization.trim()) newErrors.specialization = "Specialization is required";
-        if (!formData.yearSemester.trim()) newErrors.yearSemester = "Year & Semester are required";
+
+        // Validate Pursuing Year (Calendar Year)
+        const currentYear = new Date().getFullYear();
+        const minYear = currentYear - 10; // Allow only past 10 years
+        const maxYear = currentYear; // Only allow up to the current year
+
+        if (!formData.pursuingYear) {
+            newErrors.pursuingYear = "Pursuing Year is required";
+        } else if (!/^\d{4}$/.test(formData.pursuingYear)) {
+            newErrors.pursuingYear = "Invalid year format";
+        } else if (formData.pursuingYear < minYear || formData.pursuingYear > maxYear) {
+            newErrors.pursuingYear = `Year must be between ${minYear} and ${maxYear}`;
+        }
+
+        // Validate Pursuing Semester
+        if (!formData.pursuingSemester) {
+            newErrors.pursuingSemester = "Pursuing Semester is required";
+        } else if (!["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"].includes(formData.pursuingSemester)) {
+            newErrors.pursuingSemester = "Invalid Pursuing Semester";
+        }
+
         if (!formData.examStartDate) newErrors.examStartDate = "Semester Exam Start Date is required";
+
+        // Password validation (Minimum 8 characters, at least one uppercase & one lowercase)
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        if (!formData.password.trim()) {
+            newErrors.password = "Password is required";
+        } else if (!passwordRegex.test(formData.password)) {
+            newErrors.password = "Password must be at least 8 characters and contain both uppercase & lowercase letters";
+        }
+
+        if (!formData.confirmPassword.trim()) {
+            newErrors.confirmPassword = "Confirm Password is required";
+        } else if (formData.password !== formData.confirmPassword) {
+            newErrors.confirmPassword = "Passwords do not match";
+        }
+
+        // Pincode validation
+        if (!formData.pincode.trim()) {
+            newErrors.pincode = "Pincode is required";
+        } else if (!/^\d{6}$/.test(formData.pincode)) {
+            newErrors.pincode = "Pincode must be a 6-digit number";
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    // Handle Form Submission
-    const handleSubmit = (e) => {
+    // Handle Form Submission with API Call
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        console.log("Form Data Before Submission:", formData); // Debugging
-
-        if (validateForm()) {
-            setErrors({});
-            toast.success("Details submitted successfully!");
-            handleSubmitDetails();
-
-            // Auto scroll to top after successful submission
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
+        if (!validateForm()) {
             toast.error("Please fill all required fields.");
+            return;
+        }
+
+        setErrors({});
+
+        // Debugging: Log the form data before sending
+        console.log("Submitting Form Data:", formData);
+
+        const payload = {
+            platform: "Web",
+            first_name: formData.firstName,
+            middle_name: formData.middleName,
+            last_name: formData.lastName,
+            date_of_birth: formData.dob,
+            gender: formData.gender,
+            user_email: formData.email,
+            user_phone_number: formData.mobile,
+            password: formData.password,
+            confirm_password: formData.confirmPassword,
+            occupation_name: "Student",
+            college_name: formData.college,
+            university_name: formData.university,
+            course: formData.course,
+            specialization: formData.specialization,
+            pursuing_year: parseInt(formData.pursuingYear, 10),
+            pursuing_semester: formData.pursuingSemester,
+            internship_start_date: formData.examStartDate,
+            internship_end_date: new Date(new Date(formData.examStartDate).setMonth(new Date(formData.examStartDate).getMonth() + 1)).toISOString().split("T")[0],
+            mentor_name: "CHIRANJEEVI REDDY",
+            mentor_email: storedData.email,
+            location_id: parseInt(formData.pincode, 10)
+        };
+
+        try {
+            const response = await fetch("https://dev.quizifai.com:8010/intern_rgstr_dtls", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                toast.success("Details submitted successfully!");
+                handleSubmitDetails();
+                localStorage.setItem("registrationCompleted", "true");
+            } else {
+                toast.error(data.message || "Failed to submit details.");
+            }
+        } catch (error) {
+            console.error("Error submitting details:", error);
+            toast.error("Something went wrong. Please try again.");
         }
     };
 
-
     return (
-        <div className="p-8 bg-gray-50 rounded-lg shadow-lg">
+        <div className="p-8 bg-gray-50 rounded-lg shadow-lg h-[calc(100vh-100px)] overflow-y-auto">
             <h3 className="text-xl font-semibold text-center mb-4">Personal & Academic Details</h3>
             <form className="space-y-4" onSubmit={handleSubmit}>
 
@@ -88,6 +193,19 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                     <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Last Name</label>
                     <input id="lastName" type="text" name="lastName" placeholder="Enter Last Name" value={formData.lastName} onChange={handleChange} className="w-full p-3 border rounded-lg" />
                     {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+                </div>
+
+                {/* Confirm Password Field */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
                 </div>
 
                 <div>
@@ -121,6 +239,12 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 </div>
 
                 <div>
+                    <label className="block text-sm font-medium text-gray-700">Pincode</label>
+                    <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    {errors.pincode && <p className="text-red-500 text-xs">{errors.pincode}</p>}
+                </div>
+
+                <div>
                     <label htmlFor="course" className="block text-sm font-medium text-gray-700">Course</label>
                     <select id="course" name="course" value={formData.course} onChange={handleChange} className="w-full p-3 border rounded-lg">
                         <option value="">Select Course</option>
@@ -138,9 +262,43 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 </div>
 
                 <div>
-                    <label htmlFor="yearSemester" className="block text-sm font-medium text-gray-700">Pursuing Year & Semester</label>
-                    <input id="yearSemester" type="text" name="yearSemester" placeholder="Enter Year & Semester" value={formData.yearSemester} onChange={handleChange} className="w-full p-3 border rounded-lg" />
-                    {errors.yearSemester && <p className="text-red-500 text-xs">{errors.yearSemester}</p>}
+                    <label htmlFor="pursuingSemester" className="block text-sm font-medium text-gray-700">Pursuing Semester</label>
+                    <select id="pursuingSemester" name="pursuingSemester" value={formData.pursuingSemester} onChange={handleChange} className="w-full p-3 border rounded-lg">
+                        <option value="">Select Semester</option>
+                        <option value="One">One</option>
+                        <option value="Two">Two</option>
+                        <option value="Three">Three</option>
+                        <option value="Four">Four</option>
+                        <option value="Five">Five</option>
+                        <option value="Six">Six</option>
+                        <option value="Seven">Seven</option>
+                        <option value="Eight">Eight</option>
+                    </select>
+                    {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
+                </div>
+
+                <div>
+                    <label htmlFor="pursuingYear" className="block text-sm font-medium text-gray-700">
+                        Pursuing Year
+                    </label>
+                    <select
+                        id="pursuingYear"
+                        name="pursuingYear"
+                        value={formData.pursuingYear}
+                        onChange={handleChange}
+                        className="w-full p-3 border rounded-lg"
+                    >
+                        <option value="">Select Year</option>
+                        {[...Array(10)].map((_, index) => {
+                            const year = new Date().getFullYear() - index;
+                            return (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    {errors.pursuingYear && <p className="text-red-500 text-xs">{errors.pursuingYear}</p>}
                 </div>
 
                 <div>

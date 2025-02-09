@@ -15,8 +15,8 @@ const CelebrationPopup = ({ onClose }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-md">
         <h2 className="text-3xl font-bold text-green-600">🎉 Congratulations! 🎉</h2>
         <p className="text-lg mt-2">Your details have been successfully submitted.</p>
-        <button 
-          onClick={onClose} 
+        <button
+          onClick={onClose}
           className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
         >
           Close
@@ -71,6 +71,10 @@ const Intern = () => {
   const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
   const [isDetailsSubmitted, setIsDetailsSubmitted] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [isSendOtpDisabled, setIsSendOtpDisabled] = useState(false);
+  const [isFieldsDisabled, setIsFieldsDisabled] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(60); // Timer for OTP button
+  const [isVerifyOtpDisabled, setIsVerifyOtpDisabled] = useState(false);
 
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
@@ -79,6 +83,21 @@ const Intern = () => {
       setTimeout(() => setShowCelebration(false), 10000);
     }
   }, [isDetailsSubmitted]);
+  useEffect(() => {
+    const paymentStatus = localStorage.getItem("paymentCompleted");
+    if (paymentStatus === "true") {
+      setIsPaymentSuccessful(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => console.log("Razorpay SDK Loaded");
+    document.body.appendChild(script);
+  }, []);
+  
 
   // Handle form input changes with real-time validation
   const handleChange = (e) => {
@@ -87,45 +106,46 @@ const Intern = () => {
     // Real-time validation for each field
     let newErrors = { ...errors };
 
-    if (name === 'name') {
+    if (name === "name") {
       if (!value.trim()) {
-        newErrors.name = 'Name is required';
+        newErrors.name = "Name is required";
       } else if (value.length < 3) {
-        newErrors.name = 'Name must be at least 3 characters';
+        newErrors.name = "Name must be at least 3 characters";
       } else if (/\d/.test(value)) {
-        newErrors.name = 'Name should not contain numbers';
+        newErrors.name = "Name should not contain numbers";
       } else {
         delete newErrors.name;
       }
     }
 
-    if (name === 'email') {
+    if (name === "email") {
       if (!value.trim()) {
-        newErrors.email = 'Email is required';
+        newErrors.email = "Email is required";
       } else if (!/\S+@\S+\.\S+/.test(value)) {
-        newErrors.email = 'Invalid email format';
+        newErrors.email = "Invalid email format";
       } else {
         delete newErrors.email;
       }
     }
 
-    if (name === 'mobile') {
+    if (name === "mobile") {
       if (!value.trim()) {
-        newErrors.mobile = 'Mobile number is required';
+        newErrors.mobile = "Mobile number is required";
       } else if (!/^\d+$/.test(value)) {
-        newErrors.mobile = 'Mobile number should only contain digits';
+        newErrors.mobile = "Mobile number should only contain digits";
       } else if (value.length !== 10) {
-        newErrors.mobile = 'Mobile number must be 10 digits';
+        newErrors.mobile = "Mobile number must be 10 digits";
       } else {
         delete newErrors.mobile;
       }
     }
 
-    if (name === 'otp') {
+    // Validate OTP only if OTP has been sent
+    if (name === "otp" && isOtpSent) {
       if (!value.trim()) {
-        newErrors.otp = 'OTP is required';
-      } else if (value !== '123456') { // Mock OTP validation
-        newErrors.otp = 'Invalid OTP';
+        newErrors.otp = "OTP is required";
+      } else if (!/^\d{6}$/.test(value)) {
+        newErrors.otp = "OTP must be a 6-digit number";
       } else {
         delete newErrors.otp;
       }
@@ -135,34 +155,112 @@ const Intern = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle OTP sending
-  const handleSendOtp = () => {
-    if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
-      setIsOtpSent(true);
-      setIsSendOtpDisabled(true); // Disable the button
-      toast.success('OTP sent successfully!');
 
-      // Re-enable the button after 1 minute
-      setTimeout(() => {
-        setIsSendOtpDisabled(false);
-      }, 60000); // 60000 milliseconds = 1 minute
+  // Handle OTP sending
+  const handleSendOtp = async () => {
+    if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
+      try {
+        const response = await fetch("https://dev.quizifai.com:8010/signup-for-interns", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            signup_option: "mobile",
+            user_name: formData.name,
+            mobile: formData.mobile,
+            email: formData.email,
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          toast.success("OTP sent successfully!");
+
+          // Disable name, email, and mobile fields
+          setIsFieldsDisabled(true);
+
+          // Disable "Send OTP" button and start timer
+          setIsSendOtpDisabled(true);
+          setIsOtpSent(true);
+
+          let timeLeft = 60;
+          const timerInterval = setInterval(() => {
+            timeLeft -= 1;
+            setOtpTimer(timeLeft);
+
+            if (timeLeft === 0) {
+              clearInterval(timerInterval);
+              setIsSendOtpDisabled(false); // Re-enable Send OTP
+              setOtpTimer(60); // Reset timer
+            }
+          }, 1000);
+        } else {
+          toast.error(data.message || "Failed to send OTP");
+        }
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        toast.error("Something went wrong. Please try again.");
+      }
     } else {
-      setErrors({ ...errors, mobile: 'Enter a valid 10-digit mobile number' });
-      toast.error('Please enter a valid 10-digit mobile number.');
+      setErrors({ ...errors, mobile: "Enter a valid 10-digit mobile number" });
+      toast.error("Please enter a valid 10-digit mobile number.");
     }
   };
+
 
   // Handle OTP verification
-  const handleVerifyOtp = () => {
-    if (formData.otp === '123456') {
-      setIsOtpVerified(true);
-      setIsSendOtpDisabled(true); // Disable the button permanently after OTP is verified
-      toast.success('OTP verified successfully!');
-    } else {
-      setErrors({ ...errors, otp: 'Invalid OTP' });
-      toast.error('Invalid OTP. Please try again.');
+  const handleVerifyOtp = async () => {
+    if (!formData.otp.trim()) {
+      setErrors({ ...errors, otp: "OTP is required" });
+      toast.error("Please enter the OTP.");
+      return;
+    }
+
+    setIsVerifyOtpDisabled(true); // Disable "Verify OTP" button
+
+    try {
+      const response = await fetch("https://dev.quizifai.com:8010/sgnup_verification_for_interns", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          verify_option: "mobile",
+          mobile: formData.mobile,
+          email: formData.email,
+          otp: formData.otp,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.response !== "fail") {
+        toast.success("OTP verified successfully!");
+        setIsOtpVerified(true);
+        setIsFieldsDisabled(true); // Disable all fields
+        setIsSendOtpDisabled(true); // Disable Send OTP button
+        setOtpTimer(null); // Stop showing the timer
+
+        // Store in localStorage to persist state on refresh
+        localStorage.setItem("otpVerified", "true");
+        localStorage.setItem("formData", JSON.stringify(formData));
+      } else {
+        toast.error(data.response_message || "Invalid OTP. Please try again.");
+        setErrors({ ...errors, otp: data.response_message || "Invalid OTP" });
+
+        // Re-enable "Verify OTP" button to allow retrying
+        setIsVerifyOtpDisabled(false);
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      toast.error("Something went wrong. Please try again.");
+
+      // Re-enable "Verify OTP" button on error
+      setIsVerifyOtpDisabled(false);
     }
   };
+
 
   // Handle registration
   const handleRegisterClick = () => {
@@ -171,10 +269,69 @@ const Intern = () => {
   };
 
   // Handle payment success
-  const handlePaymentSuccess = () => {
-    toast.success('Payment successful!');
-    setIsPaymentSuccessful(true);
+  // const handlePaymentSuccess = async () => {
+  //   const options = {
+  //     key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
+  //     amount: 199 * 100, // Amount in paise (₹199)
+  //     currency: "INR",
+  //     name: "Internship Registration",
+  //     description: "Payment for Internship Program",
+  //     image: "https://narmtech.com/assets/logo-Dx_AJf1h.png", // Your logo URL
+  //     handler: function (response) {
+  //       toast.success("Payment successful!");
+  //       setIsPaymentSuccessful(true);
+
+  //       // Store payment status in localStorage
+  //       localStorage.setItem("paymentCompleted", "true");
+  //     },
+  //     prefill: {
+  //       name: formData.name,
+  //       email: formData.email,
+  //       contact: formData.mobile,
+  //     },
+  //     theme: {
+  //       color: "#007bff", // Customize Razorpay UI color
+  //     },
+  //   };
+
+  //   const razorpay = new window.Razorpay(options);
+  //   razorpay.open();
+  // };
+  const handlePaymentSuccess = async () => {
+    if (!window.Razorpay) {
+      toast.error("Razorpay SDK failed to load. Please refresh the page.");
+      return;
+    }
+  
+    const options = {
+      key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
+      amount: 199 * 100, // Convert ₹199 to paise
+      currency: "INR",
+      name: "Internship Registration",
+      description: "Payment for Internship Program",
+      image: "https://narmtech.com/assets/logo-Dx_AJf1h.png",
+      handler: function (response) {
+        toast.success("Payment successful!");
+        setIsPaymentSuccessful(true);
+  
+        // Store payment status to persist after refresh
+        localStorage.setItem("paymentCompleted", "true");
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        contact: formData.mobile,
+      },
+      theme: {
+        color: "#007bff",
+      },
+    };
+    console.log("Is Razorpay available?", window.Razorpay);
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
   };
+  
+
 
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
@@ -216,6 +373,7 @@ const Intern = () => {
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
+                    disabled={isFieldsDisabled}
                   />
                   {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
                 </div>
@@ -232,6 +390,7 @@ const Intern = () => {
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
+                    disabled={isFieldsDisabled}
                   />
                   {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                 </div>
@@ -246,16 +405,39 @@ const Intern = () => {
                       placeholder="Enter your mobile number"
                       value={formData.mobile}
                       onChange={handleChange}
-                      className={`w-[70%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.mobile ? 'border-red-500' : 'focus:ring-blue-500'
-                        }`}
-                      autoComplete='off'
+                      className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 
+                      ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
+                      autoComplete="off"
+                      disabled={isFieldsDisabled}
                     />
-                    <button type="button" onClick={handleSendOtp} className={`p-3 rounded-lg transition ${formData.mobile.length === 10 && !errors.mobile ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-400 cursor-not-allowed text-white'}`} disabled={formData.mobile.length !== 10 || !!errors.mobile}>Send OTP</button>
-
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      className={`p-3 rounded-lg transition w-[120px] text-white
+                        ${isSendOtpDisabled ? "bg-slate-400 cursor-not-allowed" :
+                          (formData.mobile.length === 10 && !errors.mobile ?
+                            "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-slate-400 cursor-not-allowed text-white")
+                        }
+                      `}
+                      disabled={isSendOtpDisabled || formData.mobile.length !== 10 || !!errors.mobile}
+                    >
+                      {isSendOtpDisabled ? "Resend OTP" : "Send OTP"}
+                    </button>
                   </div>
-                  {errors.mobile && <p className="text-red-500 text-xs">{errors.mobile}</p>}
-                </div>
 
+                  {/* Always show error message & countdown when OTP is sent */}
+                  {errors.mobile || isSendOtpDisabled ? (
+                    <p className="text-red-500 text-xs">
+                      {errors.mobile ? errors.mobile : "OTP sent successfully!"}{" "}
+                      {isSendOtpDisabled && (
+                        <span className="text-blue-600 font-semibold">
+                          (Resend OTP in {otpTimer}s)
+                        </span>
+                      )}
+                    </p>
+                  ) : null}
+                </div>
                 {/* OTP Field */}
                 {isOtpSent && (
                   <div>
@@ -267,14 +449,14 @@ const Intern = () => {
                         placeholder="Enter OTP"
                         value={formData.otp}
                         onChange={handleChange}
-                        className={`w-[70%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
+                        className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
                           }`}
                         autoComplete='off'
                       />
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
-                        className={`p-3 rounded-lg transition ${formData.otp && !errors.otp
+                        className={`p-3 rounded-lg transition w-[120px] ${formData.otp && !errors.otp
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-slate-400 text-white cursor-not-allowed'
                           }`}
@@ -302,7 +484,7 @@ const Intern = () => {
               </form>
             </div>
           ) : !isPaymentSuccessful ? (
-            <PaymentIntegration handlePaymentSuccess={() => setIsPaymentSuccessful(true)} />
+            <PaymentIntegration handlePaymentSuccess={handlePaymentSuccess} />
           ) : !isDetailsSubmitted ? (
             <PersonalAcademicForm handleSubmitDetails={() => setIsDetailsSubmitted(true)} />
           ) : (

@@ -28,43 +28,41 @@ const Navbar = ({ isHero, onClose }) => {
           {/* Logo section */}
           <div>
             <Link to={"/"}>
-              <img src={Logo} alt="" className="w-[200px] xl:w-[240px]" />
+              <img src={Logo} alt="Logo" className="w-[200px] xl:w-[240px]" />
             </Link>
           </div>
 
           {/* NavLinks section */}
           <ul className="hidden lg:flex items-center gap-4">
-            {navLinks.map((link) => {
-              const { id, text, url } = link;
-
-              return (
-                <li key={id}>
-                  <NavLink
-                    to={url}
-                    onClick={onClose}
-                    className={({ isActive }) =>
-                      `text-sm lg:text-base font-medium inline-block px-3 lg:px-4 py-2 lg:py-3 rounded-full transition-all shadow-lg ${
-                        isActive
-                          ? "bg-gradient-to-r from-emerald-500 to-blue-500 text-white"
-                          : "bg-gradient-to-r from-red-500 to-purple-600 text-white hover:from-purple-600 hover:to-blue-500"
-                      }`
-                    }
-                  >
-                    {text === "Internship" ? (
-                      <motion.div
-                        animate={{ scale: [1, 1.1, 1] }}
-                        whileHover={{ scale: 1 }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                      >
-                        {text}
-                      </motion.div>
-                    ) : (
-                      text
-                    )}
-                  </NavLink>
-                </li>
-              );
-            })}
+            {navLinks.map(({ id, text, url }) => (
+              <li key={id}>
+                <NavLink
+                  to={url}
+                  onClick={onClose}
+                  className={({ isActive }) =>
+                    `text-sm lg:text-base font-medium inline-block px-3 lg:px-4 py-2 lg:py-3 rounded-full transition-all shadow-lg ${
+                      text === "Internship"
+                        ? "bg-gradient-to-r from-red-500 to-blue-500 text-white"
+                        : isActive
+                        ? "bg-indigo-400 text-white"
+                        : "bg-slate-200 text-gray-600 hover:bg-slate-300"
+                    }`
+                  }
+                >
+                  {text === "Internship" ? (
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      whileHover={{ scale: 1 }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      {text}
+                    </motion.div>
+                  ) : (
+                    text
+                  )}
+                </NavLink>
+              </li>
+            ))}
           </ul>
 
           {/* Hamburger menu section */}
