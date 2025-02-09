@@ -7,6 +7,13 @@ import Quizifi from "../../assets/offerings/Quizifai3.png";
 const testimonialData = [
   {
     id: 1,
+    title2: "GenAI Internship Program",
+    text: `Orientation: Intro to GenAI, web app development, project planning & team setup.<br/>
+          6-Week Development: Project mentorship & documentation guidance.<br/>
+          Closing Ceremony: Project presentations, certificates, and feedback.`,
+  },
+  {
+    id: 2,
     title: "Transforming ",
     title1: "Business Operations ",
     title2: "AI & LLM Empowered ",
@@ -14,24 +21,24 @@ const testimonialData = [
     and Intuitive User Interface (UI) to provide a truly transformative and user-friendly experience with unparalleled efficiency and effectiveness.`,
   },
   {
-    id: 2,
+    id: 3,
     image: Nyayah,
     text3:
       "This powerful AI solution revolutionizes the Legal landscape by empowering Legal Practitioners and Law Firms with advanced automation and organization capabilities.",
   },
   {
-    id: 3,
+    id: 4,
     image: Adhyayn,
     text3:
       "Our ADHYAYN empowers educational institutions through the integration of AI and LLM Model Technologies.",
   },
   {
-    id: 4,
+    id: 5,
     image1: Quizifi,
     title3: "QuizifiAI",
     text4:
       "Our QuizifAI empowers organizations through the integration of AI-powered Quiz & Exam companions.",
-  },
+  }
 ];
 
 function SampleNextArrow(props) {
@@ -39,7 +46,7 @@ function SampleNextArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", borderRadius:"50%" }}
+      style={{ ...style, display: "block", background: "black", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -50,7 +57,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black",borderRadius:"50%" }}
+      style={{ ...style, display: "block", background: "black", borderRadius: "50%" }}
       onClick={onClick}
     />
   );
@@ -60,7 +67,7 @@ const GoalTestimonial = () => {
   var settings = {
     dots: true,
     arrows: true,
-    
+
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     infinite: true,
@@ -102,7 +109,18 @@ const GoalTestimonial = () => {
                       <h1 className="text-3xl font-extrabold text-secondary">
                         {title2}
                       </h1>
-                      <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p>
+                      {/* <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p> */}
+                      <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary space-y-2">
+                        {text && text.includes("<br/>") ? (
+                          text.split("<br/>").map((line, index) => (
+                            <span key={index} className="block">
+                              <span className="text-primary text-lg">🔹</span> {line.trim()}
+                            </span>
+                          ))
+                        ) : (
+                          <span>{text}</span> // Render normally if no <br/> is found
+                        )}
+                      </p>
                       <div>
                         <img src={image} alt="" className="w-[350px]" />
                       </div>
