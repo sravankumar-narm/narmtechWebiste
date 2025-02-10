@@ -446,7 +446,7 @@ const Intern = () => {
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
-                      {isSendOtpDisabled && (
+                      {isSendOtpDisabled && !isVerifyOtpDisabled && (
                         <span className="text-blue-600 font-semibold">
                           <span className="text-[#026234] text-xs">OTP sent successfully!</span> (Resend OTP in {otpTimer}s)
                         </span>

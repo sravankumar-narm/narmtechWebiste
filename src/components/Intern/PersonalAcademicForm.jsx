@@ -28,9 +28,16 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         password: "",
         confirmPassword: "",
         pincode: "",
+        location: "",
+        district: "",
+        state: "",
+        country: "",
     });
 
     const [errors, setErrors] = useState({});
+    const [locations, setLocations] = useState([]); // Store multiple location options
+    const [loadingPincode, setLoadingPincode] = useState(false);
+    const [locationError, setLocationError] = useState(""); // Store API error message
 
     // Handle Input Change & Clear Error Messages
     const handleChange = (e) => {
@@ -40,6 +47,76 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         // Clear error when user types/selects
         if (errors[name]) {
             setErrors({ ...errors, [name]: "" });
+        }
+        if (locationError) setLocationError(""); // Clear error when user types
+
+        // Fetch location details when valid 6-digit pincode is entered
+        if (name === "pincode" && /^\d{6}$/.test(value)) {
+            fetchLocationDetails(value);
+        }
+    };
+
+    // **Function to Scroll to the First Error Field**
+    const scrollToFirstError = () => {
+        const errorFields = Object.keys(errors);
+        if (errorFields.length > 0) {
+            const firstErrorField = fieldRefs.current[errorFields[0]];
+            if (firstErrorField) {
+                firstErrorField.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
+    };
+
+    // API Call to fetch location details
+    const fetchLocationDetails = async (pincode) => {
+        try {
+            const response = await fetch("https://dev.quizifai.com:8010/location_details/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJOVFBMICBBZG1pbiIsImV4cCI6MjUzNDAyMzAwNzk5fQ.G1AMvRDZ798-uvCmTEs1fK6nKKakmS1v43mp2RcUuVg",
+                },
+                body: JSON.stringify({ pincode }),
+            });
+
+            const data = await response.json();
+            if (response.ok && data.response === "success" && data.data.length > 0) {
+                setLocations(data.data);
+                setFormData((prevData) => ({
+                    ...prevData,
+                    location: data.data[0].location,
+                    district: data.data[0].district,
+                    state: data.data[0].state,
+                    country: data.data[0].country,
+                }));
+            } else {
+                setLocationError("Unable to find location details. Please check your Pincode.");
+                setLocations([]);
+                setFormData((prevData) => ({
+                    ...prevData,
+                    location: "",
+                    district: "",
+                    state: "",
+                    country: "",
+                }));
+            }
+        } catch (error) {
+            console.error("Error fetching location:", error);
+            setLocationError("Failed to fetch location details. Try again later.");
+        }
+    };
+
+    // Handle location selection
+    const handleLocationChange = (e) => {
+        const selectedLocation = locations.find(loc => loc.location === e.target.value);
+        if (selectedLocation) {
+            setFormData((prevData) => ({
+                ...prevData,
+                location: selectedLocation.location,
+                district: selectedLocation.district,
+                state: selectedLocation.state,
+                country: selectedLocation.country,
+            }));
         }
     };
 
@@ -71,19 +148,19 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         const minYear = currentYear - 4; // Allow only past 4 years
         const maxYear = currentYear; // Only allow up to the current year
 
+        // Validate Pursuing Year (Dropdown Values)
+        const validYears = ["1st Year", "2nd Year", "3rd Year", "4th Year", "5th Year"];
         if (!formData.pursuingYear) {
-            newErrors.pursuingYear = "Pursuing Year is required";
-        } else if (!/^\d{4}$/.test(formData.pursuingYear)) {
-            newErrors.pursuingYear = "Invalid year format";
-        } else if (formData.pursuingYear < minYear || formData.pursuingYear > maxYear) {
-            newErrors.pursuingYear = `Year must be between ${minYear} and ${maxYear}`;
+            newErrors.pursuingYear = "Academic Year is required";
+        } else if (!validYears.includes(formData.pursuingYear)) {
+            newErrors.pursuingYear = "Invalid academic year format";
         }
 
-        // Validate Pursuing Semester
+        // Validate Pursuing Semester (Dropdown Values)
         if (!formData.pursuingSemester) {
-            newErrors.pursuingSemester = "Pursuing Semester is required";
-        } else if (!["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight"].includes(formData.pursuingSemester)) {
-            newErrors.pursuingSemester = "Invalid Pursuing Semester";
+            newErrors.pursuingSemester = "Semester is required";
+        } else if (!["One", "Two"].includes(formData.pursuingSemester)) {
+            newErrors.pursuingSemester = "Invalid semester format";
         }
 
         if (!formData.examStartDate) newErrors.examStartDate = "Semester Exam Start Date is required";
@@ -119,7 +196,8 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         e.preventDefault();
 
         if (!validateForm()) {
-            toast.error("Please fill all required fields.");
+            // toast.error("Please fill all required fields.");
+            scrollToFirstError(); // **Scroll to First Error Field**
             return;
         }
 
@@ -177,7 +255,10 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     };
 
     return (
-        <div className="p-8 bg-gray-50 rounded-lg shadow-lg h-[calc(100vh-100px)] overflow-y-auto">
+        <div className="p-8 bg-zinc-100 rounded-lg shadow-lg 
+                h-[calc(100vh-45px)] 
+                xl:h-[calc(100vh-45px)] 
+                [@media(min-width:1450px)]:h-[calc(100vh-100px)] overflow-y-auto">
             <h3 className="text-xl font-semibold text-center mb-4">Personal & Academic Details</h3>
             <form className="space-y-4" onSubmit={handleSubmit}>
 
@@ -204,7 +285,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                     <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleChange} className="w-full p-3 border rounded-lg" />
                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div> */}
-                <div className="relative">
+                <div className="input-container">
                     <label className="block text-sm font-medium text-gray-700">Password</label>
                     <input
                         type={showPassword ? "text" : "password"}
@@ -212,19 +293,17 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         placeholder="Enter Password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full p-3 border rounded-lg pr-10"
+                        className="w-full p-[5px] border border-gray-400 rounded-lg"
                     />
                     <span
-                        className="absolute right-3 top-10 cursor-pointer text-gray-500"
+                        className="eye-icon"
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
                     </span>
-                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div>
 
-                {/* Confirm Password Field */}
-                <div className="relative mt-4">
+                <div className="input-container">
                     <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input
                         type={showConfirmPassword ? "text" : "password"}
@@ -232,17 +311,15 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         placeholder="Confirm Password"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className="w-full p-3 border rounded-lg pr-10"
+                        className="w-full p-[5px] border border-gray-400 rounded-lg"
                     />
                     <span
-                        className="absolute right-3 top-10 cursor-pointer text-gray-500"
+                        className="eye-icon"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                         {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
                     </span>
-                    {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
                 </div>
-
 
                 <div>
                     <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
@@ -274,10 +351,77 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                     {errors.university && <p className="text-red-500 text-xs">{errors.university}</p>}
                 </div>
 
+                {/* Pincode Field */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Pincode</label>
-                    <input type="text" name="pincode" placeholder="Enter Pincode" value={formData.pincode} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    <input
+                        type="text"
+                        name="pincode"
+                        placeholder="Enter Pincode"
+                        value={formData.pincode}
+                        onChange={handleChange}
+                        className="w-full p-[5px] border border-gray-400 rounded-lg"
+                    />
                     {errors.pincode && <p className="text-red-500 text-xs">{errors.pincode}</p>}
+                    {locationError && <p className="text-red-500 text-xs">{locationError}</p>}
+                </div>
+
+                {/* Location Dropdown (Appears only if multiple options exist) */}
+                {locations.length > 1 && (
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Select Location</label>
+                        <select
+                            name="location"
+                            value={formData.location}
+                            onChange={handleLocationChange}
+                            className="w-full p-3 border rounded-lg"
+                        >
+                            {locations.map((loc) => (
+                                <option key={loc.location_id} value={loc.location}>
+                                    {loc.location} - {loc.district}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
+
+                {/* Auto-filled District */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">District</label>
+                    <input
+                        type="text"
+                        name="district"
+                        value={formData.district}
+                        readOnly
+                        className="w-full p-3 border bg-gray-100 rounded-lg"
+                        placeholder="District"
+                    />
+                </div>
+
+                {/* Auto-filled State */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">State</label>
+                    <input
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        readOnly
+                        className="w-full p-3 border bg-gray-100 rounded-lg"
+                        placeholder="State"
+                    />
+                </div>
+
+                {/* Auto-filled Country */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Country</label>
+                    <input
+                        type="text"
+                        name="country"
+                        value={formData.country}
+                        readOnly
+                        className="w-full p-3 border bg-gray-100 rounded-lg"
+                        placeholder="Country"
+                    />
                 </div>
 
                 <div>
@@ -298,43 +442,42 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 </div>
 
                 <div>
-                    <label htmlFor="pursuingSemester" className="block text-sm font-medium text-gray-700">Pursuing Semester</label>
-                    <select id="pursuingSemester" name="pursuingSemester" value={formData.pursuingSemester} onChange={handleChange} className="w-full p-3 border rounded-lg">
-                        <option value="">Select Semester</option>
-                        <option value="One">One</option>
-                        <option value="Two">Two</option>
-                        <option value="Three">Three</option>
-                        <option value="Four">Four</option>
-                        <option value="Five">Five</option>
-                        <option value="Six">Six</option>
-                        <option value="Seven">Seven</option>
-                        <option value="Eight">Eight</option>
-                    </select>
-                    {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
-                </div>
-
-                <div>
                     <label htmlFor="pursuingYear" className="block text-sm font-medium text-gray-700">
-                        Pursuing Year
+                        Current Academic Year
                     </label>
                     <select
                         id="pursuingYear"
                         name="pursuingYear"
                         value={formData.pursuingYear}
                         onChange={handleChange}
-                        className="w-full p-3 border rounded-lg"
+                        className="w-full p-[5px] border border-gray-400 rounded-lg"
                     >
-                        <option value="">Select Year</option>
-                        {[...Array(4)].map((_, index) => {
-                            const year = new Date().getFullYear() - index;
-                            return (
-                                <option key={year} value={year}>
-                                    {year}
-                                </option>
-                            );
-                        })}
+                        <option value="">Select Academic Year</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                        <option value="5th Year">5th Year</option>
                     </select>
                     {errors.pursuingYear && <p className="text-red-500 text-xs">{errors.pursuingYear}</p>}
+                </div>
+
+                <div>
+                    <label htmlFor="pursuingSemester" className="block text-sm font-medium text-gray-700">
+                        Current Semester
+                    </label>
+                    <select
+                        id="pursuingSemester"
+                        name="pursuingSemester"
+                        value={formData.pursuingSemester}
+                        onChange={handleChange}
+                        className="w-full p-3 border rounded-lg"
+                    >
+                        <option value="">Select Semester</option>
+                        <option value="One">One</option>
+                        <option value="Two">Two</option>
+                    </select>
+                    {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
                 </div>
 
                 <div>
