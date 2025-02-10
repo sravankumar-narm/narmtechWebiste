@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import ProgressBar from '../components/Intern/ProgressBar';
 import PersonalAcademicForm from '../components/Intern/PersonalAcademicForm';
 import Confetti from 'react-confetti';
+import { AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineLock } from "react-icons/ai"; // Import Icons
+import { MdOutlinePayment } from "react-icons/md";
 
 const CelebrationPopup = ({ onClose }) => {
   return (
@@ -75,6 +77,7 @@ const Intern = () => {
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false);
   const [otpTimer, setOtpTimer] = useState(60); // Timer for OTP button
   const [isVerifyOtpDisabled, setIsVerifyOtpDisabled] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
@@ -90,11 +93,11 @@ const Intern = () => {
   useEffect(() => {
     const paymentStatus = localStorage.getItem("paymentCompleted");
     console.log("Fetching payment status from localStorage:", paymentStatus);
-  
+
     if (paymentStatus === "true") {
       setIsPaymentSuccessful(true);
       setIsRegistered(true);
-      console.log('isDetailsSubmitted - ',isDetailsSubmitted)
+      console.log('isDetailsSubmitted - ', isDetailsSubmitted)
       console.log("Payment status set to true, should show PersonalAcademicForm");
     }
   }, [isPaymentSuccessful]);
@@ -351,9 +354,9 @@ const Intern = () => {
           <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
             <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on GenAI Powered Web Applications</h2>
             <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
-            <p className="mt-2 text-sm">GenAI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply GenAI technology for real-time problems and how we can build consumer applications to embed the power of GenAI.</p>
+            <p className="mt-2 text-sm">GenAI is set to revolutionize the IT industry, transforming how it operates and redefining the role of IT developers. This internship program will equip you with the knowledge and skills to apply GenAI technology to real-world challenges and develop consumer applications that harness its full potential.</p>
             <h3 className="text-xl font-semibold mt-4">What you are going to learn?</h3>
-            <p className="mt-2 text-sm">GenAI is going to be a game changer in the IT world for the next few years, and it's going to change how the IT industry functions. This internship program will help you understand how you can apply GenAI technology for real-time problems and how we can build consumer applications to embed the power of GenAI.</p>
+            <p className="mt-2 text-sm">In this internship, you'll gain a deep understanding of GenAI and its practical applications in your day-to-day tasks. You'll explore how to integrate GenAI into various workflows, automate processes, and enhance productivity. Additionally, you'll learn to build simple SaaS applications and intelligent bots using Python and GenAI, equipping you with the skills to create innovative AI-powered solutions.</p>
             <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
             <div className="mt-4">
               <p className="font-semibold">📍 Internship Progress</p>
@@ -369,6 +372,69 @@ const Intern = () => {
               </p>
 
             </div>
+            {/* Internship Overview Div */}
+            {isVisible && (
+              <div className="mt-4">
+                <h2>Internship Program Overview (Online)</h2>
+                <p>
+                  Our internship program is meticulously designed to bridge theoretical learning with practical
+                  applications, offering participants a robust foundation in the latest technologies and methodologies.
+                </p>
+
+                <h3>Key Highlights:</h3>
+                <ul>
+                  <li>
+                    <strong>Orientation Program (Online):</strong>
+                    <ul>
+                      <li>Introduction to the internship structure, objectives, and outcomes.</li>
+                      <li>
+                        Overview of tools and technologies used, including OpenAI, FastAPI, Python, PostgreSQL, ReactJS,
+                        Azure, and GitHub.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Skill Development Sessions:</strong>
+                    <ul>
+                      <li>Comprehensive training on industry-relevant skills.</li>
+                      <li>Mentorship from experienced industry professionals.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Live Projects:</strong>
+                    <ul>
+                      <li>Real-world project involvement.</li>
+                      <li>Collaboration with cross-functional teams.</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>Certification:</strong>
+                    <ul>
+                      <li>
+                        Upon successful completion, participants will receive a certificate acknowledging their efforts
+                        and achievements.
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+
+                <h3>Why Partner with Us?</h3>
+                <ul>
+                  <li>Exposure to cutting-edge technologies and industry practices.</li>
+                  <li>Opportunities to contribute to impactful projects.</li>
+                  <li>A competitive advantage in the job market.</li>
+                </ul>
+
+                <h3>Registration Details:</h3>
+                <p>
+                  Students can register via our dedicated portal:{" "}
+                  <a href="https://narmtech.com/internship" target="_blank" rel="noopener noreferrer">
+                    narmtech.com/internship
+                  </a>
+                  . The signup process is intuitive, ensuring a hassle-free experience.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right Section - Conditional Rendering */}
@@ -378,52 +444,52 @@ const Intern = () => {
               <form className="space-y-4">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
+                  <label className="block text-sm font-medium text-gray-700">👤 Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Enter your name"
+                    placeholder="Enter Name"
                     value={formData.name}
                     onChange={handleChange}
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
-                    // disabled={isFieldsDisabled}
+                  // disabled={isFieldsDisabled}
                   />
                   {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
                 </div>
 
                 {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <label className="block text-sm font-medium text-gray-700">✉️ Email</label>
                   <input
                     type="email"
                     name="email"
-                    placeholder="Enter your email"
+                    placeholder="Enter Email"
                     value={formData.email}
                     onChange={handleChange}
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
-                    // disabled={isFieldsDisabled}
+                  // disabled={isFieldsDisabled}
                   />
                   {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                 </div>
 
                 {/* Mobile Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Mobile</label>
+                  <label className="block text-sm font-medium text-gray-700">📞 Mobile</label>
                   <div className="flex items-center justify-between space-x-2">
                     <input
                       type="text"
                       name="mobile"
-                      placeholder="Enter your mobile number"
+                      placeholder="Enter Mobile"
                       value={formData.mobile}
                       onChange={handleChange}
                       className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 
                       ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
                       autoComplete="off"
-                      // disabled={isFieldsDisabled}
+                    // disabled={isFieldsDisabled}
                     />
                     <button
                       type="button"
@@ -457,7 +523,7 @@ const Intern = () => {
                 {/* OTP Field */}
                 {isOtpSent && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">OTP:</label>
+                    <label className="block text-sm font-medium text-gray-700">🔐 OTP:</label>
                     <div className="flex items-center justify-between space-x-2">
                       <input
                         type="text"
@@ -511,10 +577,10 @@ const Intern = () => {
                       type="button"
                       onClick={handlePaymentSuccess}
                       className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${Object.keys(errors).length === 0
-                          ? 'bg-blue-600 hover:bg-blue-700'
-                          : 'bg-slate-400 cursor-not-allowed'
+                        ? 'bg-blue-600 hover:bg-blue-700'
+                        : 'bg-slate-400 cursor-not-allowed'
                         }`}
-                      // disabled={Object.keys(errors).length > 0}
+                    // disabled={Object.keys(errors).length > 0}
                     >
                       Pay Now
                     </button>

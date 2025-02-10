@@ -285,7 +285,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                     <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleChange} className="w-full p-3 border rounded-lg" />
                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div> */}
-                <div className="input-container">
+                <div className="relative">
                     <label className="block text-sm font-medium text-gray-700">Password</label>
                     <input
                         type={showPassword ? "text" : "password"}
@@ -293,17 +293,18 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         placeholder="Enter Password"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full p-[5px] border border-gray-400 rounded-lg"
+                        className="w-full p-3 border rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <span
-                        className="eye-icon"
+                        className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-500"
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
                     </span>
+                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div>
 
-                <div className="input-container">
+                <div className="relative mt-4">
                     <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input
                         type={showConfirmPassword ? "text" : "password"}
@@ -311,15 +312,17 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         placeholder="Confirm Password"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className="w-full p-[5px] border border-gray-400 rounded-lg"
+                        className="w-full p-3 border rounded-lg pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <span
-                        className="eye-icon"
+                        className="absolute right-3 top-10 transform -translate-y-1/2 cursor-pointer text-gray-500"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                         {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
                     </span>
+                    {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
                 </div>
+
 
                 <div>
                     <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
