@@ -2,8 +2,10 @@ import React from 'react';
 import '../Intern/progressBar.css';
 
 const stages = [
-  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-15'), color: 'bg-[#14ab61]' },
+  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-15'), color: 'bg-[#0bff88]' },
   { name: 'Reg End', icon: '🔒', date: new Date('2025-02-25'), color: 'bg-red-500' },
+  { name: 'Scrutiny', icon: '👀', date: new Date('2025-02-28'), color: 'bg-blue-500' },
+  { name: 'Squadcast', icon: '📣', date: new Date('2025-03-01'), color: 'bg-[#1a11a4]' },
   { name: 'Week 1', icon: '📅', date: new Date('2025-03-03'), color: 'bg-blue-500' },
   { name: 'Week 2', icon: '📚', date: new Date('2025-03-10'), color: 'bg-[#1a11a4]' },
   { name: 'Week 3', icon: '📊', date: new Date('2025-03-17'), color: 'bg-purple-500' },
@@ -14,12 +16,19 @@ const stages = [
 ];
 
 const today = new Date();
+// Helper function to format date as dd/mm/yy
+const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = String(date.getFullYear()).slice(-2); // Get last two digits of the year
+  return `${day}/${month}/${year}`;
+};
 
 const ProgressBar = () => {
   return (
     <>
       {/* Desktop & Tablet View (md+) */}
-      <div className="hidden md:flex items-center justify-between w-full px-8 py-6 bg-gradient-to-r from-blue-900 to-blue-500 rounded-lg shadow-lg">
+      <div className="hidden md:flex items-center justify-between w-full bg-[#d9d9ed]  rounded-lg shadow-lg p-2">
         {stages.map((stage, index) => {
           const isCompleted = today >= stage.date;
           const nextStageDate = stages[index + 1]?.date;
@@ -31,22 +40,22 @@ const ProgressBar = () => {
             <React.Fragment key={index}>
               <div className="flex flex-col items-center flex-1">
                 {/* Show Date Above */}
-                <p className="text-xs text-white font-semibold mb-2">{stage.date.toLocaleDateString()}</p>
+                <p className="text-xs text-sky-900 font-bold mb-2">{formatDate(stage.date)}</p>
 
                 {/* Circular Step */}
                 <div className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg 
-                  ${isCompleted ? `${stage.color} border-cyan-300 ` : 'border-red-300'}`}>
-                  <span className="text-white text-2xl">{stage.icon}</span>
+                  ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-red-500'}`}>
+                  <span className="text-slate-600 text-2xl">{stage.icon}</span>
                 </div>
 
                 {/* Stage Name Below */}
-                <p className="text-sm mt-2 text-center text-white font-semibold">{stage.name}</p>
+                <p className="text-sm mt-2 text-center text-sky-900 font-semibold">{stage.name}</p>
               </div>
 
               {/* Connecting Line */}
               {index < stages.length - 1 && (
                 <div className="flex-1 h-1 relative">
-                  <div className="absolute left-0 top-0 h-full w-full bg-zinc-50"></div>
+                  <div className="absolute left-0 top-0 h-full w-full bg-[#3c53dc]"></div>
                   <div
                     className="absolute left-0 top-0 h-full transition-all duration-500"
                     style={{
@@ -63,7 +72,7 @@ const ProgressBar = () => {
 
       {/* Mobile View (sm & below) */}
       {/* <div className="flex md:hidden flex-col items-center justify-center w-full px-6 py-6 bg-gradient-to-r from-blue-900 to-blue-500 rounded-lg shadow-lg"> */}
-      <div className="flex md:hidden flex-col items-center justify-center w-full px-6 py-6 bg-gradient-to-r from-blue-900 to-blue-500 rounded-lg shadow-lg">
+      <div className="flex md:hidden flex-col items-center justify-center w-full px-6 py-6 bg-gradient-to-r bg-[#d9d9ed] rounded-lg shadow-lg">
       {stages.map((stage, index) => {
         const isCompleted = today >= stage.date;
         const nextStageDate = stages[index + 1]?.date;
@@ -76,18 +85,18 @@ const ProgressBar = () => {
             {/* Stage Block */}
             <div className="flex flex-col md:flex-row items-center text-center md:text-left w-full md:w-1/9 mb-6 md:mb-0">
               {/* Date Above */}
-              <p className="text-xs sm:text-sm md:text-base text-white font-semibold mb-2 md:mb-0">
+              <p className="text-xs sm:text-sm md:text-base text-sky-900 font-semibold mb-2 md:mb-0">
                 {stage.date.toLocaleDateString()}
               </p>
 
               {/* Circular Step */}
               <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center shadow-lg transition-transform duration-300
-                ${isCompleted ? `${stage.color} border-transparent scale-110` : 'border-cyan-300'}`}>
-                <span className="text-white text-lg sm:text-xl md:text-2xl">{stage.icon}</span>
+                ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-red-500'}`}>
+                <span className="text-slate-600 text-lg sm:text-xl md:text-2xl">{stage.icon}</span>
               </div>
 
               {/* Stage Name Below */}
-              <p className="text-xs sm:text-sm md:text-base mt-2 text-white font-semibold">{stage.name}</p>
+              <p className="text-xs sm:text-sm md:text-base mt-2 text-sky-900 font-semibold">{stage.name}</p>
             </div>
 
             {/* Connecting Line - Adjust for mobile */}

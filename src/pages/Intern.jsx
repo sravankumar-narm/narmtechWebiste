@@ -27,26 +27,26 @@ const CelebrationPopup = ({ onClose }) => {
 };
 
 // Payment Integration Component
-const PaymentIntegration = ({ handlePaymentSuccess }) => {
-  return (
-    <div className="p-8 bg-gray-50 rounded-lg flex flex-col justify-between">
-      <h3 className="text-xl font-semibold text-center mb-4">Pay Nominal Fee</h3>
-      <p className="text-sm text-center mb-4">
-        Please pay the nominal fee to complete your registration.
-      </p>
-      <div className="flex flex-col items-center space-y-4">
-        <p className="text-lg font-semibold">Amount: ₹199</p>
-        <button
-          type="button"
-          onClick={handlePaymentSuccess}
-          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
-        >
-          Pay Now
-        </button>
-      </div>
-    </div>
-  );
-};
+// const PaymentIntegration = ({ handlePaymentSuccess }) => {
+//   return (
+//     <div className="p-8 bg-gray-50 rounded-lg flex flex-col justify-between">
+//       <h3 className="text-xl font-semibold text-center mb-4">Pay Nominal Fee</h3>
+//       <p className="text-sm text-center mb-4">
+//         Please pay the nominal fee to complete your registration.
+//       </p>
+//       <div className="flex flex-col items-center space-y-4">
+//         <p className="text-lg font-semibold">Amount: ₹199</p>
+//         <button
+//           type="button"
+//           onClick={handlePaymentSuccess}
+//           className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition"
+//         >
+//           Pay Now
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
 const Intern = () => {
   const location = useLocation();
@@ -80,15 +80,24 @@ const Intern = () => {
   useEffect(() => {
     if (isDetailsSubmitted) {
       setShowCelebration(true);
+      localStorage.removeItem("paymentCompleted");
+      localStorage.removeItem("otpVerified");
+      localStorage.removeItem("formData");
+      localStorage.removeItem("registrationCompleted");
       setTimeout(() => setShowCelebration(false), 10000);
     }
   }, [isDetailsSubmitted]);
   useEffect(() => {
     const paymentStatus = localStorage.getItem("paymentCompleted");
+    console.log("Fetching payment status from localStorage:", paymentStatus);
+  
     if (paymentStatus === "true") {
       setIsPaymentSuccessful(true);
+      setIsRegistered(true);
+      console.log('isDetailsSubmitted - ',isDetailsSubmitted)
+      console.log("Payment status set to true, should show PersonalAcademicForm");
     }
-  }, []);
+  }, [isPaymentSuccessful]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -313,7 +322,7 @@ const Intern = () => {
       handler: function (response) {
         toast.success("Payment successful!");
         setIsPaymentSuccessful(true);
-
+        console.log("Payment status updated:", true); // Debugging log
         // Store payment status to persist after refresh
         localStorage.setItem("paymentCompleted", "true");
       },
@@ -379,7 +388,7 @@ const Intern = () => {
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.name ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
-                    disabled={isFieldsDisabled}
+                    // disabled={isFieldsDisabled}
                   />
                   {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
                 </div>
@@ -396,7 +405,7 @@ const Intern = () => {
                     className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.email ? 'border-red-500' : 'focus:ring-blue-500'
                       }`}
                     autoComplete='off'
-                    disabled={isFieldsDisabled}
+                    // disabled={isFieldsDisabled}
                   />
                   {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                 </div>
@@ -414,7 +423,7 @@ const Intern = () => {
                       className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 
                       ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
                       autoComplete="off"
-                      disabled={isFieldsDisabled}
+                      // disabled={isFieldsDisabled}
                     />
                     <button
                       type="button"
@@ -426,7 +435,8 @@ const Intern = () => {
                             : "bg-slate-400 cursor-not-allowed text-white")
                         }
                       `}
-                      disabled={isSendOtpDisabled || formData.mobile.length !== 10 || !!errors.mobile}
+                      // disabled={isSendOtpDisabled || formData.mobile.length !== 10 || !!errors.mobile}
+                      disabled={formData.mobile.length !== 10 || !!errors.mobile}
                     >
                       {isSendOtpDisabled ? "Resend OTP" : "Send OTP"}
                     </button>
@@ -435,10 +445,10 @@ const Intern = () => {
                   {/* Always show error message & countdown when OTP is sent */}
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
-                      {errors.mobile ? errors.mobile : "OTP sent successfully!"}{" "}
+                      {errors.mobile ? errors.mobile : ""}{" "}
                       {isSendOtpDisabled && (
                         <span className="text-blue-600 font-semibold">
-                          (Resend OTP in {otpTimer}s)
+                          <span className="text-[#026234] text-xs">OTP sent successfully!</span> (Resend OTP in {otpTimer}s)
                         </span>
                       )}
                     </p>
@@ -472,26 +482,49 @@ const Intern = () => {
                       </button>
                     </div>
                     {errors.otp && <p className="text-red-500 text-xs">{errors.otp}</p>}
+                    {isVerifyOtpDisabled && <p className="text-blue-600 text-xs">OTP verified successfully!</p>}
                   </div>
                 )}
 
                 {/* Register Button */}
-                <button
+                {/* <button
                   type="button"
-                  onClick={handleRegisterClick}
+                  onClick={handlePaymentSuccess}
                   className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isOtpVerified && Object.keys(errors).length === 0
                     ? 'bg-blue-600 text-white hover:bg-blue-700'
                     : 'bg-slate-400 text-white cursor-not-allowed'
                     }`}
                   disabled={!isOtpVerified || Object.keys(errors).length > 0}
                 >
-                  Register Now
-                </button>
+                  Pay Now
+                </button> */}
+                {/* Conditional Rendering for Payment Section */}
+                {isOtpVerified && (
+                  <div className="mt-4">
+                    {/* Disclaimer for Nominal Fee */}
+                    <p className="text-sm text-gray-600 mb-2">
+                      Note: A nominal fee of ₹199 is required to complete your registration.
+                    </p>
+
+                    {/* Pay Now Button */}
+                    <button
+                      type="button"
+                      onClick={handlePaymentSuccess}
+                      className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${Object.keys(errors).length === 0
+                          ? 'bg-blue-600 hover:bg-blue-700'
+                          : 'bg-slate-400 cursor-not-allowed'
+                        }`}
+                      // disabled={Object.keys(errors).length > 0}
+                    >
+                      Pay Now
+                    </button>
+                  </div>
+                )}
               </form>
             </div>
-          ) : !isPaymentSuccessful ? (
-            <PaymentIntegration handlePaymentSuccess={handlePaymentSuccess} />
-          ) : !isDetailsSubmitted ? (
+            // ) : !isPaymentSuccessful ? (
+            //   <PaymentIntegration handlePaymentSuccess={handlePaymentSuccess} />
+          ) : isPaymentSuccessful && !isDetailsSubmitted ? (
             <PersonalAcademicForm handleSubmitDetails={() => setIsDetailsSubmitted(true)} />
           ) : (
             <div className="text-center p-8 bg-green-100 rounded-lg">
@@ -511,7 +544,7 @@ const Intern = () => {
       {/* <ToastContainer /> */}
       <Footer />
       {/* Toast Container */}
-      <ToastContainer
+      {/* <ToastContainer
         position="bottom-center"
         autoClose={5000}
         hideProgressBar={false}
@@ -522,7 +555,7 @@ const Intern = () => {
         draggable
         pauseOnHover
         limit={1} // Ensures only one toast is displayed at a time
-      />
+      /> */}
     </div>
   );
 };

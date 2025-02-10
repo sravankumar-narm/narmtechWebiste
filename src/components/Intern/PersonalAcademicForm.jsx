@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     // Fetch stored email & mobile from Registration Page
     // Fetch stored email & mobile from Registration Page
     const storedData = JSON.parse(localStorage.getItem("formData")) || {};
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -64,7 +68,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
 
         // Validate Pursuing Year (Calendar Year)
         const currentYear = new Date().getFullYear();
-        const minYear = currentYear - 10; // Allow only past 10 years
+        const minYear = currentYear - 4; // Allow only past 4 years
         const maxYear = currentYear; // Only allow up to the current year
 
         if (!formData.pursuingYear) {
@@ -195,18 +199,50 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                     {errors.lastName && <p className="text-red-500 text-xs">{errors.lastName}</p>}
                 </div>
 
-                <div>
+                {/* <div>
                     <label className="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password" placeholder="Enter Password" value={formData.password} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
+                </div> */}
+                <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">Password</label>
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Enter Password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className="w-full p-3 border rounded-lg pr-10"
+                    />
+                    <span
+                        className="absolute right-3 top-10 cursor-pointer text-gray-500"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                    </span>
                     {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div>
 
                 {/* Confirm Password Field */}
-                <div>
+                <div className="relative mt-4">
                     <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="w-full p-3 border rounded-lg pr-10"
+                    />
+                    <span
+                        className="absolute right-3 top-10 cursor-pointer text-gray-500"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                        {showConfirmPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                    </span>
                     {errors.confirmPassword && <p className="text-red-500 text-xs">{errors.confirmPassword}</p>}
                 </div>
+
 
                 <div>
                     <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of Birth</label>
@@ -240,7 +276,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Pincode</label>
-                    <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} className="w-full p-3 border rounded-lg" />
+                    <input type="text" name="pincode" placeholder="Enter Pincode" value={formData.pincode} onChange={handleChange} className="w-full p-3 border rounded-lg" />
                     {errors.pincode && <p className="text-red-500 text-xs">{errors.pincode}</p>}
                 </div>
 
@@ -250,8 +286,8 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         <option value="">Select Course</option>
                         <option value="B.Tech">B.Tech</option>
                         <option value="MCA">MCA</option>
-                        <option value="B.Sc. Computers">B.Sc. Computers</option>
-                        <option value="M.Sc. Computers">M.Sc. Computers</option>
+                        <option value="B.Sc.">B.Sc.</option>
+                        <option value="M.Sc.">M.Sc.</option>
                     </select>
                     {errors.course && <p className="text-red-500 text-xs">{errors.course}</p>}
                 </div>
@@ -289,7 +325,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                         className="w-full p-3 border rounded-lg"
                     >
                         <option value="">Select Year</option>
-                        {[...Array(10)].map((_, index) => {
+                        {[...Array(4)].map((_, index) => {
                             const year = new Date().getFullYear() - index;
                             return (
                                 <option key={year} value={year}>

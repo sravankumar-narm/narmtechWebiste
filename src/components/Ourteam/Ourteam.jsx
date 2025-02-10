@@ -53,7 +53,7 @@ const Team = () => {
       {/* <section style={bgImg} > */}
       <section  >
         <div className="container">
-          <div className="min-h-[939px] flex flex-col gap-8 justify-center items-center">
+          <div className="min-h-[939px] flex flex-col gap-8 justify-center items-center mt-5">
             {/*Our team section */}
             <div className="mt-[240px] lg:mt-[2px] xl:mt-0">
               <h1 className="text-4xl font-bold  mb-8 text-center">
@@ -61,7 +61,7 @@ const Team = () => {
               </h1>
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 text-black">
                 <div className="flex items-center gap-8 flex-row-reverse border-r border-solid border-blue-500 p-10">
-                  {/* <img src={UserIcon} alt="" /> */}
+                  <img src={UserIcon} alt="" className="w-16" />
                   <div className="space-y-2 bg-[#6C6CFF] text-white px-3 py-4 rounded-lg ">
                     <div className="flex gap-2">
                       <p className="text-xl font-bold">Ram M Reddy </p>
@@ -85,24 +85,27 @@ const Team = () => {
             {/* Advisory team section */}
             <div className="">
               <h1 className="text-3xl font-bold mb-8 text-center">
-                Advisory Team
+                Core Team
               </h1>
 
               {/* card section */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
                 {AdvisoryTeamData.map(
-                  ({ id, icon, name, about, position }) => (
+                  ({ id, icon, name, about, position, socialLinks }) => (
                     <div
                       key={id}
                       className="flex flex-col  rounded-xl  bg-gradient-to-r from-[#684FFF] to-[#7190FE] p-8  space-y-4 shadow-md  "
                     >
 
-                      <div className="flex gap-4 bg-white p-4 rounded-xl  w-fit float-end">
-                        {/* <img src={UserIcon} alt="" className="w-16" /> */}
+                      <div className="flex gap-4 bg-white p-4 rounded-xl  w-full float-end min-h-[100px]">
+                        <img src={UserIcon} alt="" className="w-16" />
                         <div>
                           <div>
                             <div className="flex gap-2 justify-between">
                               <h1 className="text-base font-bold text-blue-500 min-w-[180px]">{name}</h1>
+                              <a href={socialLinks} target="_blank">
+                                <img src={linkedIn} />
+                              </a>
                             </div>
                             <p className="text-base text-blue-500">{position}</p>
                           </div>

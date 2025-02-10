@@ -8,9 +8,7 @@ const testimonialData = [
   {
     id: 1,
     title2: "GenAI Internship Program",
-    text: `Orientation: Intro to GenAI, web app development, project planning & team setup.<br/>
-          6-Week Development: Project mentorship & documentation guidance.<br/>
-          Closing Ceremony: Project presentations, certification, and feedback.`,
+    text: `An immersive internship program centered on advanced IT skills, emphasizing Generative AI (GenAI) and its application in addressing real-world challenges through the development of GenAI-powered solutions.`,
   },
   {
     id: 2,
