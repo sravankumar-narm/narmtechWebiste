@@ -17,6 +17,7 @@ const CelebrationPopup = ({ onClose }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-md">
         <h2 className="text-3xl font-bold text-green-600">🎉 Congratulations! 🎉</h2>
         <p className="text-lg mt-2">Your details have been successfully submitted.</p>
+        <p className="text-lg mt-2">You’ll get a confirmation email with all the necessary information.</p>
         <button
           onClick={onClose}
           className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -569,7 +570,7 @@ const Intern = () => {
                   <div className="mt-4">
                     {/* Disclaimer for Nominal Fee */}
                     <p className="text-sm text-gray-600 mb-2">
-                      Note: A nominal fee of ₹199 is required to complete your registration.
+                      Note: A nominal fee of ₹199 is required to complete your registration (Non refundable).
                     </p>
 
                     {/* Pay Now Button */}

@@ -8,7 +8,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const storedData = JSON.parse(localStorage.getItem("formData")) || {};
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+    const [currentStep, setCurrentStep] = useState(1);
 
     const [formData, setFormData] = useState({
         firstName: "",
