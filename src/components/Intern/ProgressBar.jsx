@@ -96,7 +96,7 @@ const ProgressBar = () => {
                   <span className="text-slate-600 text-2xl">{stage.icon}</span>
                 </div> */}
                 <div className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 bg-[#d9d9ed]
-                  ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#ffecca]'}`}>
+                  ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#f1af9c]'}`}>
                   <span className="text-slate-600 text-sm">{stage.icon}</span>
                 </div>
 
