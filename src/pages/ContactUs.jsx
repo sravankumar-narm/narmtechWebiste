@@ -22,6 +22,8 @@ const Contact = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("products");
   const [customInput, setCustomInput] = useState("");
+  const [apiErrorMessage, setApiErrorMessage] = useState("");
+  const [apiSuccessMessage, setApiSuccessMessage] = useState("");
   // const [isAdhyaynDropdownOpen, setIsAdhyaynDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -130,6 +132,8 @@ const Contact = () => {
           data
         );
         toast.success("Email sent successfully!");
+        setApiSuccessMessage("Email sent successfully!");
+        setApiErrorMessage("");
         console.log("Form Data:", data);
         setSelectedOption("products");
         setCustomInput("");
@@ -145,11 +149,15 @@ const Contact = () => {
         });
       } catch (error) {
         console.error("Error sending email:", error);
+        setApiErrorMessage(error.message || "Failed to send email. Please try again later.");
+        setApiSuccessMessage("");
         toast.error("Failed to send email. Please try again later.");
       }
     } else {
       // Display error message if form is invalid
       toast.error("Please fill in all required fields correctly.");
+      setApiErrorMessage("Please fill in all required fields correctly.");
+      setApiSuccessMessage("");
     }
   };
 
@@ -432,6 +440,8 @@ const Contact = () => {
                     {errors.message && (
                       <p className="text-red-500">{errors.message}</p>
                     )}
+                    <p className="text-lime-600">{apiSuccessMessage}</p>
+                    <p className="text-red-600">{apiErrorMessage}</p>
                   </div>
                   <div className="flex justify-center items-center">
                     <button
