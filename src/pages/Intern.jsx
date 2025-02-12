@@ -79,6 +79,8 @@ const Intern = () => {
   const [otpTimer, setOtpTimer] = useState(60); // Timer for OTP button
   const [isVerifyOtpDisabled, setIsVerifyOtpDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isOTPMessage, setIsOTPMessage] = useState('');
+  const [isVerifyOTPMessage, setIsVerifyOTPMessage] = useState('');
 
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
@@ -187,7 +189,8 @@ const Intern = () => {
         });
 
         const data = await response.json();
-        if (response.ok) {
+        if (data.response == 'success') {
+          setIsOTPMessage(data.response_message);
           toast.success("OTP sent successfully!");
 
           // Disable name, email, and mobile fields
@@ -208,7 +211,11 @@ const Intern = () => {
               setOtpTimer(60); // Reset timer
             }
           }, 1000);
+        }else if(data.response == 'fail'){
+          console.log(data.response_message)
+          setIsOTPMessage(data.response_message);
         } else {
+          setIsOTPMessage(data.message || "Failed to send OTP");
           toast.error(data.message || "Failed to send OTP");
         }
       } catch (error) {
@@ -249,7 +256,9 @@ const Intern = () => {
       const data = await response.json();
 
       if (response.ok && data.response !== "fail") {
-        toast.success("OTP verified successfully!");
+      // if (true) {
+        // toast.success("OTP verified successfully!");
+        setIsVerifyOTPMessage(data.response_message);
         setIsOtpVerified(true);
         setIsFieldsDisabled(true); // Disable all fields
         setIsSendOtpDisabled(true); // Disable Send OTP button
@@ -259,8 +268,9 @@ const Intern = () => {
         localStorage.setItem("otpVerified", "true");
         localStorage.setItem("formData", JSON.stringify(formData));
       } else {
-        toast.error(data.response_message || "Invalid OTP. Please try again.");
+        // toast.error(data.response_message || "Invalid OTP. Please try again.");
         setErrors({ ...errors, otp: data.response_message || "Invalid OTP" });
+        setIsVerifyOTPMessage('');
 
         // Re-enable "Verify OTP" button to allow retrying
         setIsVerifyOtpDisabled(false);
@@ -271,6 +281,7 @@ const Intern = () => {
 
       // Re-enable "Verify OTP" button on error
       setIsVerifyOtpDisabled(false);
+      setIsVerifyOTPMessage('');
     }
   };
 
@@ -366,9 +377,9 @@ const Intern = () => {
                 <ProgressBar />
               </div>
               <p className="mt-4">
-                Register for the internship with a nominal fee. Need more details?
-                <span className="text-blue-600 font-semibold"> Ask MONICA </span>
-                or email us at
+                Register for the internship with a nominal fee. Need more details? ask our AI bot
+                <span className="text-blue-600 font-semibold"> "Monica" </span>
+                or email at 
                 <a href="mailto:internship@narmtech.com" className="text-blue-600 font-semibold"> internship@narmtech.com</a>.
               </p>
 
@@ -445,7 +456,7 @@ const Intern = () => {
               <form className="space-y-4">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">👤 Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
                   <input
                     type="text"
                     name="name"
@@ -462,7 +473,7 @@ const Intern = () => {
 
                 {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">✉️ Email</label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-envelope text-blue-600"></i> Email</label>
                   <input
                     type="email"
                     name="email"
@@ -479,7 +490,7 @@ const Intern = () => {
 
                 {/* Mobile Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">📞 Mobile</label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-phone text-blue-600"></i> Mobile</label>
                   <div className="flex items-center justify-between space-x-2">
                     <input
                       type="text"
@@ -510,12 +521,13 @@ const Intern = () => {
                   </div>
 
                   {/* Always show error message & countdown when OTP is sent */}
+                  <span className="text-xs">{isOTPMessage}</span> 
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
                       {isSendOtpDisabled && !isVerifyOtpDisabled && (
                         <span className="text-blue-600 font-semibold">
-                          <span className="text-[#026234] text-xs">OTP sent successfully!</span> (Resend OTP in {otpTimer}s)
+                          Resend OTP in {otpTimer}s
                         </span>
                       )}
                     </p>
@@ -543,13 +555,13 @@ const Intern = () => {
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-slate-400 text-white cursor-not-allowed'
                           }`}
-                        disabled={!formData.otp || !!errors.otp}
+                        // disabled={!formData.otp || !!errors.otp}
                       >
                         Verify OTP
                       </button>
                     </div>
                     {errors.otp && <p className="text-red-500 text-xs">{errors.otp}</p>}
-                    {isVerifyOtpDisabled && <p className="text-blue-600 text-xs">OTP verified successfully!</p>}
+                    {isVerifyOtpDisabled && <p className="text-blue-600 text-xs">{isVerifyOTPMessage}</p>}
                   </div>
                 )}
 
@@ -595,8 +607,9 @@ const Intern = () => {
             <PersonalAcademicForm handleSubmitDetails={() => setIsDetailsSubmitted(true)} />
           ) : (
             <div className="text-center p-8 bg-green-100 rounded-lg">
-              <h2 className="text-2xl font-bold text-green-700">🎉 Registration Complete!</h2>
-              <p className="mt-2 text-green-600">Your details have been successfully submitted.</p>
+              <h2 className="text-2xl font-bold text-lime-800">🎉 Registration Complete!</h2>
+              <p className="mt-2">Your details have been successfully submitted.</p>
+              <p className="mt-2">You’ll get a confirmation email with all the necessary information.</p>
             </div>
           )}
         </div>

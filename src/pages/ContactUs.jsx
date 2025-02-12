@@ -157,7 +157,7 @@ const Contact = () => {
     <>
       <div className=" overflow-hidden mt-10 md:mt-0">
         <Navbar />
-        <ToastContainer />
+        {/* <ToastContainer /> */}
         <div className="relative">
           <div className="relative z-10 container min-h-[700px] flex justify-center items-center">
             <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 ">

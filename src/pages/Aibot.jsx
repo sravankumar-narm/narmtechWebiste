@@ -327,7 +327,7 @@ const Aibot = ({ onClose, onMin }) => {
   };
   return (
     <body className="h-[70%] sm:h-[90%] w-[65%] xl:w-[25%] lg:w-[25%] md:w-[35%] bottom-0 right-0 bg-[#ffffff] fixed t-0 z-50 transition-all duration-500 flex flex-col text-white">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <nav className="flex justify-between bg-gradient-to-r from-indigo-500 to-sky-500">
         <div className=" items-center justify-center p-3">
           <h1>I am MONICA</h1>
