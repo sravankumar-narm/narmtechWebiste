@@ -2,10 +2,10 @@ import React from 'react';
 import '../Intern/progressBar.css';
 
 const stages = [
-  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-15'), color: 'bg-[#ceffe7]', styles: {
+  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-01'), color: 'bg-[#ceffe7]', styles: {
     linePadding: "ml-[-13px] mr-[-8px]", 
   }, },
-  { name: 'Reg End', icon: '🔒', date: new Date('2025-02-25'), color: 'bg-[#ceffe7]', styles: {
+  { name: 'Reg End', icon: '🔒', date: new Date('2025-02-10'), color: 'bg-[#ceffe7]', styles: {
     linePadding: "ml-[-13px] mr-[-8px]", 
   },  },
   { name: 'Scrutiny', icon: '👀', date: new Date('2025-02-28'), color: 'bg-[#ceffe7]', styles: {
@@ -97,7 +97,7 @@ const ProgressBar = () => {
                 </div> */}
                 <div className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 bg-[#d9d9ed]
                   ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#f1af9c]'}`}>
-                  <span className="text-slate-600 text-sm">{stage.icon}</span>
+                  {/* <span className="text-slate-600 text-sm">{stage.icon}</span> */}
                 </div>
 
 

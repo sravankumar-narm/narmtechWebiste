@@ -8,7 +8,7 @@ const AdvisoryTeamData = [
   {
     id: 1,
     name: "Dr. Samantha S ",
-    position: "Product Management & Delivery Lead ",
+    position: "Master of Science, Doctor of Philosophy - Product Management & Delivery Lead ",
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/samanthasunkara/",
     about:
@@ -18,7 +18,7 @@ const AdvisoryTeamData = [
   {
     id: 2,
     name: "Deepika Reddy ",
-    position: "Human Resources, Sales & Marketing Lead ",
+    position: "Master of Business Administration - Human Resources, Sales & Marketing Lead ",
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/deepika-reddy-04b24838/",
     about:
@@ -29,7 +29,7 @@ const AdvisoryTeamData = [
   {
     id: 3,
     name: "Dr M Padma Lalitha",
-    position: "Advisor",
+    position: "Master of Technology, Doctor of Philosophy - Advisor",
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/padmalalitha-mareddy-86393b17/",
     about:
@@ -61,7 +61,7 @@ const Team = () => {
               </h1>
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 text-black">
                 <div className="flex items-center gap-8 flex-row-reverse border-r border-solid border-blue-500 p-10">
-                  <img src={UserIcon} alt="" className="w-16" />
+                  {/* <img src={UserIcon} alt="" className="w-16" /> */}
                   <div className="space-y-2 bg-[#6C6CFF] text-white px-3 py-4 rounded-lg ">
                     <div className="flex gap-2">
                       <p className="text-xl font-bold">Ram M Reddy </p>
@@ -98,7 +98,7 @@ const Team = () => {
                     >
 
                       <div className="flex gap-4 bg-white p-4 rounded-xl  w-full float-end min-h-[100px]">
-                        <img src={UserIcon} alt="" className="w-16" />
+                        {/* <img src={UserIcon} alt="" className="w-16" /> */}
                         <div>
                           <div>
                             <div className="flex gap-2 justify-between">
