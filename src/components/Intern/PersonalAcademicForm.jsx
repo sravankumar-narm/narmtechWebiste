@@ -502,7 +502,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                             {errors.specialization && <p className="text-red-500 text-xs">{errors.specialization}</p>}
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label htmlFor="pursuingYear" className="block text-sm font-medium text-gray-700">
                                 Pursuing Academic Year
                             </label>
@@ -539,6 +539,48 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                                 <option value="Two">Two</option>
                             </select>
                             {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
+                        </div> */}
+                        <div className="flex gap-4">
+                            {/* Date of Birth Field */}
+                            <div className="flex-1">
+                                <label htmlFor="pursuingYear" className="block text-sm font-medium text-gray-700">
+                                    Pursuing Year
+                                </label>
+                                <select
+                                    id="pursuingYear"
+                                    name="pursuingYear"
+                                    value={formData.pursuingYear}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border border-gray-400 rounded-lg"
+                                >
+                                    <option value="">Select Academic Year</option>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                    <option value="5th Year">5th Year</option>
+                                </select>
+                                {errors.pursuingYear && <p className="text-red-500 text-xs">{errors.pursuingYear}</p>}
+                            </div>
+
+                            {/* Gender Field */}
+                            <div className="flex-1">
+                                <label htmlFor="pursuingSemester" className="block text-sm font-medium text-gray-700">
+                                    Semester
+                                </label>
+                                <select
+                                    id="pursuingSemester"
+                                    name="pursuingSemester"
+                                    value={formData.pursuingSemester}
+                                    onChange={handleChange}
+                                    className="w-full p-3 border rounded-lg"
+                                >
+                                    <option value="">Select Semester</option>
+                                    <option value="One">One</option>
+                                    <option value="Two">Two</option>
+                                </select>
+                                {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
+                            </div>
                         </div>
 
                         <div>

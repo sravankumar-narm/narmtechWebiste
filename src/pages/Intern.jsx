@@ -81,6 +81,7 @@ const Intern = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isOTPMessage, setIsOTPMessage] = useState('');
   const [isVerifyOTPMessage, setIsVerifyOTPMessage] = useState('');
+  const [isVerifyPayementMessage, setIsVerifyPayementMessage] = useState('');
 
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
@@ -190,37 +191,51 @@ const Intern = () => {
 
         const data = await response.json();
         if (data.response == 'success') {
-          setIsOTPMessage(data.response_message);
-          toast.success("OTP sent successfully!");
+          if (data.response_message == 'Mobile is already registered. Please log in or use a different mobile number.') {
+            setIsOtpSent(false)
+            setIsOtpVerified(false)
+          } else {
+            setIsOTPMessage(data.response_message);
+            // toast.success("OTP sent successfully!");
 
-          // Disable name, email, and mobile fields
-          setIsFieldsDisabled(true);
+            // Disable name, email, and mobile fields
+            setIsFieldsDisabled(true);
 
-          // Disable "Send OTP" button and start timer
-          setIsSendOtpDisabled(true);
-          setIsOtpSent(true);
+            // Disable "Send OTP" button and start timer
+            setIsSendOtpDisabled(true);
+            setIsOtpSent(true);
 
-          let timeLeft = 60;
-          const timerInterval = setInterval(() => {
-            timeLeft -= 1;
-            setOtpTimer(timeLeft);
+            let timeLeft = 60;
+            const timerInterval = setInterval(() => {
+              timeLeft -= 1;
+              setOtpTimer(timeLeft);
 
-            if (timeLeft === 0) {
-              clearInterval(timerInterval);
-              setIsSendOtpDisabled(false); // Re-enable Send OTP
-              setOtpTimer(60); // Reset timer
-            }
-          }, 1000);
-        }else if(data.response == 'fail'){
+              if (timeLeft === 0) {
+                clearInterval(timerInterval);
+                setIsSendOtpDisabled(false); // Re-enable Send OTP
+                setOtpTimer(60); // Reset timer
+              }
+            }, 1000);
+          }
+        } else if (data.response == 'fail') {
           console.log(data.response_message)
           setIsOTPMessage(data.response_message);
+          setIsOtpSent(false)
+          setIsOtpVerified(false)
+          setIsSendOtpDisabled(false);
         } else {
           setIsOTPMessage(data.message || "Failed to send OTP");
+          setIsOtpSent(false)
+          setIsOtpVerified(false)
+          setIsSendOtpDisabled(false);
           toast.error(data.message || "Failed to send OTP");
         }
       } catch (error) {
         console.error("Error sending OTP:", error);
-        toast.error("Something went wrong. Please try again.");
+        setIsOTPMessage(data.message || "Something went wrong. Please try again.");
+        setIsOtpSent(false)
+        setIsOtpVerified(false)
+        setIsSendOtpDisabled(false);
       }
     } else {
       setErrors({ ...errors, mobile: "Enter a valid 10-digit mobile number" });
@@ -256,7 +271,7 @@ const Intern = () => {
       const data = await response.json();
 
       if (response.ok && data.response !== "fail") {
-      // if (true) {
+        // if (true) {
         // toast.success("OTP verified successfully!");
         setIsVerifyOTPMessage(data.response_message);
         setIsOtpVerified(true);
@@ -271,12 +286,15 @@ const Intern = () => {
         // toast.error(data.response_message || "Invalid OTP. Please try again.");
         setErrors({ ...errors, otp: data.response_message || "Invalid OTP" });
         setIsVerifyOTPMessage('');
-
+        setIsSendOtpDisabled(false); // Disable Send OTP button
         // Re-enable "Verify OTP" button to allow retrying
         setIsVerifyOtpDisabled(false);
+        // setIsOtpVerified(true) // for testing enabled
+
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
+      setErrors({ ...errors, otp: data.response_message || "Something went wrong. Please try again." });
       toast.error("Something went wrong. Please try again.");
 
       // Re-enable "Verify OTP" button on error
@@ -321,39 +339,154 @@ const Intern = () => {
   //   const razorpay = new window.Razorpay(options);
   //   razorpay.open();
   // };
+  // const handlePaymentSuccess = async () => {
+  //   if (!window.Razorpay) {
+  //     toast.error("Razorpay SDK failed to load. Please refresh the page.");
+  //     return;
+  //   }
+
+  //   const options = {
+  //     key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
+  //     amount: 199 * 100, // Convert ₹199 to paise
+  //     currency: "INR",
+  //     name: "Internship Registration",
+  //     description: "Payment for Internship Program",
+  //     image: "https://narmtech.com/assets/logo-Dx_AJf1h.png",
+  //     handler: function (response) {
+  //       toast.success("Payment successful!");
+  //       setIsPaymentSuccessful(true);
+  //       console.log("Payment status updated:", true); // Debugging log
+  //       // Store payment status to persist after refresh
+  //       localStorage.setItem("paymentCompleted", "true");
+  //     },
+  //     prefill: {
+  //       name: formData.name,
+  //       email: formData.email,
+  //       contact: formData.mobile,
+  //     },
+  //     theme: {
+  //       color: "#007bff",
+  //     },
+  //   };
+  //   console.log("Is Razorpay available?", window.Razorpay);
+  //   const razorpay = new window.Razorpay(options);
+  //   razorpay.open();
+  // };
   const handlePaymentSuccess = async () => {
     if (!window.Razorpay) {
       toast.error("Razorpay SDK failed to load. Please refresh the page.");
       return;
     }
+    setIsSendOtpDisabled(true);
+    setOtpTimer(null);
+    setIsVerifyOtpDisabled(true);
+    setIsOtpVerified(true);
+    try {
+      // Step 1: Create Order API Call
+      const orderResponse = await fetch("https://dev.quizifai.com:8010/create_order_for_internship", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJOVFBMICBBZG1pbiIsImV4cCI6MjUzNDAyMzAwNzk5fQ.G1AMvRDZ798-uvCmTEs1fK6nKKakmS1v43mp2RcUuVg",
+        },
+        body: JSON.stringify({
+          user_id: 0, // Replace with actual user ID
+          user_name: formData.name,
+          email_id: formData.email,
+          mobile_number: formData.mobile,
+          subscription_plan_id: 1,
+          quiz_package_id: 0,
+          plan_type: "Yearly",
+          amount: 199,
+          currency: "INR",
+          receipt: "Internship Registration",
+          notes: {
+            additionalProp1: "Intial Payment",
+            additionalProp2: "string",
+            additionalProp3: "string"
+          }
+        })
+      });
 
-    const options = {
-      key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
-      amount: 199 * 100, // Convert ₹199 to paise
-      currency: "INR",
-      name: "Internship Registration",
-      description: "Payment for Internship Program",
-      image: "https://narmtech.com/assets/logo-Dx_AJf1h.png",
-      handler: function (response) {
-        toast.success("Payment successful!");
-        setIsPaymentSuccessful(true);
-        console.log("Payment status updated:", true); // Debugging log
-        // Store payment status to persist after refresh
-        localStorage.setItem("paymentCompleted", "true");
-      },
-      prefill: {
-        name: formData.name,
-        email: formData.email,
-        contact: formData.mobile,
-      },
-      theme: {
-        color: "#007bff",
-      },
-    };
-    console.log("Is Razorpay available?", window.Razorpay);
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+      const orderData = await orderResponse.json();
+      console.log("Order API Response:", orderData);
+
+      // ❌ Stop execution if API fails
+      if (!orderResponse.ok || orderData.response === "failure") {
+        setIsVerifyPayementMessage(orderData.response_message);
+        console.error("Order creation failed:", orderData.response_message);
+        // toast.error("Failed to create order: " + orderData.response_message);
+        return; // Do not proceed to Razorpay
+      }
+
+      // Step 2: Open Razorpay Payment Gateway
+      const options = {
+        key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
+        amount: 199 * 100, // Convert ₹199 to paise
+        currency: "INR",
+        name: "Internship Registration",
+        description: "Payment for Internship Program",
+        image: "https://narmtech.com/assets/logo-Dx_AJf1h.png",
+        order_id: orderData.order_id, // Razorpay Order ID
+        handler: async function (response) {
+          console.log("Payment successful:", response);
+
+          // Step 3: Call API on Successful Payment
+          try {
+            const paymentResponse = await fetch("https://dev.quizifai.com:8010/payment_success", {
+              method: "POST",
+              headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJOVFBMICBBZG1pbiIsImV4cCI6MjUzNDAyMzAwNzk5fQ.G1AMvRDZ798-uvCmTEs1fK6nKKakmS1v43mp2RcUuVg",
+              },
+              body: JSON.stringify({
+                order_id: orderData.order_id,
+                payment_id: response.razorpay_payment_id,
+                signature: response.razorpay_signature,
+                status: "success",
+                user_name: formData.name,
+                email_id: formData.email,
+                mobile_number: formData.mobile,
+                amount: 199,
+                currency: "INR"
+              })
+            });
+
+            const paymentData = await paymentResponse.json();
+            console.log("Payment Success API Response:", paymentData);
+
+            if (!paymentResponse.ok) {
+              throw new Error(paymentData.message || "Payment success API failed");
+            }
+
+            toast.success("Payment successful!");
+            setIsPaymentSuccessful(true);
+            localStorage.setItem("paymentCompleted", "true");
+          } catch (error) {
+            console.error("Error in payment success API:", error);
+            toast.error("Error in payment verification. Please contact support.");
+          }
+        },
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.mobile,
+        },
+        theme: {
+          color: "#007bff",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      toast.error("Error processing payment. Please try again.");
+    }
   };
+
 
 
 
@@ -364,11 +497,28 @@ const Intern = () => {
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
-            <h2 className="text-2xl font-bold mb-6">Virtual Internship Program on GenAI Powered Web Applications</h2>
             <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
-            <p className="mt-2 text-sm">GenAI is set to revolutionize the IT industry, transforming how it operates and redefining the role of IT developers. This internship program will equip you with the knowledge and skills to apply GenAI technology to real-world challenges and develop consumer applications that harness its full potential.</p>
+            <p className="mt-2 text-sm">
+              <span className="font-bold">GenAI</span> is set to <span className="font-bold italic">revolutionize</span> the IT industry, transforming how it operates and redefining the role of
+              <span className="font-bold italic"> IT developers</span>.
+              This <span className="font-bold">internship program</span> will equip you with the knowledge and skills to apply
+              <span className="font-bold italic"> GenAI technology</span> to real-world challenges and develop
+              <span className="font-bold"> consumer applications</span> that harness its full potential.
+            </p>
+
             <h3 className="text-xl font-semibold mt-4">What you are going to learn?</h3>
-            <p className="mt-2 text-sm">In this internship, you'll gain a deep understanding of GenAI and its practical applications in your day-to-day tasks. You'll explore how to integrate GenAI into various workflows, automate processes, and enhance productivity. Additionally, you'll learn to build simple SaaS applications and intelligent bots using Python and GenAI, equipping you with the skills to create innovative AI-powered solutions.</p>
+            <p className="mt-2 text-sm">
+              In this <span className="font-bold">internship</span>, you'll gain a
+              <span className="font-bold italic"> deep understanding of GenAI</span> and its
+              <span className="font-bold"> practical applications</span> in your day-to-day tasks.
+              You'll explore how to <span className="font-bold italic"> integrate GenAI</span> into various workflows,
+              <span className="font-bold">automate processes</span> , and
+              <span className="font-bold italic"> enhance productivity</span>.
+              Additionally, you'll learn to build <span className="font-bold">simple SaaS applications</span> and
+              <span className="font-bold italic"> intelligent bots</span> using
+              <span className="font-bold"> Python and GenAI</span>, equipping you with the skills to create
+              <span className="font-bold italic"> innovative AI-powered solutions</span>.
+            </p>
             <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
             <div className="mt-4">
               <p className="font-semibold">📍 Internship Progress</p>
@@ -379,7 +529,7 @@ const Intern = () => {
               <p className="mt-4">
                 Register for the internship with a nominal fee. Need more details? ask our AI bot
                 <span className="text-blue-600 font-semibold"> "Monica" </span>
-                or email at 
+                or email at
                 <a href="mailto:internship@narmtech.com" className="text-blue-600 font-semibold"> internship@narmtech.com</a>.
               </p>
 
@@ -521,7 +671,7 @@ const Intern = () => {
                   </div>
 
                   {/* Always show error message & countdown when OTP is sent */}
-                  <span className="text-xs">{isOTPMessage}</span> 
+                  <span className="text-xs">{isOTPMessage}</span>
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
@@ -555,7 +705,7 @@ const Intern = () => {
                           ? 'bg-blue-600 text-white hover:bg-blue-700'
                           : 'bg-slate-400 text-white cursor-not-allowed'
                           }`}
-                        // disabled={!formData.otp || !!errors.otp}
+                      // disabled={!formData.otp || !!errors.otp}
                       >
                         Verify OTP
                       </button>
@@ -597,6 +747,7 @@ const Intern = () => {
                     >
                       Pay Now
                     </button>
+                    {isVerifyPayementMessage !== "" && <p className="text-red-500 text-xs">{isVerifyPayementMessage}</p>}
                   </div>
                 )}
               </form>
