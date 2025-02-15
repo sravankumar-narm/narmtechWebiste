@@ -2,39 +2,83 @@ import React from 'react';
 import '../Intern/progressBar.css';
 
 const stages = [
-  { name: 'Reg Start', icon: '📝', date: new Date('2025-02-01'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  }, },
-  { name: 'Reg End', icon: '🔒', date: new Date('2025-02-10'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Scrutiny', icon: '👀', date: new Date('2025-02-28'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-16px]", 
-  },  },
-  { name: 'Squadcast', icon: '📣', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-17px] mr-[-8px]", 
-  },  },
-  { name: 'Week 1', icon: '📅', date: new Date('2025-03-03'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Week 2', icon: '📚', date: new Date('2025-03-10'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Week 3', icon: '📊', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Week 4', icon: '💡', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Week 5', icon: '🎯', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-8px]", 
-  },  },
-  { name: 'Week 6', icon: '🚀', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-18px]", 
-  },  },
-  { name: 'Credential', icon: '🎓', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
-    linePadding: "ml-[-13px] mr-[-18px]", 
-  },  }
+  {
+    name: 'Registration  Start', icon: '✔️', date: new Date('2025-02-01'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "mt-[15px] mr-[-6px]",
+      nowarp: "",
+    },
+  },
+  {
+    name: 'Registration  End', icon: '✔️', date: new Date('2025-02-10'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "mt-[15px] mr-[-6px] ml-[-15px]",
+      nowarp: "",
+    },
+  },
+  {
+    name: 'Scrutiny', icon: '✔️', date: new Date('2025-02-28'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-16px]",
+      mainPadding: "",
+      nowarp: "",
+    },
+  },
+  {
+    name: 'Squadcast', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-17px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "",
+    },
+  },
+  {
+    name: 'Week 1', icon: '✔️', date: new Date('2025-03-03'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Week 2', icon: '✔️', date: new Date('2025-03-10'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Week 3', icon: '✔️', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Week 4', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Week 5', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-8px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Week 6', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-18px]",
+      mainPadding: "",
+      nowarp: "whitespace-nowrap",
+    },
+  },
+  {
+    name: 'Credential', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-13px] mr-[-18px]",
+      mainPadding: "",
+      nowarp: "",
+    },
+  }
 ];
 // const stages = [
 //   { name: 'Reg Start', icon: '📝', date: new Date('2025-01-01'), color: 'bg-[#ceffe7]' },
@@ -86,7 +130,7 @@ const ProgressBar = () => {
 
           return (
             <React.Fragment key={index}>
-              <div className="flex flex-col items-center flex-1">
+              <div className={`flex flex-col items-center flex-1 ${stage.styles.mainPadding}`}>
                 {/* Show Date Above */}
                 <p className="text-xs text-sky-900 font-bold mb-2">{formattedDate}</p>
 
@@ -95,14 +139,36 @@ const ProgressBar = () => {
                   ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-red-500'}`}>
                   <span className="text-slate-600 text-2xl">{stage.icon}</span>
                 </div> */}
-                <div className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 bg-[#d9d9ed]
+                {/* <div className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 bg-[#d9d9ed]
                   ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#f1af9c]'}`}>
-                  {/* <span className="text-slate-600 text-sm">{stage.icon}</span> */}
+                  <span className="text-slate-600 text-sm">{stage.icon}</span>
+                </div> */}
+                <div
+                  className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 
+                  ${isCompleted ? `${stage.color} border-[#269908]` : 'bg-[#d9d9ed] border-[#f1af9c]'}`}
+                >
+                  {isCompleted ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5 text-[#269908]"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M20.285 6.707a1 1 0 0 0-1.414-1.414L9 15.164 5.13 11.293a1 1 0 1 0-1.415 1.415l4.95 4.95a1 1 0 0 0 1.415 0l10.205-10.205z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  ) : (
+                    <span className="text-slate-600 text-sm"></span>
+                  )}
                 </div>
 
 
+
                 {/* Stage Name Below */}
-                <p className="text-sm mt-2 text-center text-sky-900 font-semibold whitespace-nowrap">{stage.name}</p>
+                <p className={`text-xs mt-2 text-center text-sky-900 font-bold ${stage.styles.nowarp}`}>{stage.name}</p>
               </div>
 
               {/* Connecting Line */}

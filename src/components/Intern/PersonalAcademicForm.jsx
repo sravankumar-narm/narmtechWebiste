@@ -271,7 +271,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     };
 
     return (
-        <div className="p-8 bg-zinc-100 rounded-lg shadow-lg h-[calc(100vh-45px)] overflow-y-auto">
+        <div className="p-8 bg-zinc-100 rounded-lg shadow-lg h-[calc(100vh-65px)] overflow-y-auto">
             <h3 className="text-xl font-semibold text-center mb-4">
                 {currentStep === 1 ? "Personal Information" : "Academic Information"}
             </h3>
