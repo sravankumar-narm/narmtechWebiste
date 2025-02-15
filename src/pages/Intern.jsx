@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -62,12 +62,14 @@ const Intern = () => {
     email: '',
     mobile: '',
     otp: '',
+    userId: '',
   });
 
   // Validation state
   const [errors, setErrors] = useState({});
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   // State to track registration and payment status
   const [isRegistered, setIsRegistered] = useState(false);
@@ -82,7 +84,10 @@ const Intern = () => {
   const [isOTPMessage, setIsOTPMessage] = useState('');
   const [isVerifyOTPMessage, setIsVerifyOTPMessage] = useState('');
   const [isVerifyPayementMessage, setIsVerifyPayementMessage] = useState('');
-
+  const otpTimerRef = useRef(null); // Store timer reference
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false); // Tracks if terms are accepted
+  const [isTermsPopupOpen, setIsTermsPopupOpen] = useState(false); // Controls visibility of the popup
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
     if (isDetailsSubmitted) {
@@ -190,51 +195,68 @@ const Intern = () => {
         });
 
         const data = await response.json();
-        if (data.response == 'success') {
-          if (data.response_message == 'Mobile is already registered. Please log in or use a different mobile number.') {
-            setIsOtpSent(false)
-            setIsOtpVerified(false)
+        if (data.response === "success") {
+          if (data.response_message === "Mobile is already registered. Please log in or use a different mobile number.") {
+            setIsOtpSent(false);
+            setIsOtpVerified(false);
+            setIsOTPMessage(data.response_message);
+          } else if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment.") {
+            setIsOtpSent(false);
+            setIsOTPMessage(data.response_message);
+            setIsOtpVerified(true);
+            setUserId(data.user_id);
+            formData.userId = data.user_id;
+          } else if (data.response_message === "Payment has been done successfully. Registration is pending." || data.response_message === "Payment has been done successfully. Continue with registration.") {
+            setIsOtpSent(false);
+            setIsOTPMessage(data.response_message + ' Redirecting to Personal and Academic Details...');
+            setIsPaymentSuccessful(true);
+            setIsOtpVerified(false);
+            setUserId(data.user_id);
+            formData.userId = data.user_id;
+            setTimeout(() => setIsRegistered(true), 5000);
+
+          } else if (data.response_message === "Registration is completed for the given number. Please check your inbox for login credentials.") {
+            setIsOtpSent(false);
+            setIsOtpVerified(false);
+            setIsOTPMessage(data.response_message);
           } else {
             setIsOTPMessage(data.response_message);
-            // toast.success("OTP sent successfully!");
-
-            // Disable name, email, and mobile fields
             setIsFieldsDisabled(true);
-
-            // Disable "Send OTP" button and start timer
             setIsSendOtpDisabled(true);
             setIsOtpSent(true);
 
+            // Clear existing interval before starting a new one
+            if (otpTimerRef.current) {
+              clearInterval(otpTimerRef.current);
+            }
+
             let timeLeft = 60;
-            const timerInterval = setInterval(() => {
+            setOtpTimer(timeLeft);
+
+            otpTimerRef.current = setInterval(() => {
               timeLeft -= 1;
               setOtpTimer(timeLeft);
 
               if (timeLeft === 0) {
-                clearInterval(timerInterval);
-                setIsSendOtpDisabled(false); // Re-enable Send OTP
-                setOtpTimer(60); // Reset timer
+                clearInterval(otpTimerRef.current);
+                otpTimerRef.current = null;
+                setIsSendOtpDisabled(false);
+                setOtpTimer(60);
               }
             }, 1000);
           }
-        } else if (data.response == 'fail') {
-          console.log(data.response_message)
-          setIsOTPMessage(data.response_message);
-          setIsOtpSent(false)
-          setIsOtpVerified(false)
-          setIsSendOtpDisabled(false);
         } else {
-          setIsOTPMessage(data.message || "Failed to send OTP");
-          setIsOtpSent(false)
-          setIsOtpVerified(false)
+          setIsOTPMessage(data.response_message || "Failed to send OTP");
+          setIsOtpSent(false);
+          setIsOtpVerified(false);
           setIsSendOtpDisabled(false);
           toast.error(data.message || "Failed to send OTP");
         }
       } catch (error) {
         console.error("Error sending OTP:", error);
-        setIsOTPMessage(data.message || "Something went wrong. Please try again.");
-        setIsOtpSent(false)
-        setIsOtpVerified(false)
+        setIsOTPMessage("Something went wrong. Please try again.");
+        setIsOtpSent(false);
+        setIsOtpVerified(false);
         setIsSendOtpDisabled(false);
       }
     } else {
@@ -269,8 +291,7 @@ const Intern = () => {
       });
 
       const data = await response.json();
-
-      if (response.ok && data.response !== "fail") {
+      if (response.ok && data.response == "success") {
         // if (true) {
         // toast.success("OTP verified successfully!");
         setIsVerifyOTPMessage(data.response_message);
@@ -278,7 +299,8 @@ const Intern = () => {
         setIsFieldsDisabled(true); // Disable all fields
         setIsSendOtpDisabled(true); // Disable Send OTP button
         setOtpTimer(null); // Stop showing the timer
-
+        setUserId(data.user_id || 99);
+        formData.userId = data.user_id;
         // Store in localStorage to persist state on refresh
         localStorage.setItem("otpVerified", "true");
         localStorage.setItem("formData", JSON.stringify(formData));
@@ -290,6 +312,7 @@ const Intern = () => {
         // Re-enable "Verify OTP" button to allow retrying
         setIsVerifyOtpDisabled(false);
         // setIsOtpVerified(true) // for testing enabled
+        setOtpTimer(null); // Stop showing the timer
 
       }
     } catch (error) {
@@ -377,10 +400,10 @@ const Intern = () => {
       toast.error("Razorpay SDK failed to load. Please refresh the page.");
       return;
     }
-    setIsSendOtpDisabled(true);
-    setOtpTimer(null);
-    setIsVerifyOtpDisabled(true);
-    setIsOtpVerified(true);
+  
+    // Disable the "Pay Now" button during payment processing
+    setIsPaymentProcessing(true);
+  
     try {
       // Step 1: Create Order API Call
       const orderResponse = await fetch("https://dev.quizifai.com:8010/create_order_for_internship", {
@@ -391,7 +414,7 @@ const Intern = () => {
           "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJOVFBMICBBZG1pbiIsImV4cCI6MjUzNDAyMzAwNzk5fQ.G1AMvRDZ798-uvCmTEs1fK6nKKakmS1v43mp2RcUuVg",
         },
         body: JSON.stringify({
-          user_id: 0, // Replace with actual user ID
+          user_id: formData.userId || userId,
           user_name: formData.name,
           email_id: formData.email,
           mobile_number: formData.mobile,
@@ -400,26 +423,26 @@ const Intern = () => {
           plan_type: "Yearly",
           amount: 199,
           currency: "INR",
-          receipt: "Internship Registration",
+          receipt: "string",
           notes: {
-            additionalProp1: "Intial Payment",
+            additionalProp1: "string",
             additionalProp2: "string",
             additionalProp3: "string"
           }
         })
       });
-
+  
       const orderData = await orderResponse.json();
       console.log("Order API Response:", orderData);
-
-      // ❌ Stop execution if API fails
+  
+      // Stop execution if API fails
       if (!orderResponse.ok || orderData.response === "failure") {
-        setIsVerifyPayementMessage(orderData.response_message);
+        setIsVerifyPayementMessage(orderData.response_message || "Something went wrong. Please try again.");
         console.error("Order creation failed:", orderData.response_message);
-        // toast.error("Failed to create order: " + orderData.response_message);
-        return; // Do not proceed to Razorpay
+        setIsPaymentProcessing(false); // Re-enable the button on failure
+        return;
       }
-
+  
       // Step 2: Open Razorpay Payment Gateway
       const options = {
         key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
@@ -431,10 +454,10 @@ const Intern = () => {
         order_id: orderData.order_id, // Razorpay Order ID
         handler: async function (response) {
           console.log("Payment successful:", response);
-
+  
           // Step 3: Call API on Successful Payment
           try {
-            const paymentResponse = await fetch("https://dev.quizifai.com:8010/payment_success", {
+            const paymentResponse = await fetch("https://dev.quizifai.com:8010/verify_payment_signature_verify_payment_signature_for_internship__post", {
               method: "POST",
               headers: {
                 "Accept": "application/json",
@@ -453,20 +476,22 @@ const Intern = () => {
                 currency: "INR"
               })
             });
-
+  
             const paymentData = await paymentResponse.json();
             console.log("Payment Success API Response:", paymentData);
-
+  
             if (!paymentResponse.ok) {
               throw new Error(paymentData.message || "Payment success API failed");
             }
-
+  
             toast.success("Payment successful!");
             setIsPaymentSuccessful(true);
             localStorage.setItem("paymentCompleted", "true");
           } catch (error) {
             console.error("Error in payment success API:", error);
             toast.error("Error in payment verification. Please contact support.");
+          } finally {
+            setIsPaymentProcessing(false); // Re-enable the button after processing
           }
         },
         prefill: {
@@ -478,12 +503,13 @@ const Intern = () => {
           color: "#007bff",
         },
       };
-
+  
       const razorpay = new window.Razorpay(options);
       razorpay.open();
     } catch (error) {
       console.error("Error processing payment:", error);
       toast.error("Error processing payment. Please try again.");
+      setIsPaymentProcessing(false); // Re-enable the button on error
     }
   };
 
@@ -606,7 +632,7 @@ const Intern = () => {
               <form className="space-y-4">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Name <span className='text-xs'><i>(Full name as per certificates)</i></span></label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Name <span className='text-[10px] text-blue-800 font-semibold'><i>(Full name as per certificates)</i></span></label>
                   <input
                     type="text"
                     name="name"
@@ -623,7 +649,7 @@ const Intern = () => {
 
                 {/* Email Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-envelope text-blue-600"></i> Email</label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-envelope text-blue-600"></i> Email <span className='text-[10px] text-blue-800 font-semibold'><i>(All communication will be sent to this email)</i></span></label>
                   <input
                     type="email"
                     name="email"
@@ -671,7 +697,7 @@ const Intern = () => {
                   </div>
 
                   {/* Always show error message & countdown when OTP is sent */}
-                  <span className="text-xs">{isOTPMessage}</span>
+                  <span className="text-xs text-blue-800">{isOTPMessage}</span>
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
@@ -711,7 +737,7 @@ const Intern = () => {
                       </button>
                     </div>
                     {errors.otp && <p className="text-red-500 text-xs">{errors.otp}</p>}
-                    {isVerifyOtpDisabled && <p className="text-blue-600 text-xs">{isVerifyOTPMessage}</p>}
+                    {isVerifyOtpDisabled && <p className="text-[#1d8105] text-xs">{isVerifyOTPMessage}</p>}
                   </div>
                 )}
 
@@ -731,23 +757,154 @@ const Intern = () => {
                 {isOtpVerified && (
                   <div className="mt-4">
                     {/* Disclaimer for Nominal Fee */}
-                    <p className="text-sm text-gray-600 mb-2">
+                    <p className="text-base text-gray-600 mb-2">
                       Note: A nominal fee of ₹199 is required to complete your registration (Non refundable).
                     </p>
+
+                    {/* Terms and Conditions Checkbox */}
+                    <div className="flex items-center mb-4">
+                      <input
+                        type="checkbox"
+                        id="termsCheckbox"
+                        className="mr-2"
+                        onChange={(e) => setIsTermsAccepted(e.target.checked)} // Enable Pay Now button when checked
+                      />
+                      <label htmlFor="termsCheckbox" className="text-sm text-gray-700 cursor-pointer">
+                        I agree to the{' '}
+                        <span
+                          className="text-blue-600 underline cursor-pointer"
+                          onClick={() => setIsTermsPopupOpen(true)} // Open Terms and Conditions popup
+                        >
+                          Terms and Conditions
+                        </span>
+                      </label>
+                    </div>
 
                     {/* Pay Now Button */}
                     <button
                       type="button"
                       onClick={handlePaymentSuccess}
-                      className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${Object.keys(errors).length === 0
-                        ? 'bg-blue-600 hover:bg-blue-700'
-                        : 'bg-slate-400 cursor-not-allowed'
+                      className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isTermsAccepted ? 'bg-blue-600 hover:bg-blue-700' : 'bg-slate-400 cursor-not-allowed'
                         }`}
-                    // disabled={Object.keys(errors).length > 0}
+                      disabled={!isTermsAccepted && isPaymentProcessing} // Disable button if terms are not accepted
                     >
                       Pay Now
                     </button>
-                    {isVerifyPayementMessage !== "" && <p className="text-red-500 text-xs">{isVerifyPayementMessage}</p>}
+                    {isVerifyPayementMessage !== "" && (
+                      <p className="text-red-500 text-xs">{isVerifyPayementMessage}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Terms and Conditions Popup */}
+                {isTermsPopupOpen && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-lg max-w-2xl overflow-y-auto h-96">
+                      <h2 className="text-lg font-bold mb-4">Terms and Conditions</h2>
+                      <div style={{ fontSize: '11px' }}>
+                        <p>
+                          <strong>1. Eligibility:</strong>
+                          By signing up for the internship program, you confirm that you meet the eligibility criteria,
+                          including age, educational qualifications, and other requirements specified in the internship
+                          description.
+                        </p>
+                        <p>
+                          <strong>2. Commitment:</strong>
+                          Interns are expected to adhere to the internship schedule, complete assigned tasks, and maintain
+                          a professional attitude throughout the program.
+                        </p>
+                        <p>
+                          <strong>3. Confidentiality:</strong>
+                          Interns must maintain confidentiality regarding any sensitive information, documents, or data
+                          accessed during the internship. Unauthorized sharing or misuse will result in immediate
+                          termination and potential legal action.
+                        </p>
+                        <p>
+                          <strong>4. Stipend and Benefits:</strong>
+                          The internship program is unpaid. No stipend or monetary compensation will be provided.
+                          However, as part of the program, interns will gain valuable hands-on experience, enhancing their
+                          practical skills and knowledge. Upon successful completion, interns will receive a certificate
+                          of completion as a formal acknowledgment of their efforts and accomplishments.
+                        </p>
+                        <p>
+                          <strong>5. Intellectual Property:</strong>
+                          Any work created or developed during the internship is the sole intellectual property of the
+                          company unless explicitly stated otherwise.
+                        </p>
+                        <p>
+                          <strong>6. Termination:</strong>
+                          The company reserves the right to terminate the internship for reasons including but not limited
+                          to non-performance, misconduct, or breach of terms.
+                        </p>
+                        <p>
+                          <strong>7. Compliance:</strong>
+                          Interns must comply with company policies, code of conduct, and applicable laws throughout the
+                          internship.
+                        </p>
+                        <p>
+                          <strong>8. Indemnity:</strong>
+                          The company is not liable for any personal injury or property damage during the internship
+                          unless caused by company negligence.
+                        </p>
+                        <p>
+                          <strong>9. Amendments:</strong>
+                          The company may update these terms and conditions and schedule at any time. Interns will be
+                          notified of significant changes.
+                        </p>
+                        <h3 className="font-bold mt-4">Privacy Policy</h3>
+                        <p>
+                          <strong>1. Personal Information Collection:</strong>
+                          We collect personal details, including your name, contact information, academic records, and
+                          other data required for processing your application and managing the internship.
+                        </p>
+                        <p>
+                          <strong>2. Usage of Information:</strong>
+                          Your personal information is used solely for recruitment, training, and internship management
+                          purposes.
+                        </p>
+                        <p>
+                          <strong>3. Data Sharing:</strong>
+                          Your information will not be shared with third parties unless required by law or necessary for
+                          program facilitation.
+                        </p>
+                        <p>
+                          <strong>4. Data Security:</strong>
+                          We implement reasonable measures to protect your personal data against unauthorized access,
+                          alteration, or disclosure.
+                        </p>
+                        <p>
+                          <strong>5. Access and Correction:</strong>
+                          You may request access to or correction of your personal information at any time by contacting
+                          our HR department.
+                        </p>
+                        <p>
+                          <strong>6. Retention of Data:</strong>
+                          Your data will be retained for the internship and for a limited period afterward as per legal
+                          and business requirements.
+                        </p>
+                        <p>
+                          <strong>7. Cookies and Tracking:</strong>
+                          If you use our online platforms, cookies or similar technologies may be used to enhance your
+                          experience.
+                        </p>
+                        <p>
+                          <strong>8. Consent:</strong>
+                          By signing up, you consent to our collection, use, and processing of your data as outlined in
+                          this Privacy Policy.
+                        </p>
+                        <p>
+                          <strong>9. Policy Updates:</strong>
+                          We reserve the right to update this Privacy Policy. Significant changes will be communicated
+                          to you.
+                        </p>
+                      </div>
+                      <button
+                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                        onClick={() => setIsTermsPopupOpen(false)} // Close popup
+                      >
+                        Close
+                      </button>
+                    </div>
                   </div>
                 )}
               </form>
