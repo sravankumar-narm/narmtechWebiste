@@ -719,7 +719,7 @@ const Intern = () => {
                     </div>
 
                     {/* Always show error message & countdown when OTP is sent */}
-                    <span className="text-xs text-blue-800">{isOTPMessage}</span>
+                    <span className="text-xs text-[#1d8105]">{isOTPMessage}</span>
                     {errors.mobile || isSendOtpDisabled ? (
                       <p className="text-red-500 text-xs">
                         {errors.mobile ? errors.mobile : ""}{" "}
