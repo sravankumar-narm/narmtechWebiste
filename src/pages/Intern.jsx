@@ -89,6 +89,7 @@ const Intern = () => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false); // Tracks if terms are accepted
   const [isTermsPopupOpen, setIsTermsPopupOpen] = useState(false); // Controls visibility of the popup
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
     if (isDetailsSubmitted) {
@@ -182,6 +183,7 @@ const Intern = () => {
   const handleSendOtp = async () => {
     if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
       try {
+        setIsLoading(true);
         const response = await fetch("https://dev.quizifai.com:8010/signup-for-interns", {
           method: "POST",
           headers: {
@@ -266,11 +268,20 @@ const Intern = () => {
         setIsOtpSent(false);
         setIsOtpVerified(false);
         setIsSendOtpDisabled(false);
+      } finally {
+        // Stop loader after API call completes
+        setIsLoading(false);
       }
     } else {
       setErrors({ ...errors, mobile: "Enter a valid 10-digit mobile number" });
       toast.error("Please enter a valid 10-digit mobile number.");
+      setIsLoading(false);
     }
+    // Start a timer to hide the message after 5 seconds
+    setTimeout(() => {
+      setIsOTPMessage(""); // Clear the success message
+      setIsOTPErrorMessage(""); // Clear the error message
+    }, 5000);
   };
 
 
@@ -282,8 +293,8 @@ const Intern = () => {
       return;
     }
 
+    setIsLoading(true);
     setIsVerifyOtpDisabled(true); // Disable "Verify OTP" button
-
     try {
       const response = await fetch("https://dev.quizifai.com:8010/sgnup_verification_for_interns", {
         method: "POST",
@@ -334,7 +345,31 @@ const Intern = () => {
         //     // setIsOtpVerified(true) // for testing enabled
         //     setOtpTimer(null); // Stop showing the timer
         //   }
-      } else {
+      }
+      else if (data.response == "fail") {
+        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment") {
+          setIsVerifyOTPMessage(data.response_message);
+          setIsOtpVerified(true);
+          setIsFieldsDisabled(true); // Disable all fields
+          setIsSendOtpDisabled(true); // Disable Send OTP button
+          setOtpTimer(null); // Stop showing the timer
+          setUserId(data.user_id || 99);
+          formData.userId = data.user_id;
+          // Store in localStorage to persist state on refresh
+          localStorage.setItem("otpVerified", "true");
+          localStorage.setItem("formData", JSON.stringify(formData));
+        } else {
+          // toast.error(data.response_message || "Invalid OTP. Please try again.");
+          setErrors({ ...errors, otp: data.response_message || "Invalid OTP" });
+          setIsVerifyOTPMessage('');
+          setIsSendOtpDisabled(false); // Disable Send OTP button
+          // Re-enable "Verify OTP" button to allow retrying
+          setIsVerifyOtpDisabled(false);
+          // setIsOtpVerified(true) // for testing enabled
+          setOtpTimer(null); // Stop showing the timer
+        }
+      }
+      else {
         // toast.error(data.response_message || "Invalid OTP. Please try again.");
         setErrors({ ...errors, otp: data.response_message || "Invalid OTP" });
         setIsVerifyOTPMessage('');
@@ -352,7 +387,14 @@ const Intern = () => {
       // Re-enable "Verify OTP" button on error
       setIsVerifyOtpDisabled(false);
       setIsVerifyOTPMessage('');
+    }finally {
+      setIsLoading(false);
     }
+    // Start a timer to hide the message after 5 seconds
+    setTimeout(() => {
+      setErrors(""); // Clear the success message
+      setIsVerifyOTPMessage(""); // Clear the error message
+    }, 5000);
   };
 
 
@@ -429,7 +471,7 @@ const Intern = () => {
       toast.error("Razorpay SDK failed to load. Please refresh the page.");
       return;
     }
-
+    setIsLoading(true);
     // Disable the "Pay Now" button during payment processing
     setIsPaymentProcessing(true);
 
@@ -447,7 +489,7 @@ const Intern = () => {
           user_name: formData.name,
           email_id: formData.email,
           mobile_number: formData.mobile,
-          subscription_plan_id: 1,
+          subscription_plan_id: 5,
           quiz_package_id: 0,
           plan_type: "Yearly",
           amount: 199,
@@ -464,14 +506,19 @@ const Intern = () => {
       const orderData = await orderResponse.json();
       console.log("Order API Response:", orderData);
       let order_id_data = orderData.order_information.id
-      console.log('order_id_data - ',order_id_data)
+      console.log('order_id_data - ', order_id_data)
 
       // Stop execution if API fails
       if (!orderResponse.ok || orderData.response === "failure") {
+        setIsLoading(false);
         setIsVerifyPayementMessage(orderData.response_message || "Something went wrong. Please try again.");
         console.error("Order creation failed:", orderData.response_message);
         setIsPaymentProcessing(false); // Re-enable the button on failure
         return;
+      }
+
+      if(!order_id_data) {
+        setIsLoading(false);
       }
 
       // Step 2: Open Razorpay Payment Gateway
@@ -495,7 +542,7 @@ const Intern = () => {
             payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
           };
-          console.log('paymentDetails - ',paymentDetails)
+          console.log('paymentDetails - ', paymentDetails)
 
           // Step 3: Call API on Successful Payment
           try {
@@ -524,13 +571,16 @@ const Intern = () => {
             console.log("Payment Success API Response:", paymentData);
 
             if (!paymentResponse.ok) {
+              setIsVerifyPayementMessage(paymentData.message || "Something went wrong. Please try again.");
               throw new Error(paymentData.message || "Payment success API failed");
             }
 
             toast.success("Payment successful!");
+            setIsVerifyPayementMessage(paymentData.message || "Payment successful!");
             setIsPaymentSuccessful(true);
             localStorage.setItem("paymentCompleted", "true");
           } catch (error) {
+            setIsVerifyPayementMessage("Error in payment verification. Please contact support.");
             console.error("Error in payment success API:", error);
             toast.error("Error in payment verification. Please contact support.");
           } finally {
@@ -552,8 +602,15 @@ const Intern = () => {
     } catch (error) {
       console.error("Error processing payment:", error);
       toast.error("Error processing payment. Please try again.");
+      setIsVerifyPayementMessage("Error processing payment. Please try again.");
       setIsPaymentProcessing(false); // Re-enable the button on error
+    }finally {
+      setIsLoading(false);
     }
+    // Start a timer to hide the message after 5 seconds
+    setTimeout(() => {
+      setIsVerifyPayementMessage(""); // Clear the error message
+    }, 5000);
   };
 
 
@@ -562,6 +619,22 @@ const Intern = () => {
   return (
     <div className="bg-gray-100 min-h-screen font-sans">
       <Navbar />
+      {isLoading && <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 9999,
+        }}
+      >
+        <div className="spinner"></div>
+      </div>}
       <div className="container mx-auto py-10 px-5">
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
@@ -597,7 +670,7 @@ const Intern = () => {
               </div>
               <p className="mt-4">
                 Register for the internship with a nominal fee. Need more details? ask our AI bot
-                <span className="text-blue-600 font-semibold"> "Monica" </span>
+                <span className="text-blue-600 font-semibold"> "Ask Monica" </span>
                 or email at
                 <a href="mailto:internship@narmtech.com" className="text-blue-600 font-semibold"> internship@narmtech.com</a>.
               </p>
@@ -687,7 +760,7 @@ const Intern = () => {
                     autoComplete='off'
                   // disabled={isFieldsDisabled}
                   />
-                  {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+                  {errors.name && <p className="text-red-500 text-xs pt-1">{errors.name}</p>}
                 </div>
 
                 {/* Email Field */}
@@ -704,7 +777,7 @@ const Intern = () => {
                     autoComplete='off'
                   // disabled={isFieldsDisabled}
                   />
-                  {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+                  {errors.email && <p className="text-red-500 text-xs pt-1">{errors.email}</p>}
                 </div>
 
                 {/* Mobile Field */}
@@ -740,8 +813,8 @@ const Intern = () => {
                   </div>
 
                   {/* Always show error message & countdown when OTP is sent */}
-                  <span className="text-xs text-[#1d8105]">{isOTPMessage}</span>
-                  <span className='text-xs text-red-500'>{isOTPErrorMessage}</span>
+                  <span className="text-xs text-[#1d8105] pt-1">{isOTPMessage}</span>
+                  <span className='text-xs text-red-500 pt-1'>{isOTPErrorMessage}</span>
                   {errors.mobile || isSendOtpDisabled ? (
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
@@ -780,8 +853,8 @@ const Intern = () => {
                         Verify OTP
                       </button>
                     </div>
-                    {errors.otp && <p className="text-red-500 text-xs">{errors.otp}</p>}
-                    {isVerifyOtpDisabled && <p className="text-[#1d8105] text-xs">{isVerifyOTPMessage}</p>}
+                    {errors.otp && <p className="text-red-500 text-xs pt-1">{errors.otp}</p>}
+                    {isVerifyOtpDisabled && <p className="text-[#1d8105] text-xs pt-1">{isVerifyOTPMessage}</p>}
                   </div>
                 )}
 
@@ -828,14 +901,18 @@ const Intern = () => {
                     <button
                       type="button"
                       onClick={handlePaymentSuccess}
-                      className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isTermsAccepted ? 'bg-blue-600 hover:bg-blue-700' : 'bg-slate-400 cursor-not-allowed'
+                      className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isPaymentProcessing
+                          ? 'bg-slate-400 cursor-not-allowed' // Show as disabled during payment processing
+                          : isTermsAccepted
+                            ? 'bg-blue-600 hover:bg-blue-700' // Active state when terms are accepted
+                            : 'bg-slate-400 cursor-not-allowed' // Disabled state when terms are not accepted
                         }`}
-                      disabled={!isTermsAccepted && isPaymentProcessing} // Disable button if terms are not accepted
+                      disabled={!isTermsAccepted} // Disable button if terms are not accepted
                     >
                       Pay Now
                     </button>
                     {isVerifyPayementMessage !== "" && (
-                      <p className="text-red-500 text-xs">{isVerifyPayementMessage}</p>
+                      <p className="text-red-500 text-xs pt-1">{isVerifyPayementMessage}</p>
                     )}
                   </div>
                 )}
