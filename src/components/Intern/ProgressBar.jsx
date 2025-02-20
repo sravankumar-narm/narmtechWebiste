@@ -163,6 +163,9 @@ const ProgressBar = () => {
                   ) : (
                     <span className="text-slate-600 text-sm"></span>
                   )}
+                  {index === stages.length - 1 &&
+                    <span className="text-slate-600 text-sm">🎓</span>
+                  }
                 </div>
 
 
