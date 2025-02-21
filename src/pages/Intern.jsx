@@ -101,17 +101,17 @@ const Intern = () => {
       setTimeout(() => setShowCelebration(false), 10000);
     }
   }, [isDetailsSubmitted]);
-  useEffect(() => {
-    const paymentStatus = localStorage.getItem("paymentCompleted");
-    console.log("Fetching payment status from localStorage:", paymentStatus);
+  // useEffect(() => {
+  //   const paymentStatus = localStorage.getItem("paymentCompleted");
+  //   console.log("Fetching payment status from localStorage:", paymentStatus);
 
-    if (paymentStatus === "true") {
-      setIsPaymentSuccessful(true);
-      setIsRegistered(true);
-      console.log('isDetailsSubmitted - ', isDetailsSubmitted)
-      console.log("Payment status set to true, should show PersonalAcademicForm");
-    }
-  }, [isPaymentSuccessful]);
+  //   if (paymentStatus === "true") {
+  //     setIsPaymentSuccessful(true);
+  //     setIsRegistered(true);
+  //     console.log('isDetailsSubmitted - ', isDetailsSubmitted)
+  //     console.log("Payment status set to true, should show PersonalAcademicForm");
+  //   }
+  // }, [isPaymentSuccessful]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -819,7 +819,7 @@ const Intern = () => {
                     <p className="text-red-500 text-xs">
                       {errors.mobile ? errors.mobile : ""}{" "}
                       {isSendOtpDisabled && !isVerifyOtpDisabled && (
-                        <span className="text-blue-600 font-semibold">
+                        <span className="text-blue-600 font-semibold pt-1">
                           Resend OTP in {otpTimer}s
                         </span>
                       )}
