@@ -14,6 +14,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const formContainerRef = useRef(null);
     const [locationId, setLocationId] = useState(0);
     const [submittedError, setSubmittedError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     // References for input fields
     const refs = {
@@ -78,6 +79,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
 
     // API Call to fetch location details
     const fetchLocationDetails = async (pincode) => {
+        setIsLoading(true);
         try {
             const response = await fetch("https://dev.quizifai.com:8010/location_details/", {
                 method: "POST",
@@ -117,6 +119,8 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
             console.error("Error fetching location:", error);
             setLocationError("Failed to fetch location details. Try again later.");
             setLocationId(0); // Reset locationId
+        }finally{
+            setIsLoading(false);
         }
     };
 
@@ -217,7 +221,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         }
         setApiError(""); // Clear previous errors
         setSubmittedError(""); // Clear any previous submission errors
-
+        
         const payload = {
             platform: "Web",
             first_name: formData.firstName.trim(),
@@ -246,6 +250,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         // Debug logs
         console.log("Submitting Payload:", JSON.stringify(payload, null, 2));
         console.log("Submitting Payload:", payload);
+        setIsLoading(true);
         try {
             const response = await fetch("https://dev.quizifai.com:8010/intern_rgstr_dtls", {
                 method: "POST",
@@ -267,6 +272,8 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         } catch (error) {
             console.error("Error submitting details:", error);
             setSubmittedError("Something went wrong. Please try again."); // Set submittedError state
+        }finally{
+            setIsLoading(false);
         }
     };
 
