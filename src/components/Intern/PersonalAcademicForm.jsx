@@ -81,7 +81,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const fetchLocationDetails = async (pincode) => {
         setIsLoading(true);
         try {
-            const response = await fetch("https://dev.quizifai.com:8010/location_details/", {
+            const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/location_details/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -252,7 +252,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         console.log("Submitting Payload:", payload);
         setIsLoading(true);
         try {
-            const response = await fetch("https://dev.quizifai.com:8010/intern_rgstr_dtls", {
+            const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/intern_rgstr_dtls", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
