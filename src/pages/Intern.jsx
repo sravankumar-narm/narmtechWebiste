@@ -583,6 +583,7 @@ const Intern = () => {
               // Ensure isDetailsSubmitted is false to show the form
               setIsDetailsSubmitted(false);
               setForceUpdate((prev) => prev + 1); // Force UI re-render
+              setTimeout(() => setIsRegistered(true), 2000);
             } else {
               setIsVerifyPayementMessage(paymentData.response_message || "Payment failed. Please try again.");
             }

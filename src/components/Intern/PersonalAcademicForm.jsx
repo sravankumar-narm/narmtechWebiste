@@ -119,7 +119,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
             console.error("Error fetching location:", error);
             setLocationError("Failed to fetch location details. Try again later.");
             setLocationId(0); // Reset locationId
-        }finally{
+        } finally {
             setIsLoading(false);
         }
     };
@@ -204,7 +204,15 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         }
         if (!formData.pursuingYear) newErrors.pursuingYear = "Academic Year is required";
         if (!formData.pursuingSemester) newErrors.pursuingSemester = "Semester is required";
-        if (!formData.examStartDate) newErrors.examStartDate = "Semester Exam Start Date is required";
+        // if (!formData.examStartDate) newErrors.examStartDate = "Semester Exam Start Date is required";
+        const currentYear = new Date().getFullYear();
+        const examYear = new Date(formData.examStartDate).getFullYear();
+
+        if (!formData.examStartDate) {
+            newErrors.examStartDate = "Semester Exam Start Date is required";
+        } else if (examYear < currentYear) {
+            newErrors.examStartDate = "Exam start date must be in the current year or later";
+        }
 
         setErrors(newErrors);
 
@@ -221,7 +229,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         }
         setApiError(""); // Clear previous errors
         setSubmittedError(""); // Clear any previous submission errors
-        
+
         const payload = {
             platform: "Web",
             first_name: formData.firstName.trim(),
@@ -272,7 +280,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         } catch (error) {
             console.error("Error submitting details:", error);
             setSubmittedError("Something went wrong. Please try again."); // Set submittedError state
-        }finally{
+        } finally {
             setIsLoading(false);
         }
     };
