@@ -748,7 +748,7 @@ const Intern = () => {
               <form className="space-y-4">
                 {/* Name Field */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i>Full Name <span className='text-[10px] text-blue-800 font-semibold'><i>(as per certificates)</i></span></label>
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Full Name <span className='text-[10px] text-blue-800 font-semibold'><i>(as per certificates)</i></span></label>
                   <input
                     type="text"
                     name="name"
