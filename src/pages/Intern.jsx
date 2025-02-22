@@ -184,7 +184,7 @@ const Intern = () => {
     if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
       try {
         setIsLoading(true);
-        const response = await fetch("https://dev.quizifai.com:8010/signup-for-interns", {
+        const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/signup-for-interns", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -296,7 +296,7 @@ const Intern = () => {
     setIsLoading(true);
     setIsVerifyOtpDisabled(true); // Disable "Verify OTP" button
     try {
-      const response = await fetch("https://dev.quizifai.com:8010/sgnup_verification_for_interns", {
+      const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/sgnup_verification_for_interns", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -318,7 +318,7 @@ const Intern = () => {
         setIsFieldsDisabled(true); // Disable all fields
         setIsSendOtpDisabled(true); // Disable Send OTP button
         setOtpTimer(null); // Stop showing the timer
-        setUserId(data.user_id || 99);
+        setUserId(data.user_id || 0);
         formData.userId = data.user_id;
         // Store in localStorage to persist state on refresh
         localStorage.setItem("otpVerified", "true");
@@ -347,13 +347,13 @@ const Intern = () => {
         //   }
       }
       else if (data.response == "fail") {
-        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment") {
+        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment.") {
           setIsVerifyOTPMessage(data.response_message);
           setIsOtpVerified(true);
           setIsFieldsDisabled(true); // Disable all fields
           setIsSendOtpDisabled(true); // Disable Send OTP button
           setOtpTimer(null); // Stop showing the timer
-          setUserId(data.user_id || 99);
+          setUserId(data.user_id || 0);
           formData.userId = data.user_id;
           // Store in localStorage to persist state on refresh
           localStorage.setItem("otpVerified", "true");
@@ -477,7 +477,7 @@ const Intern = () => {
 
     try {
       // Step 1: Create Order API Call
-      const orderResponse = await fetch("https://dev.quizifai.com:8010/create_order_for_internship", {
+      const orderResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/create_order_for_internship", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -546,7 +546,7 @@ const Intern = () => {
 
           // Step 3: Call API on Successful Payment
           try {
-            const paymentResponse = await fetch("https://dev.quizifai.com:8010/verify_payment_signature", {
+            const paymentResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/verify_payment_signature", {
               method: "POST",
               headers: {
                 "Accept": "application/json",
@@ -557,7 +557,7 @@ const Intern = () => {
                 order_id: order_id_data,
                 payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                plan_type: "Yearly",
+                plan_type: "One Time",
                 // status: "success",
                 user_name: formData.name,
                 email_id: formData.email,

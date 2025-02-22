@@ -56,9 +56,8 @@ const Footer = () => {
                 <img src={Icon3} alt="" className="w-14 mx-auto" />
               </div>
               <div>
-                <p>+91 9611291621 - Sales and Services</p>
+                <p>+91 9663901621  - Sales and Services</p>
                 <p> +91 9663901621 - Hiring Queries</p>
-                <p> +91 8297902227 - Whatsapp</p>
               </div>
             </div>
           </div>

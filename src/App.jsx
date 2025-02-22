@@ -40,7 +40,7 @@ function App() {
 
   return (
         <>
-          <CountdownTimer endDate="2025-02-25T12:00:00" currentPath={location.pathname} />
+          <CountdownTimer endDate="2025-03-15T12:00:00" currentPath={location.pathname} />
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
