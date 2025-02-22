@@ -34,13 +34,13 @@ const CountdownTimer = ({ endDate, currentPath }) => {
   //   bgColorClass = 'bg-gradient-to-br from-white to-blue-50 border-2 border-blue-200 rounded-lg shadow-md';
   // }
   if (days <= 2 && !ended) {
-    bgColorClass = 'bg-gradient-to-br from-white to-purple-50 border-2 border-purple-200 rounded-lg shadow-md';
+    bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
   }
   if (days <= 1 && !ended) {
-    bgColorClass = 'bg-gradient-to-br from-white to-red-50 border-2 border-red-200 rounded-lg shadow-md';
+    bgColorClass = 'bg-gradient-to-br from-[#db3a3a] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
   }
   if (ended) {
-    bgColorClass = 'bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 rounded-lg shadow-md';
+    bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
   }
 
   // Hide timer on signup page
