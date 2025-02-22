@@ -90,6 +90,7 @@ const Intern = () => {
   const [isTermsPopupOpen, setIsTermsPopupOpen] = useState(false); // Controls visibility of the popup
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
     if (isDetailsSubmitted) {
@@ -281,7 +282,7 @@ const Intern = () => {
     setTimeout(() => {
       setIsOTPMessage(""); // Clear the success message
       setIsOTPErrorMessage(""); // Clear the error message
-    }, 5000);
+    }, 15000);
   };
 
 
@@ -387,14 +388,14 @@ const Intern = () => {
       // Re-enable "Verify OTP" button on error
       setIsVerifyOtpDisabled(false);
       setIsVerifyOTPMessage('');
-    }finally {
+    } finally {
       setIsLoading(false);
     }
     // Start a timer to hide the message after 5 seconds
     setTimeout(() => {
       setErrors(""); // Clear the success message
       setIsVerifyOTPMessage(""); // Clear the error message
-    }, 5000);
+    }, 15000);
   };
 
 
@@ -517,7 +518,7 @@ const Intern = () => {
         return;
       }
 
-      if(!order_id_data) {
+      if (!order_id_data) {
         setIsLoading(false);
       }
 
@@ -546,7 +547,7 @@ const Intern = () => {
 
           // Step 3: Call API on Successful Payment
           try {
-            const paymentResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/verify_payment_signature", {
+            const paymentResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/verify_payment_signature_for_internship", {
               method: "POST",
               headers: {
                 "Accept": "application/json",
@@ -574,11 +575,18 @@ const Intern = () => {
               setIsVerifyPayementMessage(paymentData.message || "Something went wrong. Please try again.");
               throw new Error(paymentData.message || "Payment success API failed");
             }
+            if (paymentData.response === "success") {
+              toast.success("Payment successful!");
+              setIsVerifyPayementMessage(paymentData.response_message || "Payment successful!");
+              localStorage.setItem("paymentCompleted", "true");
+              setIsPaymentSuccessful(true);
+              // Ensure isDetailsSubmitted is false to show the form
+              setIsDetailsSubmitted(false);
+              setForceUpdate((prev) => prev + 1); // Force UI re-render
+            } else {
+              setIsVerifyPayementMessage(paymentData.response_message || "Payment failed. Please try again.");
+            }
 
-            toast.success("Payment successful!");
-            setIsVerifyPayementMessage(paymentData.message || "Payment successful!");
-            setIsPaymentSuccessful(true);
-            localStorage.setItem("paymentCompleted", "true");
           } catch (error) {
             setIsVerifyPayementMessage("Error in payment verification. Please contact support.");
             console.error("Error in payment success API:", error);
@@ -604,13 +612,13 @@ const Intern = () => {
       toast.error("Error processing payment. Please try again.");
       setIsVerifyPayementMessage("Error processing payment. Please try again.");
       setIsPaymentProcessing(false); // Re-enable the button on error
-    }finally {
+    } finally {
       setIsLoading(false);
     }
     // Start a timer to hide the message after 5 seconds
     setTimeout(() => {
       setIsVerifyPayementMessage(""); // Clear the error message
-    }, 5000);
+    }, 15000);
   };
 
 
@@ -902,10 +910,10 @@ const Intern = () => {
                       type="button"
                       onClick={handlePaymentSuccess}
                       className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isPaymentProcessing
-                          ? 'bg-slate-400 cursor-not-allowed' // Show as disabled during payment processing
-                          : isTermsAccepted
-                            ? 'bg-blue-600 hover:bg-blue-700' // Active state when terms are accepted
-                            : 'bg-slate-400 cursor-not-allowed' // Disabled state when terms are not accepted
+                        ? 'bg-slate-400 cursor-not-allowed' // Show as disabled during payment processing
+                        : isTermsAccepted
+                          ? 'bg-blue-600 hover:bg-blue-700' // Active state when terms are accepted
+                          : 'bg-slate-400 cursor-not-allowed' // Disabled state when terms are not accepted
                         }`}
                       disabled={!isTermsAccepted} // Disable button if terms are not accepted
                     >
