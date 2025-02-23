@@ -78,7 +78,7 @@ const Intern = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const [isSendOtpDisabled, setIsSendOtpDisabled] = useState(false);
   const [isFieldsDisabled, setIsFieldsDisabled] = useState(false);
-  const [otpTimer, setOtpTimer] = useState(60); // Timer for OTP button
+  const [otpTimer, setOtpTimer] = useState(120); // Timer for OTP button
   const [isVerifyOtpDisabled, setIsVerifyOtpDisabled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isOTPMessage, setIsOTPMessage] = useState('');
@@ -185,7 +185,7 @@ const Intern = () => {
     if (formData.mobile.trim() && /^\d{10}$/.test(formData.mobile)) {
       try {
         setIsLoading(true);
-        const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/signup-for-interns", {
+        const response = await fetch("https://quizifai.com:8010/signup-for-interns", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -239,7 +239,7 @@ const Intern = () => {
               clearInterval(otpTimerRef.current);
             }
 
-            let timeLeft = 60;
+            let timeLeft = 120;
             setOtpTimer(timeLeft);
 
             otpTimerRef.current = setInterval(() => {
@@ -250,7 +250,7 @@ const Intern = () => {
                 clearInterval(otpTimerRef.current);
                 otpTimerRef.current = null;
                 setIsSendOtpDisabled(false);
-                setOtpTimer(60);
+                setOtpTimer(120);
               }
             }, 1000);
           }
@@ -297,7 +297,7 @@ const Intern = () => {
     setIsLoading(true);
     setIsVerifyOtpDisabled(true); // Disable "Verify OTP" button
     try {
-      const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/sgnup_verification_for_interns", {
+      const response = await fetch("https://quizifai.com:8010/sgnup_verification_for_interns", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -478,7 +478,7 @@ const Intern = () => {
 
     try {
       // Step 1: Create Order API Call
-      const orderResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/create_order_for_internship", {
+      const orderResponse = await fetch("https://quizifai.com:8010/create_order_for_internship", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -490,7 +490,7 @@ const Intern = () => {
           user_name: formData.name,
           email_id: formData.email,
           mobile_number: formData.mobile,
-          subscription_plan_id: 5,
+          subscription_plan_id: 3,
           quiz_package_id: 0,
           plan_type: "Yearly",
           amount: 199,
@@ -547,7 +547,7 @@ const Intern = () => {
 
           // Step 3: Call API on Successful Payment
           try {
-            const paymentResponse = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/verify_payment_signature_for_internship", {
+            const paymentResponse = await fetch("https://quizifai.com:8010/verify_payment_signature_for_internship", {
               method: "POST",
               headers: {
                 "Accept": "application/json",
