@@ -212,6 +212,7 @@ const Intern = () => {
             setIsOtpVerified(true);
             setUserId(data.user_id);
             formData.userId = data.user_id;
+            localStorage.setItem("formData", JSON.stringify(formData));
           } else if (data.response_message === "Payment has been done successfully. Registration is pending." || data.response_message === "Payment has been done successfully. Continue with registration.") {
             setIsOtpSent(false);
             setIsOTPMessage(data.response_message + ' Redirecting to Personal and Academic Details...');
@@ -219,7 +220,9 @@ const Intern = () => {
             setIsPaymentSuccessful(true);
             setIsOtpVerified(false);
             setUserId(data.user_id);
+            console.log("form data - ",formData)
             formData.userId = data.user_id;
+            localStorage.setItem("formData", JSON.stringify(formData));
             setTimeout(() => setIsRegistered(true), 5000);
 
           } else if (data.response_message === "Registration is completed for the given number. Please check your inbox for login credentials.") {
