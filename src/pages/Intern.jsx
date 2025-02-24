@@ -678,7 +678,7 @@ const Intern = () => {
                 <ProgressBar />
               </div>
               <p className="mt-4">
-                Register for the internship with a nominal fee. Need more details? ask our AI bot
+                Register for the internship with a nominal fee. Need more details? ask our <span className="font-bold italic text-black">AI bot</span>
                 <span className="text-blue-600 font-semibold"> "Ask Monica" </span>
                 or email at
                 <a href="mailto:internship@narmtech.com" className="text-blue-600 font-semibold"> internship@narmtech.com</a>.
