@@ -317,16 +317,29 @@ const Intern = () => {
       if (response.ok && data.response == "success") {
         // if (true) {
         // toast.success("OTP verified successfully!");
-        setIsVerifyOTPMessage(data.response_message);
-        setIsOtpVerified(true);
-        setIsFieldsDisabled(true); // Disable all fields
-        setIsSendOtpDisabled(true); // Disable Send OTP button
-        setOtpTimer(null); // Stop showing the timer
-        setUserId(data.user_id || 0);
-        formData.userId = data.user_id;
-        // Store in localStorage to persist state on refresh
-        localStorage.setItem("otpVerified", "true");
-        localStorage.setItem("formData", JSON.stringify(formData));
+        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "Payment is pending. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment.") {
+          setIsVerifyOTPMessage(data.response_message);
+          setIsOtpVerified(true);
+          setIsFieldsDisabled(true); // Disable all fields
+          setIsSendOtpDisabled(true); // Disable Send OTP button
+          setOtpTimer(null); // Stop showing the timer
+          setUserId(data.user_id || 0);
+          formData.userId = data.user_id;
+          // Store in localStorage to persist state on refresh
+          localStorage.setItem("otpVerified", "true");
+          localStorage.setItem("formData", JSON.stringify(formData));
+        }else{
+          setIsVerifyOTPMessage(data.response_message);
+          setIsOtpVerified(true);
+          setIsFieldsDisabled(true); // Disable all fields
+          setIsSendOtpDisabled(true); // Disable Send OTP button
+          setOtpTimer(null); // Stop showing the timer
+          setUserId(data.user_id || 0);
+          formData.userId = data.user_id;
+          // Store in localStorage to persist state on refresh
+          localStorage.setItem("otpVerified", "true");
+          localStorage.setItem("formData", JSON.stringify(formData));
+        }
         // } else if (data.response == "fail") {
         //   if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment") {
         //     setIsVerifyOTPMessage(data.response_message);
