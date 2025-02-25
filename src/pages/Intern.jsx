@@ -85,6 +85,7 @@ const Intern = () => {
   const [isOTPErrorMessage, setIsOTPErrorMessage] = useState('');
   const [isVerifyOTPMessage, setIsVerifyOTPMessage] = useState('');
   const [isVerifyPayementMessage, setIsVerifyPayementMessage] = useState('');
+  const [isVerifyOTPSuccessMessage, setIsVerifyOTPSuccessMessage] = useState('');
   const otpTimerRef = useRef(null); // Store timer reference
   const [isTermsAccepted, setIsTermsAccepted] = useState(false); // Tracks if terms are accepted
   const [isTermsPopupOpen, setIsTermsPopupOpen] = useState(false); // Controls visibility of the popup
@@ -593,7 +594,8 @@ const Intern = () => {
             }
             if (paymentData.response === "success") {
               toast.success("Payment successful!");
-              setIsVerifyPayementMessage(paymentData.response_message || "Payment successful!");
+              setIsVerifyOTPSuccessMessage(paymentData.response_message || "Payment successful!");
+              // setIsVerifyPayementMessage(paymentData.response_message || "Payment successful!");
               localStorage.setItem("paymentCompleted", "true");
               setIsPaymentSuccessful(true);
               // Ensure isDetailsSubmitted is false to show the form
@@ -664,6 +666,7 @@ const Intern = () => {
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
+            <h2 className="text-2xl font-bold mt-[-10px] text-center text-[#0f5376] rounded-xl p-2">Virtual Internship Program on <span className="text-[#f25822]">GenAI</span> Powered Web Applications</h2>
             <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
             <p className="mt-2 text-sm">
               <span className="font-bold">GenAI</span> is set to <span className="font-bold italic">revolutionize</span> the IT industry, transforming how it operates and redefining the role of
@@ -938,6 +941,9 @@ const Intern = () => {
                     </button>
                     {isVerifyPayementMessage !== "" && (
                       <p className="text-red-500 text-xs pt-1">{isVerifyPayementMessage}</p>
+                    )}
+                    {isVerifyOTPSuccessMessage !== "" && (
+                      <p className="text-[#1d8105] text-xs pt-1">{isVerifyOTPSuccessMessage}</p>
                     )}
                   </div>
                 )}
