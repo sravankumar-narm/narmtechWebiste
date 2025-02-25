@@ -351,7 +351,7 @@ const Intern = () => {
         //   }
       }
       else if (data.response == "fail") {
-        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment.") {
+        if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "Payment is pending. Continue with payment." || data.response_message === "This mobile number is already verified, please proceed to payment.") {
           setIsVerifyOTPMessage(data.response_message);
           setIsOtpVerified(true);
           setIsFieldsDisabled(true); // Disable all fields
