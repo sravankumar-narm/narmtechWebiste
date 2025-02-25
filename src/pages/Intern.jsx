@@ -205,7 +205,7 @@ const Intern = () => {
             setIsOtpVerified(false);
             setIsOTPMessage(data.response_message);
             setIsOTPErrorMessage('')
-          } else if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment.") {
+          } else if (data.response_message === "Mobile number is already verified. Continue with payment." || data.response_message === "Payment has failed. Continue with payment." || data.response_message === "Payment is pending. Continue with payment.") {
             setIsOtpSent(false);
             setIsOTPMessage(data.response_message);
             setIsOTPErrorMessage('')
