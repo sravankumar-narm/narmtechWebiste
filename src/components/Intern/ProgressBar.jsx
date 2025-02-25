@@ -73,7 +73,7 @@ const stages = [
     },
   },
   {
-    name: 'Credential', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Ceremony', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-18px]",
       mainPadding: "",
       nowarp: "",
