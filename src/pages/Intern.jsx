@@ -146,7 +146,9 @@ const Intern = () => {
     if (name === "email") {
       if (!value.trim()) {
         newErrors.email = "Email is required";
-      } else if (!/\S+@\S+\.\S+/.test(value)) {
+      } else if (!/^[a-zA-Z0-9@.]+$/.test(value)) { // Allow only characters, numbers, @, and .
+        newErrors.email = "Email can only contain letters, numbers, '@', and '.'";
+      } else if (!/\S+@\S+\.\S+/.test(value)) { // Ensure valid email format
         newErrors.email = "Invalid email format";
       } else {
         delete newErrors.email;
