@@ -46,16 +46,29 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        console.log("formData -",formData);
-
+    
+        // Clear errors when the user starts typing
         if (errors[name]) {
             setErrors({ ...errors, [name]: "" });
         }
-        if (locationError) setLocationError(""); // Clear error when user types
-
-        // Fetch location details when valid 6-digit pincode is entered
-        if (name === "pincode" && /^\d{6}$/.test(value)) {
-            fetchLocationDetails(value);
+        if (locationError) setLocationError(""); // Clear location error when user types
+    
+        // Validate PIN code length (must be exactly 6 digits)
+        if (name === "pincode") {
+            if (value.length < 6) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    pincode: "PIN code must be exactly 6 digits.",
+                }));
+            } else if (value.length > 6) {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    pincode: "PIN code cannot exceed 6 digits.",
+                }));
+            } else if (/^\d{6}$/.test(value)) {
+                // Fetch location details only if the PIN code is valid
+                fetchLocationDetails(value);
+            }
         }
     };
 
@@ -82,7 +95,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const fetchLocationDetails = async (pincode) => {
         setIsLoading(true);
         try {
-            const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/location_details/", {
+            const response = await fetch("https://quizifai.com:8010/location_details/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -91,6 +104,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 body: JSON.stringify({ pincode }),
             });
             const data = await response.json();
+    
             if (response.ok && data.response === "success" && data.data.length > 0) {
                 setLocations(data.data);
                 const firstLocation = data.data[0];
@@ -104,7 +118,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 }));
                 setLocationId(firstLocation.location_id); // Update locationId
             } else {
-                setLocationError("Unable to find location details. Please check your Pincode.");
+                setLocationError("Unable to find location details. Please check your PIN code.");
                 setLocations([]);
                 setFormData((prevData) => ({
                     ...prevData,
@@ -261,7 +275,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
         console.log("Submitting Payload:", payload);
         setIsLoading(true);
         try {
-            const response = await fetch("https://nt-misc.centralindia.cloudapp.azure.com:8012/intern_rgstr_dtls", {
+            const response = await fetch("https://quizifai.com:8010/intern_rgstr_dtls", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
