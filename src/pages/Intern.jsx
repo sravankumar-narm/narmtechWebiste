@@ -511,7 +511,7 @@ const Intern = () => {
           mobile_number: formData.mobile,
           subscription_plan_id: 5,
           quiz_package_id: 0,
-          plan_type: "Yearly",
+          plan_type: "Monthly",
           amount: 199,
           currency: "INR",
           receipt: "string",
@@ -558,7 +558,7 @@ const Intern = () => {
           const paymentDetails = {
             user_name: formData.name, // Replace with actual user name
             email_id: formData.email,   // Replace with actual email
-            plan_type: "",  // Replace with actual plan type
+            plan_type: "Monthly",  // Replace with actual plan type
             order_id: response.razorpay_order_id,
             payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
