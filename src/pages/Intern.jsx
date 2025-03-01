@@ -223,7 +223,7 @@ const Intern = () => {
             setIsPaymentSuccessful(true);
             setIsOtpVerified(false);
             setUserId(data.user_id);
-            console.log("form data - ",formData)
+            console.log("form data - ", formData)
             formData.userId = data.user_id;
             localStorage.setItem("formData", JSON.stringify(formData));
             setTimeout(() => setIsRegistered(true), 5000);
@@ -331,7 +331,7 @@ const Intern = () => {
           // Store in localStorage to persist state on refresh
           localStorage.setItem("otpVerified", "true");
           localStorage.setItem("formData", JSON.stringify(formData));
-        }else{
+        } else {
           setIsVerifyOTPMessage(data.response_message);
           setIsOtpVerified(true);
           setIsFieldsDisabled(true); // Disable all fields
@@ -525,7 +525,7 @@ const Intern = () => {
 
       const orderData = await orderResponse.json();
       console.log("Order API Response:", orderData);
-      let order_id_data = orderData.order_information.id
+      let order_id_data = orderData.order_id
       console.log('order_id_data - ', order_id_data)
 
       // Stop execution if API fails
@@ -574,16 +574,24 @@ const Intern = () => {
                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJOVFBMICBBZG1pbiIsImV4cCI6MjUzNDAyMzAwNzk5fQ.G1AMvRDZ798-uvCmTEs1fK6nKKakmS1v43mp2RcUuVg",
               },
               body: JSON.stringify({
+                user_name: formData.name,
+                email_id: formData.email,
+                plan_type: "One Time",
                 order_id: order_id_data,
                 payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                plan_type: "One Time",
+                user_id: formData.userId || userId,
+                mobile_number: formData.mobile,
+                amount: 199,
+                currency: "INR",
+                receipt: "string",
+                notes: {
+                  additionalProp1: "string",
+                  additionalProp2: "string",
+                  additionalProp3: "string"
+                },
+                subscription_plan_id: 5
                 // status: "success",
-                user_name: formData.name,
-                email_id: formData.email,
-                // mobile_number: formData.mobile,
-                // amount: 199,
-                // currency: "INR",
               })
             });
 
