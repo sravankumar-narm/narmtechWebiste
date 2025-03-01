@@ -576,7 +576,7 @@ const Intern = () => {
               body: JSON.stringify({
                 user_name: formData.name,
                 email_id: formData.email,
-                plan_type: "One Time",
+                plan_type: "Monthly",
                 order_id: order_id_data,
                 payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
