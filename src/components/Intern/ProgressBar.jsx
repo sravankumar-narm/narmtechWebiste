@@ -31,6 +31,13 @@ const stages = [
     },
   },
   {
+    name: 'Announcement', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
+      linePadding: "ml-[-17px] mr-[-8px]",
+      mainPadding: "ml-[-20px] mr-[-15px]",
+      nowarp: "",
+    },
+  },
+  {
     name: 'Week 1', icon: '✔️', date: new Date('2025-03-03'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
@@ -65,13 +72,13 @@ const stages = [
       nowarp: "whitespace-nowrap",
     },
   },
-  {
-    name: 'Week 6', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
-      linePadding: "ml-[-13px] mr-[-18px]",
-      mainPadding: "",
-      nowarp: "whitespace-nowrap",
-    },
-  },
+  // {
+  //   name: 'Week 6', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
+  //     linePadding: "ml-[-13px] mr-[-18px]",
+  //     mainPadding: "",
+  //     nowarp: "whitespace-nowrap",
+  //   },
+  // },
   {
     name: 'Ceremony', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-18px]",
@@ -121,6 +128,8 @@ const ProgressBar = () => {
           const daysBetween = nextStageDate ? (nextStageDate - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const daysPassed = nextStageDate ? (today - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const progressPercentage = nextStageDate ? Math.min(100, (daysPassed / daysBetween) * 100) : 100;
+          const isCurrentIndex = today < stage.date && (index === 0 || today >= stages[index - 1].date);
+          const isUpcoming = !isCompleted && !isCurrentIndex;
 
           // Determine which date format to use
           const formattedDate =
@@ -160,9 +169,13 @@ const ProgressBar = () => {
                         clipRule="evenodd"
                       />
                     </svg>
+                  ) : isCurrentIndex ? (
+                    // 🔄 Use `<span>` for the ⏳ icon
+                    <span className="text-[#FFA500] text-lg rotate-animation">⏳</span>
                   ) : (
                     <span className="text-slate-600 text-sm"></span>
                   )}
+
                   {index === stages.length - 1 &&
                     <span className="text-slate-600 text-xl">🎓</span>
                   }
