@@ -10,6 +10,10 @@ import PersonalAcademicForm from '../components/Intern/PersonalAcademicForm';
 import Confetti from 'react-confetti';
 import { AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineLock } from "react-icons/ai"; // Import Icons
 import { MdOutlinePayment } from "react-icons/md";
+import TextField from "@mui/material/TextField";
+import { FaUser } from "react-icons/fa";
+import { SlScreenSmartphone } from "react-icons/sl";
+import { MdOutlineMailOutline } from "react-icons/md";
 
 const CelebrationPopup = ({ onClose }) => {
   return (
@@ -702,7 +706,7 @@ const Intern = () => {
             </p>
             <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
             <div className="mt-4">
-              <p className="font-semibold">📍 Internship Progress</p>
+              <p className="font-semibold">📍 Mile Stone</p>
               {/* Responsive Progress Bar */}
               <div className="flex flex-col items-center justify-between mt-4 relative sm:flex-row">
                 <ProgressBar />
@@ -786,7 +790,7 @@ const Intern = () => {
               <h3 className="text-xl font-semibold text-center mb-4">Sign Up for Internship Program</h3>
               <form className="space-y-4">
                 {/* Name Field */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Full Name <span className='text-[10px] text-blue-800 font-semibold'><i>(as per certificates)</i></span></label>
                   <input
                     type="text"
@@ -800,10 +804,35 @@ const Intern = () => {
                   // disabled={isFieldsDisabled}
                   />
                   {errors.name && <p className="text-red-500 text-xs pt-1">{errors.name}</p>}
+                </div> */}
+                <div className="relative">
+                  {/* <FaUser className="absolute flex mt-4 z-10 right-[55px] sm:right-[110px] md:right-[393px] lg:right-[274px] xl:right-[373px] 2xl:right-[488px] text-[#684FFF]" /> */}
+                  <TextField
+                    type="text"
+                    id="name"
+                    className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    variant="outlined"
+                    autoComplete='off'
+                    label="Full Name (as per certificates)"
+                    InputProps={{
+                      style: {
+                        height: '50px',
+                        border: 'none',
+                        paddingLeft: '0px',
+                        paddingRight: '10px',
+                        borderRadius: '10px',
+                        backgroundColor: '#ffffff',
+                      },
+                    }}
+                  />
+                  {errors.name && <span className="text-red-500">{errors.name}</span>}
                 </div>
 
                 {/* Email Field */}
-                <div>
+                {/* <div>
                   <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-envelope text-blue-600"></i> Email <span className='text-[10px] text-blue-800 font-semibold'><i>(All communication will be sent to this email)</i></span></label>
                   <input
                     type="email"
@@ -817,13 +846,38 @@ const Intern = () => {
                   // disabled={isFieldsDisabled}
                   />
                   {errors.email && <p className="text-red-500 text-xs pt-1">{errors.email}</p>}
+                </div> */}
+                <div className="relative">
+                  {/* <AiOutlineMail className="absolute flex mt-4 z-10 right-[55px] sm:right-[110px] md:right-[393px] lg:right-[274px] xl:right-[373px] 2xl:right-[488px] text-[#684FFF]" /> */}
+                  <TextField
+                    type="email"
+                    id="email"
+                    className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    variant="outlined"
+                    autoComplete='off'
+                    label="Email (All communication will be sent to this email)"
+                    InputProps={{
+                      style: {
+                        height: '50px',
+                        border: 'none',
+                        paddingLeft: '0px',
+                        paddingRight: '10px',
+                        borderRadius: '10px',
+                        backgroundColor: '#ffffff',
+                      },
+                    }}
+                  />
+                  {errors.email && <span className="text-red-500">{errors.email}</span>}
                 </div>
 
                 {/* Mobile Field */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-phone text-blue-600"></i> Mobile</label>
+                <div className='relative'>
+                  {/* <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-phone text-blue-600"></i> Mobile</label> */}
                   <div className="flex items-center justify-between space-x-2">
-                    <input
+                    {/* <input
                       type="text"
                       name="mobile"
                       placeholder="Enter Mobile"
@@ -833,6 +887,27 @@ const Intern = () => {
                       ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
                       autoComplete="off"
                     // disabled={isFieldsDisabled}
+                    /> */}
+                    <TextField
+                      type="text"
+                      id="mobile"
+                      className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                      name="mobile"
+                      value={formData.mobile}
+                      onChange={handleChange}
+                      variant="outlined"
+                      label="Mobile"
+                      autoComplete='off'
+                      InputProps={{
+                        style: {
+                          height: '50px',
+                          border: 'none',
+                          paddingLeft: '0px',
+                          paddingRight: '10px',
+                          borderRadius: '10px',
+                          backgroundColor: '#ffffff',
+                        },
+                      }}
                     />
                     <button
                       type="button"
@@ -867,10 +942,10 @@ const Intern = () => {
                 </div>
                 {/* OTP Field */}
                 {isOtpSent && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">🔐 OTP:</label>
+                  <div className='relative'>
+                    {/* <label className="block text-sm font-medium text-gray-700">🔐 OTP:</label> */}
                     <div className="flex items-center justify-between space-x-2">
-                      <input
+                      {/* <input
                         type="text"
                         name="otp"
                         placeholder="Enter OTP"
@@ -878,6 +953,27 @@ const Intern = () => {
                         onChange={handleChange}
                         className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
                           }`}
+                        autoComplete='off'
+                      /> */}
+                      <TextField
+                        type="text"
+                        id="otp"
+                        className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                        name="otp"
+                        value={formData.otp}
+                        onChange={handleChange}
+                        variant="outlined"
+                        label="OTP"
+                        InputProps={{
+                          style: {
+                            height: '50px',
+                            border: 'none',
+                            paddingLeft: '0px',
+                            paddingRight: '10px',
+                            borderRadius: '10px',
+                            backgroundColor: '#ffffff',
+                          },
+                        }}
                         autoComplete='off'
                       />
                       <button
@@ -1078,7 +1174,7 @@ const Intern = () => {
             <PersonalAcademicForm handleSubmitDetails={() => setIsDetailsSubmitted(true)} />
           ) : (
             <div className="text-center p-8 bg-green-100 rounded-lg">
-              <h2 className="text-2xl font-bold text-lime-800">🎉 Registration Complete!</h2>
+              <h2 className="text-2xl font-bold text-lime-800">🎉 Registration Completed!</h2>
               <p className="mt-2">Your details have been successfully submitted.</p>
               <p className="mt-2">You’ll get a confirmation email with all the necessary information.</p>
             </div>
