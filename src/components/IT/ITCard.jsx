@@ -32,7 +32,7 @@ const IT = ({ reverse = false }) => {
               <h1 className="text-4xl font-bold">IT Infrastructure</h1>
 
               <h1 className="text-2xl font-bold mb-4">
-                VYAYAH (Launching on Nov 2024)
+                VYAYAH
               </h1>
 
               <h4 className="font-bold my-4">

@@ -34,7 +34,7 @@ const Edu = ({ reverse = false }) => {
               <h1 className="text-4xl font-bold">Education</h1>
 
               <h1 className="text-2xl font-bold mb-4">
-                ADHYAYN (Launching on Nov 2024)
+                ADHYAYN
               </h1>
               <p className="leading-10">
                 Our ADHYAYN empowers educational institutions through the

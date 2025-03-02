@@ -61,7 +61,7 @@ const Legal = ({ reverse = false }) => {
                 </li>
               </ul> */}
               <h1 className="text-2xl font-bold mb-4">
-                NYAYAH (Launching on Nov 2024)
+                NYAYAH
               </h1>
               <p className="leading-7">
                 This powerful AI solution revolutionizes the legal landscape by

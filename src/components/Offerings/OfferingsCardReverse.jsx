@@ -110,7 +110,7 @@ const OfferingsCardReverse = ({ Image }) => {
             <div className="order-1 lg:order-2 lg:col-span-2 lg:pl-60 xl:pl-44 bg-creamWhite text-black/70 px-10 py-20 rounded-3xl">
               <h1 className="text-5xl font-bold mb-4">Education</h1>
               <h1 className="text-2xl font-bold mb-4">
-                ADHYAYN (Launching on Nov 2024)
+                ADHYAYN
               </h1>
               <p className="leading-7 font-medium">
                 Our ADHYAYN empowers Educational Institutions through the

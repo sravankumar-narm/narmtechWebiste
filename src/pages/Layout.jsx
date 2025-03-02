@@ -18,7 +18,7 @@ const Layout = () => {
         <div>
             {/* <Navbar /> */}
             <Outlet />
-            {pathname !== "/internship/signup" && <CountdownTimer endDate="2024-07-31T23:59:59" currentPath={pathname} />}
+            {pathname !== "/internship/signup" && <CountdownTimer endDate="2025-03-15T23:59:59" currentPath={pathname} />}
             {/* <Footer /> */}
         </div>
     );
