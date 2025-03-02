@@ -18,7 +18,7 @@ const About = () => {
     <>
       {/* <span id="about"></span> */}
       <section style={bgImg}>
-        <div className="container my-10">
+        <div className="container-fluid my-10">
           <div className="min-h-[1050px] grid grid-cols-1 lg:grid-cols-2 gap-8 place-items-center">
             {/* Image section */}
             <div>

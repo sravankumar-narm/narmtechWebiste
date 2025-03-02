@@ -21,7 +21,7 @@ const Hero = () => {
       <main style={bgImg}>
         <Navbar isHero={true} />
         {/* <div style={bgImg} className="sm:-mt-[70px] "> */}
-        <div className="container lg:pr-24 xl:px-8">
+        <div className="container-fluid lg:pr-24 xl:px-8">
           <div className="min-h-[550px] grid grid-cols-1 sm:grid-cols-2 gap-8 place-items-center">
             {/* Hero text section */}
             <Hero1 className="order-2 sm:order-1   "/>

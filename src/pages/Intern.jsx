@@ -677,7 +677,7 @@ const Intern = () => {
       >
         <div className="spinner"></div>
       </div>}
-      <div className="container mx-auto py-10 px-5">
+      <div className="container-fluid mx-auto py-10 px-5">
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-zinc-100 rounded-lg text-gray-800">

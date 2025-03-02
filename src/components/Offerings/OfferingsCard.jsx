@@ -10,7 +10,7 @@ const OfferingsCard = ({ Image }) => {
   return (
     <>
       <div className="relative py-2">
-        <div className="container lg:px-14 min-h-[700px] grid place-items-center relative z-10">
+        <div className="container-fluid lg:px-14 min-h-[700px] grid place-items-center relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 place-items-center relative">
             {/* first col */}
             <div className="lg:col-span-2 xl:pr-40 lg:pr-60 bg-creamWhite text-black/70 px-10 py-20 rounded-3xl">

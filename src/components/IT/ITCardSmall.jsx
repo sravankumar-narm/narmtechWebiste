@@ -4,7 +4,7 @@ const ITCardSmall = ({ reverse = false, data, image }) => {
   const { title, content } = data;
   return (
     <div className="py-10 mb-8">
-      <div className="container">
+      <div className="container-fluid">
         <div className={`${ 
               reverse ? " justify-end items-end" : "justify-start items-start"
             } flex flex-col sm:flex-row items-center gap-6`}>

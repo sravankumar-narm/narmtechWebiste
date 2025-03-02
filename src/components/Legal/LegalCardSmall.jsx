@@ -5,7 +5,7 @@ const LegalCardSmall = ({ reverse = false, data }) => {
   const { title, content ,image} = data;
   return (
     <div className="py-10 mb-8">
-      <div className="container">
+      <div className="container-fluid">
      
         <div className={`${ 
               reverse ? " justify-end items-end" : "justify-start items-start"

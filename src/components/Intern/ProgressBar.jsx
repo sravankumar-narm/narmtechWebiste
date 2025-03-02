@@ -25,7 +25,7 @@ const stages = [
     },
   },
   {
-    name: 'broadcast', icon: '✔️', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Broadcast', icon: '✔️', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-17px] mr-[-8px]",
       mainPadding: "",
       nowarp: "",

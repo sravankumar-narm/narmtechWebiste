@@ -15,7 +15,7 @@ const Agri = ({ reverse = false }) => {
   return (
     <>
       <div className="relative">
-        <div className="container py-10 my-10 relative z-10">
+        <div className="container-fluid py-10 my-10 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 place-items-center">
             {/* image section */}
             <div className="rounded-xl bg-white px-5 py-9 space-y-4 shadow-md border border-solid border-[#855CFF] ">

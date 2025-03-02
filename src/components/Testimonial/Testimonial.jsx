@@ -71,7 +71,7 @@ const Testimonial = () => {
   return (
     <>
       <div data-aos-duration="300" className="py-10">
-        <div className="container mx-auto">
+        <div className="container-fluid mx-auto">
           {/* heading section */}
           <div className="text-center">
             <h1 className="text-4xl font-bold  lg:w-[500px] mx-auto">

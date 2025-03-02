@@ -11,7 +11,7 @@ const OfferingsCardReverse = ({ Image }) => {
   return (
     <>
       <div className="relative py-4">
-        <div className="container lg:px-14 min-h-[700px] grid place-items-center relative z-10">
+        <div className="container-fluid lg:px-14 min-h-[700px] grid place-items-center relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 place-items-center relative">
             {/* first col */}
             {/* <div className="order-2 lg:order-1 mt-20 flex flex-col items-center gap-5 lg:translate-x-[50px]">

@@ -50,7 +50,7 @@ const Services2 = () => {
   return (
     <>
       <section className="py-12">
-        <div className="container space-y-8">
+        <div className="container-fluid space-y-8">
           {/* heading section */}
           <div className="text-center">
             <h1 className="text-4xl font-bold  lg:w-[500px] mx-auto">

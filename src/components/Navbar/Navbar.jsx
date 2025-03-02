@@ -24,7 +24,7 @@ const Navbar = ({ isHero, onClose }) => {
   return (
     <>
       <nav className="relative z-50 py-3">
-        <div className="container flex items-center justify-between">
+        <div className="container-fluid flex items-center justify-between">
           {/* Logo section */}
           <div>
             <Link to={"/"}>

@@ -33,7 +33,7 @@ const Testimonial = () => {
   return (
     <>
       <div>
-        <div className="container">
+        <div className="container-fluid">
           {/* heading section */}
           <div className="text-center">
             <h1 className="text-4xl font-bold  lg:w-[500px] mx-auto">
