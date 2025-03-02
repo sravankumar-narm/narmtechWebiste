@@ -20,7 +20,7 @@ const Intern = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <Navbar />
-      <div className="container mx-auto py-10 px-5">
+      <div className="container-fluid mx-auto py-10 px-5">
         <div className="flex flex-col sm:flex-row rounded-lg shadow-xl overflow-hidden bg-white">
           {/* Left side - Internship Details */}
 <div className="sm:w-7/12 p-8 bg-[#ffecca]">

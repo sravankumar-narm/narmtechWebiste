@@ -44,7 +44,7 @@ const Team = () => {
   return (
     <>
       <section style={bgImg}>
-        <div className="container">
+        <div className="container-fluid">
           <div className="min-h-[1240px] flex flex-col gap-8 justify-center items-center">
             {/*Our team section */}
             <div className="mt-[240px] lg:mt-[200px] xl:mt-0">

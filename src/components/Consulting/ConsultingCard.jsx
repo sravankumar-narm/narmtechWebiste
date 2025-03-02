@@ -9,7 +9,7 @@ const ConsultingCard = ({ reverse = false, data }) => {
     <>
       <div className="relative">
         <div
-          className="container py-10 my-10 relative z-10 lg:pr-32 2xl:px-[200px]  "
+          className="container-fluid py-10 my-10 relative z-10 lg:pr-32 2xl:px-[200px]  "
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center">
             {/* image section */}
