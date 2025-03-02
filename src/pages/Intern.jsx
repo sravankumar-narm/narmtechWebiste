@@ -547,8 +547,8 @@ const Intern = () => {
 
       // Step 2: Open Razorpay Payment Gateway
       const options = {
-        key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID Test
-        // key: "rzp_live_MJuCL3mjmWsSfI", // PROD
+        // key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID Test
+        key: "rzp_live_MJuCL3mjmWsSfI", // Replace with your Razorpay Key ID PROD
         amount: 199 * 100, // Convert ₹199 to paise
         currency: "INR",
         name: "Internship Registration",
