@@ -682,7 +682,7 @@ const Intern = () => {
           {/* Left Section - Progress Bar */}
           <div className="p-8 bg-zinc-100 rounded-lg text-gray-800">
             <h2 className="text-2xl bg-[#ffecca] font-bold mt-[-10px] text-center text-[#0f5376] rounded-xl p-2 shadow-lg">Virtual Internship Program on <span className="text-[#f25822]">GenAI</span> Powered Web Applications</h2>
-            <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
+            <h3 className="text-xl font-semibold mt-4 text-[#f25822]">How it's going to help you?</h3>
             <p className="mt-2 text-sm">
               <span className="font-bold">GenAI</span> is set to <span className="font-bold italic">revolutionize</span> the IT industry, transforming how it operates and redefining the role of
               <span className="font-bold italic"> IT developers</span>.
@@ -691,7 +691,7 @@ const Intern = () => {
               <span className="font-bold"> consumer applications</span> that harness its full potential.
             </p>
 
-            <h3 className="text-xl font-semibold mt-4">What you are going to learn?</h3>
+            <h3 className="text-xl font-semibold mt-4 text-[#f25822]">What you are going to learn?</h3>
             <p className="mt-2 text-sm">
               In this <span className="font-bold">internship</span>, you'll gain a
               <span className="font-bold italic"> deep understanding of GenAI</span> and its
@@ -704,7 +704,7 @@ const Intern = () => {
               <span className="font-bold"> Python and GenAI</span>, equipping you with the skills to create
               <span className="font-bold italic"> innovative AI-powered solutions</span>.
             </p>
-            <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
+            <p className="mt-4 font-semibold">📅 Duration: 6 Sprint | <span className='text-[#0f5376]'>Limited Seats Only</span></p>
             <div className="mt-4">
               <div className='bg-[#d9d9ed] rounded-lg shadow-lg'>
                 <div className="font-semibold text-center pt-3">Internship Mile Stone</div>
@@ -713,6 +713,7 @@ const Intern = () => {
                   <ProgressBar />
                 </div>
               </div>
+              <div className='text-sm mt-4'><span className="font-bold">Cermony Date :</span> 3rd or 4th May 2025 (In office)</div>
               <p className="mt-4">
                 Register for the internship with a nominal fee. Need more details? ask our <span className="font-bold italic text-black">AI bot</span>
                 <span className="text-blue-600 font-semibold"> "Ask Monica" </span>
