@@ -1,72 +1,73 @@
 import React from 'react';
 import '../Intern/progressBar.css';
+import timeGlass from "../../assets/brand/timeglass.png";
 
 const stages = [
   {
-    name: 'Registration  Start', icon: '✔️', date: new Date('2025-02-01'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Start', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
-      mainPadding: "mt-[15px] mr-[-6px]",
+      mainPadding: "",
       nowarp: "",
     },
   },
   {
-    name: 'Registration  End', icon: '✔️', date: new Date('2025-02-10'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Registration  End', icon: '✔️', date: new Date('2025-03-15'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "mt-[15px] mr-[-6px] ml-[-15px]",
       nowarp: "",
     },
   },
   {
-    name: 'Scrutiny', icon: '✔️', date: new Date('2025-02-28'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Scrutiny', icon: '✔️', date: new Date('2025-03-16'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-16px]",
       mainPadding: "",
       nowarp: "",
     },
   },
   {
-    name: 'Squadcast', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
+    name: 'broadcast', icon: '✔️', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-17px] mr-[-8px]",
       mainPadding: "",
       nowarp: "",
     },
   },
   {
-    name: 'Announcement', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Orientation', icon: '✔️', date: new Date('2025-03-23'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-17px] mr-[-8px]",
       mainPadding: "ml-[-20px] mr-[-15px]",
       nowarp: "",
     },
   },
   {
-    name: 'Week 1', icon: '✔️', date: new Date('2025-03-03'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 1', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 2', icon: '✔️', date: new Date('2025-03-10'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 2', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 3', icon: '✔️', date: new Date('2025-03-17'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 3', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 4', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 4', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 5', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 5', icon: '✔️', date: new Date('2025-04-21'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
@@ -80,9 +81,9 @@ const stages = [
   //   },
   // },
   {
-    name: 'Ceremony', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Week 6 (Ceremony)', icon: '✔️', date: new Date('2025-04-28'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-18px]",
-      mainPadding: "",
+      mainPadding: "mt-[15px] mr-[-6px] ml-[-10px]",
       nowarp: "",
     },
   }
@@ -171,7 +172,7 @@ const ProgressBar = () => {
                     </svg>
                   ) : isCurrentIndex ? (
                     // 🔄 Use `<span>` for the ⏳ icon
-                    <span className="text-[#FFA500] text-lg rotate-animation">⏳</span>
+                    <span className="rotate-animation"><img src={timeGlass} className="w-5 h-5" alt="loading" /></span>
                   ) : (
                     <span className="text-slate-600 text-sm"></span>
                   )}

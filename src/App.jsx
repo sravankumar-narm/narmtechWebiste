@@ -20,6 +20,9 @@ import monicaImg from "./assets/brand/monica.png";
 import CountdownTimer from "./components/CountdownTimer";
 import close from "./assets/brand/close.png";
 import { useLocation } from 'react-router-dom'; // Import useLocation
+import Privacy from "./pages/Privacy.jsx";
+import Terms from "./pages/Terms.jsx";
+import Refund from "./pages/Refund.jsx";
 
 function App() {
   const [aiChatStatus, setAiChatStatus] = useState(false);
@@ -55,6 +58,9 @@ function App() {
               <Route path="Agri" element={<Agri />} />
               <Route path="internship" element={<Intern />} />
               <Route path="internship/signup" element={<Signup />} /> {/* Signup Route */}
+              <Route path="PrivatePolicy" element={<Privacy />} />
+              <Route path="TermsandConditions" element={<Terms />} />
+              <Route path="CancellationAndRefundPolicy" element={<Refund />} />
               {aiChatStatus && <Route path="Aibot" element={<Aibot onClose={handleOpenAIChat} />} />}
               <Route path="*" element={<NoPage />} />
             </Route>

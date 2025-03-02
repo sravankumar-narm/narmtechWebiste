@@ -11,9 +11,7 @@ const AdvisoryTeamData = [
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/samanthasunkara/",
     about:
-      `Dr. Samantha S, a seasoned professional with over a decade of experience, leads Product Management and Delivery at NARM Tech. With a strong academic background and expertise spanning the Education and IT industries, she plays a pivotal role in driving innovative product development and ensuring seamless delivery. 
-    
-    Her deep understanding of the educational domain, combined with her extensive product management experience, empowers her to craft impactful solutions for global markets. Dr. Samantha is a key force behind NARM Tech’s commitment to quality and excellence. `,
+      `Dr. Samantha S, with over a decade of experience, leads Product Management and Delivery at NARM Tech. Her expertise in Education and IT drives innovative product development and seamless delivery. A key force behind NARM Tech’s commitment to quality, she crafts impactful solutions for global markets.`,
   },
   {
     id: 2,
@@ -22,9 +20,7 @@ const AdvisoryTeamData = [
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/deepika-reddy-04b24838/",
     about:
-      `Deepika Reddy, with a Master’s in Business Administration specializing in Human Resources, brings nearly a decade of experience in talent acquisition, human resource management, and sales & marketing. At NARM Tech, she plays a critical role in fostering a people-first culture while driving sales and marketing strategies that support business growth. 
-    
-    Her expertise in HR operations and team-building ensures a robust and dynamic workforce, while her strategic insights into sales and marketing contribute to expanding NARM Tech’s footprint across industries and markets. `,
+      `Deepika Reddy, an MBA in Human Resources, has nearly a decade of experience in talent acquisition, HR management, and sales & marketing. At NARM Tech, she fosters a people-first culture while driving business growth through strategic HR and marketing initiatives. `,
   },
   {
     id: 3,
@@ -33,9 +29,7 @@ const AdvisoryTeamData = [
     image: UserIcon,
     socialLinks: "https://www.linkedin.com/in/padmalalitha-mareddy-86393b17/",
     about:
-      `Dr. M Padma Lalitha, a distinguished academic and industry expert, serves as an Advisor to NARM Tech. With 25 years of professional experience, she is a Professor and Head of Department at AITS, Rajampet, Andhra Pradesh, India. 
-    
-    Her extensive background spans Research and Development in cutting-edge fields, including Artificial Intelligence (AI) and Machine Learning (ML), along with various other technologies. Dr. Lalitha’s guidance and expertise are invaluable in shaping NARM Tech’s innovation roadmap and advancing its R&D initiatives. `,
+      `Dr. M Padma Lalitha, a seasoned academic and industry expert with 25 years of experience, advises NARM Tech. As a Professor and HOD at AITS, Rajampet, she specializes in AI, ML, and R&D. Her expertise drives NARM Tech’s innovation and research initiatives. `,
   },
 ];
 const Team = () => {
@@ -43,7 +37,7 @@ const Team = () => {
     backgroundImage: `url(${BgSvg})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundPosition: "right",
+    backgroundPosition: "center",
     minHeight: "1208px",
     width: "100%",
   };
@@ -98,7 +92,7 @@ const Team = () => {
                 {AdvisoryTeamData.map(({ id, icon, name, about, position }) => (
                   <div
                     key={id}
-                    className="flex flex-col  rounded-xl bg-white p-8 space-y-4 shadow-md 2xl:h-[520px]"
+                    className="flex flex-col  rounded-xl bg-white p-8 space-y-4 shadow-md 2xl:h-[400px]"
                   >
 
                     <div className="flex items-center gap-4 bg-darkBlue p-4 rounded-xl text-white w-fit float-end">

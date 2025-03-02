@@ -15,6 +15,7 @@ const bgImage = {
   height: "auto",
   width: "100%",
 };
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
@@ -25,53 +26,81 @@ const Footer = () => {
             Contact Us
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 border-b-2 border-white py-2">
+            {/* Address Section */}
             <div className="text-center space-y-4">
               <div>
-                <img src={Icon1} alt="" className="w-14 mx-auto" />
+                <img src={Icon1} alt="" className="w-6 mx-auto" />
               </div>
               <p>
-              #50, 1st Floor, GVR Towers<br></br>
-              Munireddy Layout, 1st Main,<br></br>
-              Horamavu main Road,<br></br>
-              Bangalore, Karnataka 560043<br></br>
+                #50, 1st Floor, GVR Towers<br></br>
+                Munireddy Layout, 1st Main,<br></br>
+                Horamavu main Road,<br></br>
+                Bangalore, Karnataka 560043<br></br>
               </p>
               <div className="flex justify-center gap-2">
-              <a href="https://www.linkedin.com/company/narmtech/" target="_blank"><img src={Icon6} alt="" className="w-5"/></a>
-              <a href="https://www.linkedin.com/company/narmtech/"  target="_blank"><img src={Icon4} alt="" className="w-5"/></a>
-             <a  href="https://twitter.com/narmtech"  target="_blank"><img src={Icon5} alt="" className="w-5"/></a>
+                <a href="https://www.linkedin.com/company/narmtech/" target="_blank">
+                  <img src={Icon6} alt="" className="w-5" />
+                </a>
+                <a href="https://www.linkedin.com/company/narmtech/" target="_blank">
+                  <img src={Icon4} alt="" className="w-5" />
+                </a>
+                <a href="https://twitter.com/narmtech" target="_blank">
+                  <img src={Icon5} alt="" className="w-5" />
+                </a>
+              </div>
             </div>
-            </div>
+
+            {/* Email and Phone Section */}
             <div className="text-center space-y-4 mt-6">
-              <div>
-                <img src={Icon2} alt="" className="w-14 mx-auto" />
+              <div className="flex gap-4 justify-center items-center">
+                <div>
+                  <img src={Icon2} alt="" className="w-6 mx-auto" />
+                </div>
+                <div className="text-justify">
+                  <p>info@narmtech.com</p>
+                  <p>hr@narmtech.com</p>
+                  <p>sales@narmtech.com</p>
+                </div>
               </div>
-              <div>
-                <p>info@narmtech.com</p>
-                <p>hr@narmtech.com</p>
-                <p>sales@narmtech.com</p>
+              <div className="flex gap-4 justify-center items-center">
+                <div>
+                  <img src={Icon3} alt="" className="w-6 mx-auto" />
+                </div>
+                <div className="text-justify">
+                  <div>+91 9663901621 - Sales and Services</div>
+                  <div>+91 9663901621 - Hiring Queries</div>
+                </div>
               </div>
             </div>
+
+            {/* Important Links Section */}
             <div className="text-center space-y-4 mt-3">
               <div>
-                <img src={Icon3} alt="" className="w-14 mx-auto" />
+                <span className="text-2xl">📚</span> {/* Emoji Icon */}
               </div>
               <div>
-                <p>+91 9663901621  - Sales and Services</p>
-                <p> +91 9663901621 - Hiring Queries</p>
+                <p className="font-semibold">Important Links</p>
+                <div className="space-y-2">
+                  <a href="/PrivatePolicy" className="hover:underline">
+                    Privacy Policy
+                  </a>
+                  <br />
+                  <a href="/TermsandConditions" className="hover:underline">
+                    Terms & Conditions
+                  </a>
+                  <br />
+                  <a href="/CancellationAndRefundPolicy" className="hover:underline">
+                    Cancellation & Refund Policy
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-          <div className="flex justify-between p-4">
+
+          {/* Footer Bottom Section */}
+          <div className="flex justify-center items-center p-4">
             <div className="flex gap-2">
-            <p>© Copyright {currentYear} - NARM Tech</p>
-           {/* <a href="https://www.linkedin.com/company/narmtech/"><img src={Icon4} alt="" className="w-5"/></a>
-           <a href="https://twitter.com/narmtech"><img src={Icon5} alt="" className="w-5"/></a> */}
-           </div>
-            <div className="flex items-center">
-              {/* <a href="#">Privacy Policy</a>
-              <a href="#">Terms & Conditions</a> */}
-             {/* <p>Privacy Policy</p>
-             <p>Terms & Conditions</p> */}
+              <p>© Copyright {currentYear} - NARM Tech</p>
             </div>
           </div>
         </div>
