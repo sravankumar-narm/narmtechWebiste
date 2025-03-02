@@ -16,7 +16,7 @@ const OfferingsCard = ({ Image }) => {
             <div className="lg:col-span-2 xl:pr-40 lg:pr-60 bg-creamWhite text-black/70 px-10 py-20 rounded-3xl">
               <h1 className="text-5xl font-bold mb-4">Legal</h1>
               <h1 className="text-2xl font-bold mb-4">
-                NYAYAH (Launching on Nov 2024)
+                NYAYAH
               </h1>
               <p className="leading-7 font-medium">
                 This powerful AI solution revolutionizes the Legal landscape by

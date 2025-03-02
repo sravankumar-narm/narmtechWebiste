@@ -34,7 +34,7 @@ const ResponsiveMenu = ({ showMenu }) => {
         </nav>
       </div>
       <div className="footer">
-        <h1>NarmTech © 2024 All Rights Reserved</h1>
+        <h1>NarmTech © 2025 All Rights Reserved</h1>
       </div>
     </div>
   );
