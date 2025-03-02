@@ -32,7 +32,7 @@ const Footer = () => {
             {/* Location Block */}
             <div className="text-center space-y-4">
               <div>
-                <img src={Icon1} alt="Location Icon" className="w-8 mx-auto" />
+                <img src={Icon1} alt="Location Icon" className="w-4 mx-auto" />
               </div>
               <p className="text-sm">
                 #50, 1st Floor, GVR Towers<br />
@@ -56,7 +56,7 @@ const Footer = () => {
             {/* Email Block */}
             <div className="text-center space-y-4">
               <div>
-                <img src={Icon2} alt="Email Icon" className="w-8 mx-auto" />
+                <img src={Icon2} alt="Email Icon" className="w-6 mx-auto" />
               </div>
               <div className="text-sm">
                 <a href="mailto:info@narmtech.com" className="hover:underline block">
@@ -74,7 +74,7 @@ const Footer = () => {
             {/* Numbers Block */}
             <div className="text-center space-y-4">
               <div>
-                <img src={Icon3} alt="Phone Icon" className="w-8 mx-auto" />
+                <img src={Icon3} alt="Phone Icon" className="w-6 mx-auto" />
               </div>
               <div className="text-sm">
                 <a href="tel:+919663901621" className="hover:underline block">

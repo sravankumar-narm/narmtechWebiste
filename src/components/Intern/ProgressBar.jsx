@@ -4,16 +4,16 @@ import timeGlass from "../../assets/brand/timeglass.png";
 
 const stages = [
   {
-    name: 'Start', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Registration  Start', icon: '✔️', date: new Date('2025-03-01'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
-      mainPadding: "",
+      mainPadding: "mt-[15px] mr-[-6px]",
       nowarp: "",
     },
   },
   {
-    name: 'Registration  End', icon: '✔️', date: new Date('2025-03-15'), color: 'bg-[#ceffe7]', styles: {
+    name: 'End', icon: '✔️', date: new Date('2025-03-15'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
-      mainPadding: "mt-[15px] mr-[-6px] ml-[-15px]",
+      mainPadding: "",
       nowarp: "",
     },
   },
@@ -39,35 +39,35 @@ const stages = [
     },
   },
   {
-    name: 'Week 1', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 1', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 2', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 2', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 3', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 3', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 4', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 4', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Week 5', icon: '✔️', date: new Date('2025-04-21'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 5', icon: '✔️', date: new Date('2025-04-21'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
@@ -81,9 +81,9 @@ const stages = [
   //   },
   // },
   {
-    name: 'Week 6 (Ceremony)', icon: '✔️', date: new Date('2025-04-28'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 6', icon: '✔️', date: new Date('2025-04-28'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-18px]",
-      mainPadding: "mt-[15px] mr-[-6px] ml-[-10px]",
+      mainPadding: "",
       nowarp: "",
     },
   }
@@ -122,7 +122,7 @@ const ProgressBar = () => {
   return (
     <>
       {/* Desktop & Tablet View (md+) */}
-      <div className="hidden md:flex items-center justify-between w-full bg-[#d9d9ed]  rounded-lg shadow-lg p-2">
+      <div className="hidden md:flex items-center justify-between w-full bg-[#d9d9ed]  rounded-lg shadow-lg p-2 pt-1">
         {stages.map((stage, index) => {
           const isCompleted = today >= stage.date;
           const nextStageDate = stages[index + 1]?.date;
@@ -177,9 +177,9 @@ const ProgressBar = () => {
                     <span className="text-slate-600 text-sm"></span>
                   )}
 
-                  {index === stages.length - 1 &&
+                  {/* {index === stages.length - 1 &&
                     <span className="text-slate-600 text-xl">🎓</span>
-                  }
+                  } */}
                 </div>
 
 
