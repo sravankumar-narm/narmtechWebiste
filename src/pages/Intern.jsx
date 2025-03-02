@@ -713,7 +713,7 @@ const Intern = () => {
                   <ProgressBar />
                 </div>
               </div>
-              <div className='text-sm mt-4'><span className="font-bold">Cermony Date :</span> 3rd or 4th May 2025 (In office)</div>
+              <div className='text-sm mt-4'><span className="font-bold">Certification On :</span> 3rd or 4th May 2025 (In office)</div>
               <p className="mt-4">
                 Register for the internship with a nominal fee. Need more details? ask our <span className="font-bold italic text-black">AI bot</span>
                 <span className="text-blue-600 font-semibold"> "Ask Monica" </span>
