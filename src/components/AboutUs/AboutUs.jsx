@@ -30,18 +30,18 @@ const About = () => {
             </div>
             {/* about text section */}
             <div className="  xl:gap-8  xl:w-[600px] ">
-              <h1 className="text-3xl font-bold text-yellow mb-4 mx-[30px]">
+              <h1 className="text-3xl font-bold text-yellow mb-4 mx-3">
                 About Us
               </h1>
-              <p className="text-white leading-8 text-[18px] mx-[30px]">
-                NARM Tech is a visionary start-up revolutionizing business
-                operations through AI-powered software products. Our
-                cutting-edge solutions enable organizations to streamline
-                processes, optimize efficiency, and uncover invaluable insights.
-                By harnessing the latest in machine learning and data analytics,
-                we redefine how businesses operate in the digital age. Embrace
-                the future and experience the transformative power of AI with
-                NARM Tech.
+              <p className="text-white leading-8 text-[18px] mx-3 text-justify">
+                At <b>NARM Tech</b>, we specialize in <b>Generative AI</b>, developing smart AI-powered 
+                solutions that enhance business efficiency. 
+                Our expertise lies in creating <b>GenAI-based products</b> that simplify workflows, 
+                improve user experiences, and seamlessly integrate AI into applications.
+                Founded just two years ago, we are a fast-growing startup driven by a passion for AI and innovation. 
+                Under the leadership of our <b>Founder & CEO, Ram M Reddy</b>, our dedicated team focuses on making technology more intuitive and impactful for businesses.
+                At NARM Tech, we believe in making AI accessible—<b>shaping user experiences and simplifying efforts with Generative AI.
+                Innovate. Automate. Elevate.</b>
               </p>
               <GoalTestimonial />
               {/* <div className="bg-white rounded-3xl p-6 mt-6 shadow-md">
