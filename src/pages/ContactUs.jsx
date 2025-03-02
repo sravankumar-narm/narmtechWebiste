@@ -328,6 +328,7 @@ const Contact = () => {
                           {/* <option value="">Select Option</option> */}
                           <option value="products">Products</option>
                           <option value="services">Services</option>
+                          <option value="Intership">Intership</option>
                           <option value="others">Others</option>
                         </select>
                       </div>
@@ -374,7 +375,7 @@ const Contact = () => {
                           </select>
                         </div>
                       )}
-                      {selectedOption === "others" && (
+                      {/* {selectedOption === "others" && (
                         <div className="">
                           <select
                             className="rounded-xl"
@@ -389,8 +390,8 @@ const Contact = () => {
                             <option value="others">other</option>
                           </select>
                         </div>
-                      )}
-                      {/* {(selectedOption === "services" ||
+                      )} */}
+                      {(selectedOption === "services" ||
                         selectedOption === "others") && (
                         <div className="">
                           <input
@@ -406,7 +407,7 @@ const Contact = () => {
                             }}
                           />
                         </div>
-                      )} */}
+                      )}
                     </div>
                     <div className="flex ">
                     <div>

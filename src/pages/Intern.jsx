@@ -680,8 +680,8 @@ const Intern = () => {
       <div className="container mx-auto py-10 px-5">
         <div className="grid grid-cols-1 md:grid-cols-[70%_30%] gap-6 bg-white shadow-xl rounded-lg overflow-hidden p-6">
           {/* Left Section - Progress Bar */}
-          <div className="p-8 bg-[#ffecca] rounded-lg text-gray-800">
-            <h2 className="text-2xl font-bold mt-[-10px] text-center text-[#0f5376] rounded-xl p-2">Virtual Internship Program on <span className="text-[#f25822]">GenAI</span> Powered Web Applications</h2>
+          <div className="p-8 bg-zinc-100 rounded-lg text-gray-800">
+            <h2 className="text-2xl bg-[#ffecca] font-bold mt-[-10px] text-center text-[#0f5376] rounded-xl p-2 shadow-lg">Virtual Internship Program on <span className="text-[#f25822]">GenAI</span> Powered Web Applications</h2>
             <h3 className="text-xl font-semibold mt-4">How it's going to help you?</h3>
             <p className="mt-2 text-sm">
               <span className="font-bold">GenAI</span> is set to <span className="font-bold italic">revolutionize</span> the IT industry, transforming how it operates and redefining the role of
@@ -706,10 +706,12 @@ const Intern = () => {
             </p>
             <p className="mt-4 font-semibold">📅 Duration: 6 Weeks | Limited Seats Only</p>
             <div className="mt-4">
-              <p className="font-semibold">📍 Mile Stone</p>
-              {/* Responsive Progress Bar */}
-              <div className="flex flex-col items-center justify-between mt-4 relative sm:flex-row">
-                <ProgressBar />
+              <div className='bg-[#d9d9ed] rounded-lg shadow-lg'>
+                <div className="font-semibold text-center pt-3">Internship Mile Stone</div>
+                {/* Responsive Progress Bar */}
+                <div className="flex flex-col items-center justify-between relative sm:flex-row">
+                  <ProgressBar />
+                </div>
               </div>
               <p className="mt-4">
                 Register for the internship with a nominal fee. Need more details? ask our <span className="font-bold italic text-black">AI bot</span>
@@ -790,7 +792,7 @@ const Intern = () => {
               <h3 className="text-xl font-semibold text-center mb-4">Sign Up for Internship Program</h3>
               <form className="space-y-4">
                 {/* Name Field */}
-                {/* <div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-user text-blue-600"></i> Full Name <span className='text-[10px] text-blue-800 font-semibold'><i>(as per certificates)</i></span></label>
                   <input
                     type="text"
@@ -804,9 +806,8 @@ const Intern = () => {
                   // disabled={isFieldsDisabled}
                   />
                   {errors.name && <p className="text-red-500 text-xs pt-1">{errors.name}</p>}
-                </div> */}
-                <div className="relative">
-                  {/* <FaUser className="absolute flex mt-4 z-10 right-[55px] sm:right-[110px] md:right-[393px] lg:right-[274px] xl:right-[373px] 2xl:right-[488px] text-[#684FFF]" /> */}
+                </div>
+                {/* <div className="relative">
                   <TextField
                     type="text"
                     id="name"
@@ -829,10 +830,10 @@ const Intern = () => {
                     }}
                   />
                   {errors.name && <span className="text-red-500">{errors.name}</span>}
-                </div>
+                </div> */}
 
                 {/* Email Field */}
-                {/* <div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-envelope text-blue-600"></i> Email <span className='text-[10px] text-blue-800 font-semibold'><i>(All communication will be sent to this email)</i></span></label>
                   <input
                     type="email"
@@ -846,9 +847,8 @@ const Intern = () => {
                   // disabled={isFieldsDisabled}
                   />
                   {errors.email && <p className="text-red-500 text-xs pt-1">{errors.email}</p>}
-                </div> */}
-                <div className="relative">
-                  {/* <AiOutlineMail className="absolute flex mt-4 z-10 right-[55px] sm:right-[110px] md:right-[393px] lg:right-[274px] xl:right-[373px] 2xl:right-[488px] text-[#684FFF]" /> */}
+                </div>
+                {/* <div className="relative">
                   <TextField
                     type="email"
                     id="email"
@@ -871,13 +871,13 @@ const Intern = () => {
                     }}
                   />
                   {errors.email && <span className="text-red-500">{errors.email}</span>}
-                </div>
+                </div> */}
 
                 {/* Mobile Field */}
                 <div className='relative'>
-                  {/* <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-phone text-blue-600"></i> Mobile</label> */}
+                  <label className="block text-sm font-medium text-gray-700"><i className="fa-solid fa-phone text-blue-600"></i> Mobile</label>
                   <div className="flex items-center justify-between space-x-2">
-                    {/* <input
+                    <input
                       type="text"
                       name="mobile"
                       placeholder="Enter Mobile"
@@ -887,8 +887,8 @@ const Intern = () => {
                       ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
                       autoComplete="off"
                     // disabled={isFieldsDisabled}
-                    /> */}
-                    <TextField
+                    />
+                    {/* <TextField
                       type="text"
                       id="mobile"
                       className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
@@ -908,7 +908,7 @@ const Intern = () => {
                           backgroundColor: '#ffffff',
                         },
                       }}
-                    />
+                    /> */}
                     <button
                       type="button"
                       onClick={handleSendOtp}
@@ -943,9 +943,9 @@ const Intern = () => {
                 {/* OTP Field */}
                 {isOtpSent && (
                   <div className='relative'>
-                    {/* <label className="block text-sm font-medium text-gray-700">🔐 OTP:</label> */}
+                    <label className="block text-sm font-medium text-gray-700">🔐 OTP:</label>
                     <div className="flex items-center justify-between space-x-2">
-                      {/* <input
+                      <input
                         type="text"
                         name="otp"
                         placeholder="Enter OTP"
@@ -954,8 +954,8 @@ const Intern = () => {
                         className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 ${errors.otp ? 'border-red-500' : 'focus:ring-blue-500'
                           }`}
                         autoComplete='off'
-                      /> */}
-                      <TextField
+                      />
+                      {/* <TextField
                         type="text"
                         id="otp"
                         className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
@@ -975,7 +975,7 @@ const Intern = () => {
                           },
                         }}
                         autoComplete='off'
-                      />
+                      /> */}
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
