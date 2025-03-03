@@ -27,11 +27,21 @@ import Refund from "./pages/Refund.jsx";
 function App() {
   const [aiChatStatus, setAiChatStatus] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const location = useLocation(); // Get current location
+  const [chatLog, setChatLog] = useState([]); // Lift chatLog state to App
 
-  function handleOpenAIChat() {
+  const location = useLocation();
+
+  const handleOpenAIChat = () => {
+    if (aiChatStatus) {
+      // If the chatbot is currently open, reset the chatLog state when closing
+      setChatLog([]);
+    }
     setAiChatStatus(!aiChatStatus);
-  }
+  };
+
+  const handleMinAIChat = () => {
+    setAiChatStatus(false);
+  };
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -42,63 +52,76 @@ function App() {
   };
 
   return (
-        <>
-          <CountdownTimer endDate="2025-03-15T12:00:00" currentPath={location.pathname} />
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="contactus" element={<ContactUs />} />
-              <Route path="offerings" element={<Offerings />} />
-              <Route path="Aboutus" element={<AboutUs />} />
-              <Route path="consulting" element={<Consulting />} />
-              <Route path="Ourteam" element={<OurTeam />} />
-              <Route path="legal" element={<Legal />} />
-              <Route path="IT" element={<IT />} />
-              <Route path="Edu" element={<Edu />} />
-              <Route path="Agri" element={<Agri />} />
-              <Route path="internship" element={<Intern />} />
-              <Route path="internship/signup" element={<Signup />} /> {/* Signup Route */}
-              <Route path="PrivatePolicy" element={<Privacy />} />
-              <Route path="TermsandConditions" element={<Terms />} />
-              <Route path="CancellationAndRefundPolicy" element={<Refund />} />
-              {aiChatStatus && <Route path="Aibot" element={<Aibot onClose={handleOpenAIChat} />} />}
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
+    <>
+      <CountdownTimer endDate="2025-03-15T12:00:00" currentPath={location.pathname} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="contactus" element={<ContactUs />} />
+          <Route path="offerings" element={<Offerings />} />
+          <Route path="Aboutus" element={<AboutUs />} />
+          <Route path="consulting" element={<Consulting />} />
+          <Route path="Ourteam" element={<OurTeam />} />
+          <Route path="legal" element={<Legal />} />
+          <Route path="IT" element={<IT />} />
+          <Route path="Edu" element={<Edu />} />
+          <Route path="Agri" element={<Agri />} />
+          <Route path="internship" element={<Intern />} />
+          <Route path="internship/signup" element={<Signup />} />
+          <Route path="PrivatePolicy" element={<Privacy />} />
+          <Route path="TermsandConditions" element={<Terms />} />
+          <Route path="CancellationAndRefundPolicy" element={<Refund />} />
+          {aiChatStatus && (
+            <Route
+              path="Aibot"
+              element={
+                <Aibot
+                  onClose={handleOpenAIChat}
+                  onMin={handleMinAIChat}
+                  chatLog={chatLog} // Pass chatLog as a prop
+                  setChatLog={setChatLog} // Pass setChatLog as a prop
+                />
+              }
+            />
+          )}
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
 
-          {!showMenu ? (
-            <div className="fixed bottom-0 right-0 z-10">
-              {!aiChatStatus ? (
-                <div className="fixed bottom-0 right-0 z-10 group/item">
-                  <div className="group/edit invisible group-hover/item:visible">
-                    <img
-                      src={close}
-                      className="float-end pr-2"
-                      onClick={toggleMenu}
-                    />
-                  </div>
-                  <div onClick={openAibot}>
-                    <img src={monicaImg} className="w-[70%] float-end " />
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <Aibot onClose={handleOpenAIChat} />
-                </div>
-              )}
-            </div>
-          ) : (
-            <div
-              className="fixed bottom-[120px] right-0 z-10 -rotate-90 -mr-10 cursor-pointer"
-              onClick={toggleMenu}
-            >
-              <div className="bg-[#D9D9D9] text-[14px] rounded-t-lg px-[35px] py-[5px]">
-                <p className="font-normal">Ask</p>
-                <p className="font-extrabold">MONICA</p>
+      {!showMenu ? (
+        <div className="fixed bottom-0 right-0 z-10">
+          {!aiChatStatus ? (
+            <div className="fixed bottom-0 right-0 z-10 group/item">
+              <div className="group/edit invisible group-hover/item:visible">
+                <img src={close} className="float-end pr-2" onClick={toggleMenu} />
+              </div>
+              <div onClick={openAibot}>
+                <img src={monicaImg} className="w-[70%] float-end" />
               </div>
             </div>
+          ) : (
+            <div>
+              <Aibot
+                onClose={handleOpenAIChat}
+                onMin={handleMinAIChat}
+                chatLog={chatLog} // Pass chatLog as a prop
+                setChatLog={setChatLog} // Pass setChatLog as a prop
+              />
+            </div>
           )}
-        </>
+        </div>
+      ) : (
+        <div
+          className="fixed bottom-[120px] right-0 z-10 -rotate-90 -mr-10 cursor-pointer"
+          onClick={toggleMenu}
+        >
+          <div className="bg-[#D9D9D9] text-[14px] rounded-t-lg px-[35px] py-[5px]">
+            <p className="font-normal">Ask</p>
+            <p className="font-extrabold">MONICA</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
