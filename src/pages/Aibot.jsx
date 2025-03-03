@@ -14,11 +14,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import TextField from "@mui/material/TextField"; 
+import TextField from "@mui/material/TextField";
+import ReactMarkdown from "react-markdown";
 
-const Aibot = ({ onClose, onMin }) => {
-  console.log("onClose - ",onClose)
-  console.log("onMin - ",onMin)
+const Aibot = ({ onClose, onMin, chatLog, setChatLog }) => {
+  console.log("onClose - ", onClose)
+  console.log("onMin - ", onMin)
   const [show, setshow] = useState(true);
   const toggleMenu = () => {
     setshow(!show);
@@ -26,7 +27,7 @@ const Aibot = ({ onClose, onMin }) => {
   const [show1, setshow1] = useState(true);
   const toggleMenu1 = () => {
     setshow1(!show1);
-    setchatLog([]);
+    // setchatLog([]);
   };
 
 
@@ -35,7 +36,7 @@ const Aibot = ({ onClose, onMin }) => {
   const [userEnterCompany, setUserEnterCompany] = useState("");
 
   const [Inputvalue, setInputvalue] = useState("");
-  const [chatLog, setchatLog] = useState([]);
+  // const [chatLog, setchatLog] = useState([]);
   const chatLogEndRef = useRef(null);
   useEffect(() => {
     if (chatLogEndRef.current) {
@@ -64,14 +65,18 @@ const Aibot = ({ onClose, onMin }) => {
     ));
     // Return the formatted text
     return formattedText;
-};
+  };
+
+  const formatTextWithMarkdown = (text) => {
+    return <ReactMarkdown>{text}</ReactMarkdown>;
+  };
 
 
   const handlesubmit = async (event) => {
     event.preventDefault();
 
     const query = Inputvalue.trim();
-    setchatLog((prevChatLog) => [
+    setChatLog((prevChatLog) => [
       ...prevChatLog,
       { type: "user", message: Inputvalue },
     ]);
@@ -87,35 +92,26 @@ const Aibot = ({ onClose, onMin }) => {
           },
           body: JSON.stringify({
             query: Inputvalue.trim(),
-            company_name:
-              userEnterCompany === "" ? defaultCompanyName : userEnterCompany,
+            company_name: userEnterCompany || defaultCompanyName,
             history: [],
           }),
         }
       );
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+
       const data = await response.json();
-      console.log("data resp - ", data);
-      if(data.response === 'success'){
-        console.log("response success")
-        if (data.data === "Please Create a New BOT for Your Data.") {
-          setchatLog((prevChatLog) => [
-            ...prevChatLog,
-            { type: "assistant", message: data.data },
-          ]);
-        } else {
-          setchatLog((prevChatLog) => [
-            ...prevChatLog,
-            { type: "assistant", message: data.output },
-          ]);
-        }
-      }else{
-        console.log("response fail")
-        setchatLog((prevChatLog) => [
+      if (data.response === "success") {
+        setChatLog((prevChatLog) => [
           ...prevChatLog,
-          { type: "assistant", message: 'Unable to fetch your query. Please try again later.' },
+          { type: "assistant", message: data.output },
+        ]);
+      } else {
+        setChatLog((prevChatLog) => [
+          ...prevChatLog,
+          { type: "assistant", message: "Unable to fetch your query. Please try again later." },
         ]);
       }
     } catch (error) {
@@ -257,12 +253,12 @@ const Aibot = ({ onClose, onMin }) => {
 
       const data = await response.json();
       console.log("Bot Response - ", data);
-      if(data.response === 'success'){
+      if (data.response === 'success') {
         setchatLog([]);
         setCreateResponse(data);
         setDefaultCompanyName(userEnterCompany);
         setCreateBotStatus(true);
-      }else{
+      } else {
         setCreateResponse(data.data);
         setCreateBotStatus(false);
       }
@@ -303,7 +299,7 @@ const Aibot = ({ onClose, onMin }) => {
     if (
       file &&
       file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
       setUploadedExcelFileName(file.name);
       // Handle Excel file upload
@@ -346,8 +342,8 @@ const Aibot = ({ onClose, onMin }) => {
           </div>
 
           <div className="bg-[#D8ECF3] rounded-xl p-2 w-[70%]">
-            <p className="text-[11px] font-bold text-black">
-              Good Day! Feel free to ask me anything about {defaultCompanyName}.
+            <p className="text-[11px] text-black">
+              <span className="font-bold">Good Day!</span> Feel free to ask me anything about <span className="font-bold">{defaultCompanyName}</span>.
               How can I assist you today?
             </p>
           </div>
@@ -356,9 +352,8 @@ const Aibot = ({ onClose, onMin }) => {
         {chatLog.map((message, index) => (
           <div
             key={index}
-            className={`flex p-2 gap-1 ${
-              message.type === "user" ? "justify-end" : ""
-            }`}
+            className={`flex p-2 gap-1 ${message.type === "user" ? "justify-end" : ""
+              }`}
           >
             {message.type === "assistant" && (
               <div>
@@ -366,14 +361,13 @@ const Aibot = ({ onClose, onMin }) => {
               </div>
             )}
             <div
-              className={`flex items-center rounded-xl p-2 w-[80%] ${
-                message.type === "user"
+              className={`flex items-center rounded-xl p-2 w-[80%] ${message.type === "user"
                   ? "bg-[#EFEFEF]"
                   : "bg-[#D8ECF3]"
-              }`}
+                }`}
             >
-              <p className="text-[11px] font-bold text-black">
-                {formatTextWithNewlines(message.message)}
+              <p className="text-[11px] text-black">
+                {formatTextWithMarkdown(message.message)}
               </p>
             </div>
             {message.type === "user" && (
@@ -431,35 +425,35 @@ const Aibot = ({ onClose, onMin }) => {
             </div>
           </div>
         )}
-        
+
         {loading ? (
-         <div className="relative">
-         <div className="text-black">
-           <div>
-             <Backdrop
-               sx={{
-                 color: "#fff",
-                 zIndex: (theme) => theme.zIndex.drawer + 1,
-               }}
-               open
-             >
-               <CircularProgress color="inherit"
-                className="absolute"/>
-             </Backdrop>
-           </div>
-           <marquee behavior="" direction="right">
-             You are creating a chatbot...
-           </marquee>
-         </div>
-       </div>
+          <div className="relative">
+            <div className="text-black">
+              <div>
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open
+                >
+                  <CircularProgress color="inherit"
+                    className="absolute" />
+                </Backdrop>
+              </div>
+              <marquee behavior="" direction="right">
+                You are creating a chatbot...
+              </marquee>
+            </div>
+          </div>
         ) : createresponse ? (
           <div className="text-black grid gap-2">
             {/* Display response data here */}
             {/* <div className="p-2">{JSON.stringify(response.response)}</div> */}
             {/* <div className="p-2">{JSON.stringify(response.company_name)}</div> */}
             <div className="text-[12px] font-bold p-2">
-              {createBotStatus ? `Your chatbot is now ready. Feel free to ask me anything about{" "} ${defaultCompanyName}` : 'Unable to get data from the website' }
-              
+              {createBotStatus ? `Your chatbot is now ready. Feel free to ask me anything about{" "} ${defaultCompanyName}` : 'Unable to get data from the website'}
+
             </div>
             <div className="p-2">{JSON.stringify(createresponse.data)}</div>
             <div className=" flex justify-between p-2">
@@ -481,7 +475,7 @@ const Aibot = ({ onClose, onMin }) => {
                     {/* <p className="text-[10px]">What is the company name</p> */}
                     <TextField
                       type="text"
-                      variant="outlined" 
+                      variant="outlined"
                       // className="text-[10px] w-full px-3 py-2 border border-solid border-gray-300 rounded-md"
                       name="companyName"
                       value={userEnterCompany}
@@ -489,10 +483,10 @@ const Aibot = ({ onClose, onMin }) => {
                       onChange={(e) => setUserEnterCompany(e.target.value)}
                       InputProps={{
                         style: {
-                            height: "50px",
-                            border: "none",
-                            paddingLeft: "10px",    
-                            borderRadius: "10px",
+                          height: "50px",
+                          border: "none",
+                          paddingLeft: "10px",
+                          borderRadius: "10px",
                         },
                       }}
                     />
@@ -506,22 +500,22 @@ const Aibot = ({ onClose, onMin }) => {
                       type="text"
                       name="baseUrl"
                       label="website URL"
-                      variant="outlined" 
+                      variant="outlined"
                       value={baseUrl}
                       onChange={(e) => setBaseUrl(e.target.value)}
                       InputProps={{
                         style: {
-                            height: "50px",
-                            border: "none",
-                            paddingLeft: "10px",
-                           
-                            borderRadius: "10px",
+                          height: "50px",
+                          border: "none",
+                          paddingLeft: "10px",
+
+                          borderRadius: "10px",
                         },
                       }}
-                      // style={{ width: '100%', height: '50%', padding:'-9', borderRadius: '30px',  }} 
+                    // style={{ width: '100%', height: '50%', padding:'-9', borderRadius: '30px',  }} 
                     />
-             
-  {/* <div class="relative w-full min-w-[200px] h-10">
+
+                    {/* <div class="relative w-full min-w-[200px] h-10">
   <input
       class="w-full h-full px-3 py-3 font-sans text-sm font-normal transition-all bg-transparent border rounded-md peer text-blue-gray-700 outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-t-transparent border-blue-gray-200 focus:border-gray-900"
       placeholder=" " /><label
@@ -530,14 +524,14 @@ const Aibot = ({ onClose, onMin }) => {
       Large
     </label>
   </div>  */}
-     {/* <div class="relative w-full min-w-[200px] h-10">
+                    {/* <div class="relative w-full min-w-[200px] h-10">
     <input
       class="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2  focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
       placeholder=" " /><label
       class="flex w-full h-full select-none pointer-events-none absolute left-0 font-normal !overflow-visible truncate peer-placeholder-shown:text-blue-gray-500 leading-tight peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 transition-all -top-1.5 peer-placeholder-shown:text-sm text-[11px] peer-focus:text-[11px] before:content[' '] before:block before:box-border before:w-2.5 before:h-1.5 before:mt-[6.5px] before:mr-1 before:rounded-tl-md before:border-t peer-focus:before:border-t-2 before:border-l peer-focus:before:border-l-2 before:pointer-events-none before:transition-all  after:content[' '] after:block after:flex-grow after:box-border after:w-2.5 after:h-1.5 after:mt-[6.5px] after:ml-1  after:rounded-tr-md after:border-t peer-focus:after:border-t-2 after:border-r peer-focus:after:border-r-2 after:pointer-events-none after:transition-all peer-disabled:after:border-transparent peer-placeholder-shown:leading-[3.75] text-gray-500 peer-focus:text-gray-900 before:border-blue-gray-200 peer-focus:before:!border-gray-900 after:border-blue-gray-200 peer-focus:after:!border-gray-900">Username
     </label>
   </div>   */}
-   {/* <div class="relative w-full min-w-[200px] h-10">
+                    {/* <div class="relative w-full min-w-[200px] h-10">
     <input
       class="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2  focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900"
       placeholder=" " /><label
