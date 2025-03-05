@@ -207,6 +207,7 @@ const Intern = () => {
 
         const data = await response.json();
         if (data.response === "success") {
+          // data.response_message = 'Payment has been done successfully. Registration is pending.';
           if (data.response_message === "Mobile is already registered. Please log in or use a different mobile number.") {
             setIsOtpSent(false);
             setIsOtpVerified(false);
@@ -616,7 +617,8 @@ const Intern = () => {
               // Ensure isDetailsSubmitted is false to show the form
               setIsDetailsSubmitted(false);
               setForceUpdate((prev) => prev + 1); // Force UI re-render
-              setTimeout(() => setIsRegistered(true), 2000);
+              setIsRegistered(true);
+              // setTimeout(() => setIsRegistered(true), 2000);
             } else {
               setIsVerifyPayementMessage(paymentData.response_message || "Payment failed. Please try again.");
             }

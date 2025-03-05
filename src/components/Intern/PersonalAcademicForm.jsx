@@ -46,13 +46,13 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-    
+
         // Clear errors when the user starts typing
         if (errors[name]) {
             setErrors({ ...errors, [name]: "" });
         }
         if (locationError) setLocationError(""); // Clear location error when user types
-    
+
         // Validate PIN code length (must be exactly 6 digits)
         if (name === "pincode") {
             if (value.length < 6) {
@@ -104,7 +104,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                 body: JSON.stringify({ pincode }),
             });
             const data = await response.json();
-    
+
             if (response.ok && data.response === "success" && data.data.length > 0) {
                 setLocations(data.data);
                 const firstLocation = data.data[0];
@@ -588,7 +588,7 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                                     <option value="2nd Year">2nd Year</option>
                                     <option value="3rd Year">3rd Year</option>
                                     <option value="4th Year">4th Year</option>
-                                    <option value="5th Year">5th Year</option>
+                                    <option value="5th Year">5th Year (Completed)</option>
                                 </select>
                                 {errors.pursuingYear && <p className="text-red-500 text-xs">{errors.pursuingYear}</p>}
                             </div>
@@ -605,9 +605,18 @@ const PersonalAcademicForm = ({ handleSubmitDetails }) => {
                                     onChange={handleChange}
                                     className="w-full p-3 border rounded-lg"
                                 >
-                                    <option value="">Select Semester</option>
-                                    <option value="One">One</option>
-                                    <option value="Two">Two</option>
+                                    {formData.pursuingYear === "5th Year" ? (<>
+                                        <option value="">Select Semester</option>
+                                        <option value="One">One</option>
+                                        <option value="Two">Two (Completed)</option>
+                                    </>
+                                    ) : (
+                                        <>
+                                            <option value="">Select Semester</option>
+                                            <option value="One">One</option>
+                                            <option value="Two">Two</option>
+                                        </>
+                                    )}
                                 </select>
                                 {errors.pursuingSemester && <p className="text-red-500 text-xs">{errors.pursuingSemester}</p>}
                             </div>
