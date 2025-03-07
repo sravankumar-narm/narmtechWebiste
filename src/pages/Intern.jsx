@@ -1057,7 +1057,7 @@ const Intern = () => {
                     )}
                   </div>
                 )}
-
+                <div className='text-sm'><b>Note :</b> Contact <a href="mailto:hr@narmtech.com" className="text-blue-600 font-semibold"> hr@narmtech.com</a>, if you are facing any challenges with registration.</div>
                 {/* Terms and Conditions Popup */}
                 {isTermsPopupOpen && (
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
