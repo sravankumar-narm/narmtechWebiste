@@ -39,9 +39,9 @@ const CountdownTimer = ({ endDate, currentPath }) => {
   if (days <= 1 && !ended) {
     bgColorClass = 'bg-gradient-to-br from-[#db3a3a] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
   }
-  if (ended) {
-    bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
-  }
+  // if (ended) {
+  //   bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
+  // }
 
   // Hide timer on signup page
   if (ended || currentPath === '/internship/signup' || currentPath === '/internship') {
@@ -61,15 +61,23 @@ const CountdownTimer = ({ endDate, currentPath }) => {
           boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.1)', // Reduce shadow when clicked
         }}
         className={`fixed left-4 bottom-4 ${bgColorClass} cursor-pointer z-20`}
-        onClick={() => navigate('/internship')}
+      // onClick={() => navigate('/internship')}
       >
-        <div className="text-base font-bold">
+        <div className="text-sm text-gray-300">
+          <div className="text-base font-bold">
+            Virtual Internship Program on <span className='text-[#252083]'><i>GenAI</i></span> Powered Web Applications
+          </div>
+          <b>Internship Applications Closed!</b><br />
+          The application window officially closed on <b>March 15th, 2025</b>.
+        </div>
+        {/* <div className="text-base font-bold">
           Virtual Internship Program on <br></br><span className='text-[#252083]'><i>GenAI</i></span> Powered Web Applications
         </div>
         <div className="text-sm text-gray-300">
           <span>{days}d {hours}h {minutes}m {seconds}s</span>&nbsp;&nbsp;
           <span>({new Date(endDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })})</span>
-        </div>
+        </div> */}
+
       </motion.div>
     );
   }
