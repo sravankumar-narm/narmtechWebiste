@@ -189,7 +189,7 @@ const ProgressBar = () => {
                     className="absolute left-0 top-0 h-full transition-all duration-500"
                     style={{
                       width: `${progressPercentage}%`,
-                      backgroundColor: isCompleted ? 'limegreen' : '',
+                      backgroundColor: isCompleted ? 'limegreen' : 'lightblue',
                     }}
                   ></div>
                 </div>
@@ -250,7 +250,7 @@ const ProgressBar = () => {
                     style={{
                       height: '100%',
                       width: `${progressPercentage}%`,
-                      backgroundColor: isCompleted ? 'limegreen' : '',
+                      backgroundColor: isCompleted ? 'limegreen' : 'lightblue',
                     }}
                   ></div>
                 </div>
