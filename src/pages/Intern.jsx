@@ -96,6 +96,7 @@ const Intern = () => {
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
+  const [isRegisteredEnd, setIsRegisteredEnd] = useState(false);
   // Show confetti & modal for 5 seconds when registration completes
   useEffect(() => {
     if (isDetailsSubmitted) {
@@ -107,6 +108,21 @@ const Intern = () => {
       setTimeout(() => setShowCelebration(false), 10000);
     }
   }, [isDetailsSubmitted]);
+  useEffect(() => {
+    const checkDate = () => {
+      const currentDate = new Date();
+      const targetDate = new Date("2025-03-17T00:00:00");
+      console.log("Current date:", currentDate);
+      console.log("Target date:", targetDate);
+      setIsRegisteredEnd(currentDate >= targetDate);
+    };
+
+    checkDate(); // Run initially
+
+    const interval = setInterval(checkDate, 1000 * 60); // Check every 1 minute
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
   // useEffect(() => {
   //   const paymentStatus = localStorage.getItem("paymentCompleted");
   //   console.log("Fetching payment status from localStorage:", paymentStatus);
@@ -788,9 +804,8 @@ const Intern = () => {
               </div>
             )}
           </div>
-
           {/* Right Section - Conditional Rendering */}
-          {!isRegistered ? (
+          {isRegisteredEnd ? (!isRegistered ? (
             <div className="p-8 bg-zinc-100 rounded-lg flex flex-col">
               <h3 className="text-xl font-semibold text-center mb-4">Sign Up for Internship Program</h3>
               <form className="space-y-4">
@@ -811,29 +826,29 @@ const Intern = () => {
                   {errors.name && <p className="text-red-500 text-xs pt-1">{errors.name}</p>}
                 </div>
                 {/* <div className="relative">
-                  <TextField
-                    type="text"
-                    id="name"
-                    className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    variant="outlined"
-                    autoComplete='off'
-                    label="Full Name (as per certificates)"
-                    InputProps={{
-                      style: {
-                        height: '50px',
-                        border: 'none',
-                        paddingLeft: '0px',
-                        paddingRight: '10px',
-                        borderRadius: '10px',
-                        backgroundColor: '#ffffff',
-                      },
-                    }}
-                  />
-                  {errors.name && <span className="text-red-500">{errors.name}</span>}
-                </div> */}
+                    <TextField
+                      type="text"
+                      id="name"
+                      className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      variant="outlined"
+                      autoComplete='off'
+                      label="Full Name (as per certificates)"
+                      InputProps={{
+                        style: {
+                          height: '50px',
+                          border: 'none',
+                          paddingLeft: '0px',
+                          paddingRight: '10px',
+                          borderRadius: '10px',
+                          backgroundColor: '#ffffff',
+                        },
+                      }}
+                    />
+                    {errors.name && <span className="text-red-500">{errors.name}</span>}
+                  </div> */}
 
                 {/* Email Field */}
                 <div>
@@ -852,29 +867,29 @@ const Intern = () => {
                   {errors.email && <p className="text-red-500 text-xs pt-1">{errors.email}</p>}
                 </div>
                 {/* <div className="relative">
-                  <TextField
-                    type="email"
-                    id="email"
-                    className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    variant="outlined"
-                    autoComplete='off'
-                    label="Email (All communication will be sent to this email)"
-                    InputProps={{
-                      style: {
-                        height: '50px',
-                        border: 'none',
-                        paddingLeft: '0px',
-                        paddingRight: '10px',
-                        borderRadius: '10px',
-                        backgroundColor: '#ffffff',
-                      },
-                    }}
-                  />
-                  {errors.email && <span className="text-red-500">{errors.email}</span>}
-                </div> */}
+                    <TextField
+                      type="email"
+                      id="email"
+                      className="w-full mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      variant="outlined"
+                      autoComplete='off'
+                      label="Email (All communication will be sent to this email)"
+                      InputProps={{
+                        style: {
+                          height: '50px',
+                          border: 'none',
+                          paddingLeft: '0px',
+                          paddingRight: '10px',
+                          borderRadius: '10px',
+                          backgroundColor: '#ffffff',
+                        },
+                      }}
+                    />
+                    {errors.email && <span className="text-red-500">{errors.email}</span>}
+                  </div> */}
 
                 {/* Mobile Field */}
                 <div className='relative'>
@@ -887,41 +902,41 @@ const Intern = () => {
                       value={formData.mobile}
                       onChange={handleChange}
                       className={`w-[60%] p-3 border rounded-lg focus:outline-none focus:ring-2 
-                      ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
+                        ${errors.mobile ? "border-red-500" : "focus:ring-blue-500"}`}
                       autoComplete="off"
                     // disabled={isFieldsDisabled}
                     />
                     {/* <TextField
-                      type="text"
-                      id="mobile"
-                      className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
-                      name="mobile"
-                      value={formData.mobile}
-                      onChange={handleChange}
-                      variant="outlined"
-                      label="Mobile"
-                      autoComplete='off'
-                      InputProps={{
-                        style: {
-                          height: '50px',
-                          border: 'none',
-                          paddingLeft: '0px',
-                          paddingRight: '10px',
-                          borderRadius: '10px',
-                          backgroundColor: '#ffffff',
-                        },
-                      }}
-                    /> */}
+                        type="text"
+                        id="mobile"
+                        className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                        name="mobile"
+                        value={formData.mobile}
+                        onChange={handleChange}
+                        variant="outlined"
+                        label="Mobile"
+                        autoComplete='off'
+                        InputProps={{
+                          style: {
+                            height: '50px',
+                            border: 'none',
+                            paddingLeft: '0px',
+                            paddingRight: '10px',
+                            borderRadius: '10px',
+                            backgroundColor: '#ffffff',
+                          },
+                        }}
+                      /> */}
                     <button
                       type="button"
                       onClick={handleSendOtp}
                       className={`p-3 rounded-lg transition w-[120px] text-white
-                        ${isSendOtpDisabled ? "bg-slate-400 cursor-not-allowed" :
+                          ${isSendOtpDisabled ? "bg-slate-400 cursor-not-allowed" :
                           (formData.mobile.length === 10 && !errors.mobile ?
                             "bg-blue-600 text-white hover:bg-blue-700"
                             : "bg-slate-400 cursor-not-allowed text-white")
                         }
-                      `}
+                        `}
                       // disabled={isSendOtpDisabled || formData.mobile.length !== 10 || !!errors.mobile}
                       disabled={formData.mobile.length !== 10 || !!errors.mobile}
                     >
@@ -959,26 +974,26 @@ const Intern = () => {
                         autoComplete='off'
                       />
                       {/* <TextField
-                        type="text"
-                        id="otp"
-                        className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
-                        name="otp"
-                        value={formData.otp}
-                        onChange={handleChange}
-                        variant="outlined"
-                        label="OTP"
-                        InputProps={{
-                          style: {
-                            height: '50px',
-                            border: 'none',
-                            paddingLeft: '0px',
-                            paddingRight: '10px',
-                            borderRadius: '10px',
-                            backgroundColor: '#ffffff',
-                          },
-                        }}
-                        autoComplete='off'
-                      /> */}
+                          type="text"
+                          id="otp"
+                          className="w-[60%] mb-4 px-7 py-4 rounded-xl bg-[#FFFFFF] placeholder:text-[#CCCCCC]"
+                          name="otp"
+                          value={formData.otp}
+                          onChange={handleChange}
+                          variant="outlined"
+                          label="OTP"
+                          InputProps={{
+                            style: {
+                              height: '50px',
+                              border: 'none',
+                              paddingLeft: '0px',
+                              paddingRight: '10px',
+                              borderRadius: '10px',
+                              backgroundColor: '#ffffff',
+                            },
+                          }}
+                          autoComplete='off'
+                        /> */}
                       <button
                         type="button"
                         onClick={handleVerifyOtp}
@@ -998,16 +1013,16 @@ const Intern = () => {
 
                 {/* Register Button */}
                 {/* <button
-                  type="button"
-                  onClick={handlePaymentSuccess}
-                  className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isOtpVerified && Object.keys(errors).length === 0
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-slate-400 text-white cursor-not-allowed'
-                    }`}
-                  disabled={!isOtpVerified || Object.keys(errors).length > 0}
-                >
-                  Pay Now
-                </button> */}
+                    type="button"
+                    onClick={handlePaymentSuccess}
+                    className={`w-full px-6 py-3 text-white rounded-lg shadow-md transition ${isOtpVerified && Object.keys(errors).length === 0
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-slate-400 text-white cursor-not-allowed'
+                      }`}
+                    disabled={!isOtpVerified || Object.keys(errors).length > 0}
+                  >
+                    Pay Now
+                  </button> */}
                 {/* Conditional Rendering for Payment Section */}
                 {isOtpVerified && (
                   <div className="mt-4">
@@ -1181,6 +1196,23 @@ const Intern = () => {
               <p className="mt-2">Your details have been successfully submitted.</p>
               <p className="mt-2">You’ll get a confirmation email with all the necessary information.</p>
             </div>
+          )) : (
+            <div class="max-w-xl mx-auto p-6 bg-red-100 shadow-lg rounded-2xl text-center">
+              <h2 class="text-2xl font-bold text-red-600">Internship Applications Closed!</h2>
+              <p class="text-gray-700 mt-3">
+              We appreciate your interest in our internship program. 
+              The application window officially closed on <b>March 15th, 2025. </b>
+               Due to an overwhelming response, we are no longer accepting new applications at this time.
+              </p>
+              <p class="text-gray-700 mt-2">
+              Our team is currently reviewing all submissions, and if additional opportunities arise, we will announce a new application window.
+              </p>
+              <p class="text-gray-700 mt-2">
+              Thank you for your enthusiasm and understanding.
+              </p>
+              <p class="text-red-500 font-bold mt-4">Stay tuned for updates…</p>
+            </div>
+
           )}
         </div>
       </div>
