@@ -122,14 +122,21 @@ const ProgressBar = () => {
   return (
     <>
       {/* Desktop & Tablet View (md+) */}
-      <div className="hidden md:flex items-center justify-between w-full bg-[#d9d9ed]  rounded-lg shadow-lg p-2 pt-1">
+      <div className="hidden md:flex items-center justify-between w-full bg-[#d9d9ed] rounded-lg shadow-lg p-2 pt-1">
         {stages.map((stage, index) => {
-          const isCompleted = today >= stage.date;
+          const endDate = new Date(stage.date);
+          endDate.setHours(24, 0, 0, 0); // Set time to 12:00 AM of the next day
+          const isCompleted = today > endDate;
           const nextStageDate = stages[index + 1]?.date;
           const daysBetween = nextStageDate ? (nextStageDate - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const daysPassed = nextStageDate ? (today - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const progressPercentage = nextStageDate ? Math.min(100, (daysPassed / daysBetween) * 100) : 100;
-          const isCurrentIndex = today < stage.date && (index === 0 || today >= stages[index - 1].date);
+
+          const isCurrentIndex =
+            (today <= endDate && (index === 0 || today >= new Date(stages[index - 1]?.date).setHours(24, 0, 0, 0)));
+
+          const isLightblue = !isCompleted && isCurrentIndex;
+
           const isUpcoming = !isCompleted && !isCurrentIndex;
 
           // Determine which date format to use
@@ -143,16 +150,7 @@ const ProgressBar = () => {
               <div className={`flex flex-col items-center flex-1 ${stage.styles.mainPadding}`}>
                 {/* Show Date Above */}
                 <p className="text-xs text-sky-900 font-bold mb-2">{formattedDate}</p>
-
                 {/* Circular Step */}
-                {/* <div className={`w-16 h-16 rounded-full border-4 flex items-center justify-center shadow-lg 
-                  ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-red-500'}`}>
-                  <span className="text-slate-600 text-2xl">{stage.icon}</span>
-                </div> */}
-                {/* <div className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 bg-[#d9d9ed]
-                  ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#f1af9c]'}`}>
-                  <span className="text-slate-600 text-sm">{stage.icon}</span>
-                </div> */}
                 <div
                   className={`w-9 h-9 rounded-full border-4 flex items-center justify-center shadow-lg z-10 
                   ${isCompleted ? `${stage.color} border-[#269908]` : 'bg-[#d9d9ed] border-[#f1af9c]'}`}
@@ -171,23 +169,18 @@ const ProgressBar = () => {
                       />
                     </svg>
                   ) : isCurrentIndex ? (
-                    // 🔄 Use `<span>` for the ⏳ icon
-                    <span className="rotate-animation"><img src={timeGlass} className="w-5 h-5" alt="loading" /></span>
+                    <span className="rotate-animation">
+                      <img src={timeGlass} className="w-5 h-5" alt="loading" />
+                    </span>
                   ) : (
                     <span className="text-slate-600 text-sm"></span>
                   )}
-
-                  {/* {index === stages.length - 1 &&
-                    <span className="text-slate-600 text-xl">🎓</span>
-                  } */}
                 </div>
-
-
-
                 {/* Stage Name Below */}
-                <p className={`text-xs mt-2 text-center text-sky-900 font-bold ${stage.styles.nowarp}`}>{stage.name}</p>
+                <p className={`text-xs mt-2 text-center text-sky-900 font-bold ${stage.styles.nowarp}`}>
+                  {stage.name}
+                </p>
               </div>
-
               {/* Connecting Line */}
               {index < stages.length - 1 && (
                 <div className={`flex-1 h-1 relative ${stage.styles.linePadding}`}>
@@ -196,7 +189,7 @@ const ProgressBar = () => {
                     className="absolute left-0 top-0 h-full transition-all duration-500"
                     style={{
                       width: `${progressPercentage}%`,
-                      backgroundColor: isCompleted ? 'limegreen' : 'lightblue'
+                      backgroundColor: isCompleted ? 'limegreen' : '',
                     }}
                   ></div>
                 </div>
@@ -207,14 +200,19 @@ const ProgressBar = () => {
       </div>
 
       {/* Mobile View (sm & below) */}
-      {/* <div className="flex md:hidden flex-col items-center justify-center w-full px-6 py-6 bg-gradient-to-r from-blue-900 to-blue-500 rounded-lg shadow-lg"> */}
       <div className="flex md:hidden flex-col items-center justify-center w-full px-6 py-6 bg-gradient-to-r bg-[#d9d9ed] rounded-lg shadow-lg">
         {stages.map((stage, index) => {
-          const isCompleted = today >= stage.date;
+          const isCompleted = today > stage.date; // Changed from `>=` to `>` to keep "End" active on its date
           const nextStageDate = stages[index + 1]?.date;
           const daysBetween = nextStageDate ? (nextStageDate - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const daysPassed = nextStageDate ? (today - stage.date) / (1000 * 60 * 60 * 24) : 0;
           const progressPercentage = nextStageDate ? Math.min(100, (daysPassed / daysBetween) * 100) : 100;
+
+          // Adjust logic to ensure "End" remains active until today
+          const isCurrentIndex =
+            (today <= stage.date && (index === 0 || today >= stages[index - 1].date)) ||
+            (stage.name === "End" && today <= stage.date); // Special condition for "End"
+
           // Determine which date format to use
           const formattedDate =
             index === 0 || index === stages.length - 1
@@ -229,17 +227,16 @@ const ProgressBar = () => {
                 <p className="text-xs sm:text-sm md:text-base text-sky-900 font-semibold mb-2 md:mb-0">
                   {formattedDate}
                 </p>
-
                 {/* Circular Step */}
-                <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center shadow-lg transition-transform duration-300
-               ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#ffecca]'}`}>
+                <div
+                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-4 flex items-center justify-center shadow-lg transition-transform duration-300
+               ${isCompleted ? `${stage.color} border-[#269908] ` : 'border-[#ffecca]'}`}
+                >
                   <span className="text-slate-600 text-lg sm:text-xl md:text-2xl">{stage.icon}</span>
                 </div>
-
                 {/* Stage Name Below */}
                 <p className="text-xs sm:text-sm md:text-base mt-2 text-sky-900 font-semibold">{stage.name}</p>
               </div>
-
               {/* Connecting Line - Adjust for mobile */}
               {index < stages.length - 1 && (
                 <div
@@ -253,7 +250,7 @@ const ProgressBar = () => {
                     style={{
                       height: '100%',
                       width: `${progressPercentage}%`,
-                      backgroundColor: isCompleted ? 'limegreen' : 'lightblue'
+                      backgroundColor: isCompleted ? 'limegreen' : '',
                     }}
                   ></div>
                 </div>
