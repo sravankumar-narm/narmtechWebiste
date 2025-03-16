@@ -39,9 +39,9 @@ const CountdownTimer = ({ endDate, currentPath }) => {
   if (days <= 1 && !ended) {
     bgColorClass = 'bg-gradient-to-br from-[#db3a3a] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
   }
-  // if (ended) {
-  //   bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
-  // }
+  if (ended) {
+    bgColorClass = 'bg-gradient-to-br from-[#f64e4e] to-[#f64e4e] text-white p-3 rounded-lg shadow-md';
+  }
 
   // Hide timer on signup page
   if (ended || currentPath === '/internship/signup' || currentPath === '/internship') {
