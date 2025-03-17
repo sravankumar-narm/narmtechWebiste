@@ -111,10 +111,10 @@ const Intern = () => {
   useEffect(() => {
     const checkDate = () => {
       const currentDate = new Date();
-      const targetDate = new Date("2025-03-17T00:00:00");
+      const targetDate = new Date("2025-03-15T00:00:00");
       console.log("Current date:", currentDate);
       console.log("Target date:", targetDate);
-      setIsRegisteredEnd(currentDate >= targetDate);
+      setIsRegisteredEnd(currentDate <= targetDate);
     };
 
     checkDate(); // Run initially
