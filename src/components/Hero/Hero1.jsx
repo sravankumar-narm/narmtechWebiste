@@ -112,14 +112,14 @@ const GoalTestimonial = () => {
                       {image1 && (
                         <div>
                           <img src={image1} alt="" className="w-[350px]" />
-                          {url && (
-                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-1">
-                              Know more <ExternalLink size={16} />
-                            </a>
-                          )}
                         </div>
                       )}
                       {text4 && <p className="text-[18px] 2xl:w-[559px] xl:w-[409px] text-garySecondary">{text4}</p>}
+                      {url && (
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-1">
+                          Know more <ExternalLink size={16} />
+                        </a>
+                      )}
                     </div>
                   );
                 }
