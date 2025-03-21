@@ -1,5 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
+import { ExternalLink } from "lucide-react";
 import Nyayah from "../../assets/offerings/nyayah.png";
 import Adhyayn from "../../assets/offerings/Adhyayn.png";
 import Quizifi from "../../assets/offerings/Quizifai3.png";
@@ -7,8 +8,11 @@ import Quizifi from "../../assets/offerings/Quizifai3.png";
 const testimonialData = [
   {
     id: 1,
-    title2: "GenAI Internship Program",
-    text: `An immersive internship program centered on advanced IT skills, emphasizing Generative AI (GenAI) and its application in addressing real-world challenges through the development of GenAI-powered solutions.`,
+    image1: Quizifi,
+    title3: "QuizifiAI",
+    text4:
+      "Our QuizifAI empowers organizations through the integration of AI-powered Quiz & Exam companions.",
+    url: "https://quizifai.com"
   },
   {
     id: 2,
@@ -20,22 +24,21 @@ const testimonialData = [
   },
   {
     id: 3,
-    image: Nyayah,
-    text3:
+    image1: Nyayah,
+    text4:
       "This powerful AI solution revolutionizes the Legal landscape by empowering Legal Practitioners and Law Firms with advanced automation and organization capabilities.",
   },
   {
     id: 4,
-    image: Adhyayn,
-    text3:
-      "Our ADHYAYN empowers educational institutions through the integration of AI and LLM Model Technologies.",
+    image1: Adhyayn,
+    text4:
+      "Our ADHYAYN empowers educational institutions through the integration of AI and LLM Model Technologies.",
+    url: "https://adhyayn.com"
   },
   {
     id: 5,
-    image1: Quizifi,
-    title3: "QuizifiAI",
-    text4:
-      "Our QuizifAI empowers organizations through the integration of AI-powered Quiz & Exam companions.",
+    title2: "GenAI Internship Program",
+    text: `An immersive internship program centered on advanced IT skills, emphasizing Generative AI (GenAI) and its application in addressing real-world challenges through the development of GenAI-powered solutions.`,
   }
 ];
 
@@ -82,7 +85,6 @@ const GoalTestimonial = () => {
     <>
       <div data-aos-duration="300" className="py-10 order-2 sm:order-1 space-y-8 2xl:relative 2xl:right-[55px]">
         <div className=" mx-auto ">
-          {/* heading section */}
           {/* testimonial section */}
           <div className="grid grid-cols-1 max-w-[600px] mx-auto gap-6">
             <Slider {...settings}>
@@ -98,44 +100,26 @@ const GoalTestimonial = () => {
                   text4,
                   image,
                   image1,
+                  url
                 }) => {
                   return (
                     <div key={id} className="order-2 sm:order-1 space-y-8 ">
-                      <p className="text-4xl font-medium text-secondary">
-                        {title} <br /> {title1}
-                      </p>
-                      <h1 className="text-3xl font-extrabold text-secondary">
-                        {title2}
-                      </h1>
-                      {/* <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p> */}
-                      <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary space-y-2">
-                        {text && text.includes("<br/>") ? (
-                          text.split("<br/>").map((line, index) => (
-                            <span key={index} className="block">
-                              <span className="text-primary text-lg">🔹</span> {line.trim()}
-                            </span>
-                          ))
-                        ) : (
-                          <span>{text}</span> // Render normally if no <br/> is found
-                        )}
-                      </p>
-                      <div>
-                        <img src={image} alt="" className="w-[350px]" />
-                      </div>
-                      <div className="2xl:w-[559px] xl:w-[409px]">
-                        <p className="text-[18px]   text-garySecondary">{text3}</p>
-                      </div>
-                      <div className="flex flex-col relative bottom-[50px]">
+                      {title && <p className="text-4xl font-medium text-secondary">{title} <br /> {title1}</p>}
+                      {title2 && <h1 className="text-3xl font-extrabold text-secondary">{title2}</h1>}
+                      {text && <p className="text-[18px] xl:w-[550px] 2xl:w-[559px] text-garySecondary">{text}</p>}
+                      {image && <img src={image} alt="" className="w-[350px]" />}
+                      {text3 && <p className="text-[18px] text-garySecondary">{text3}</p>}
+                      {image1 && (
                         <div>
                           <img src={image1} alt="" className="w-[350px]" />
+                          {url && (
+                            <a href={url} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-1">
+                              Know more <ExternalLink size={16} />
+                            </a>
+                          )}
                         </div>
-                        <div className="flex flex-col justify-center gap-2">
-                          {/* <h1 className="text-3xl font-extrabold text-secondary">
-                            {title3}
-                          </h1> */}
-                          <p className="text-[18px] 2xl:w-[559px] xl:w-[409px] text-garySecondary relative">{text4}</p>
-                        </div>
-                      </div>
+                      )}
+                      {text4 && <p className="text-[18px] 2xl:w-[559px] xl:w-[409px] text-garySecondary">{text4}</p>}
                     </div>
                   );
                 }

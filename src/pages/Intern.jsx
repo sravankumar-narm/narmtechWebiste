@@ -1201,11 +1201,8 @@ const Intern = () => {
               <h2 class="text-2xl font-bold text-red-600">Internship Applications Closed!</h2>
               <p class="text-gray-700 mt-3">
               We appreciate your interest in our internship program. 
-              The application window officially closed on <b>March 15th, 2025. </b>
-               Due to an overwhelming response, we are no longer accepting new applications at this time.
-              </p>
-              <p class="text-gray-700 mt-2">
-              Our team is currently reviewing all submissions, and if additional opportunities arise, we will announce a new application window.
+              Registrations are closed on <b>March 15th, 2025. </b>
+               Due to an overwhelming response, we are no longer accepting new registrations at this time.
               </p>
               <p class="text-gray-700 mt-2">
               Thank you for your enthusiasm and understanding.
