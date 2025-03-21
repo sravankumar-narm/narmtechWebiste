@@ -1,6 +1,7 @@
 import React from "react";
 import quizifAI from "../../assets/offerings/quizifAI.png";
 import { useNavigate } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 
 const OfferingsCardReverse = ({ Image }) => {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ const OfferingsCardReverse = ({ Image }) => {
             </div> */}
             <div className="order-2 lg:order-1 mt-20 flex flex-col items-center gap-5 lg:translate-x-[90px] xl:translate-x-[50px]">
               <div className=" mx-auto bg-white rounded-[50px] border-[1px] border-darkBlue shadow-md grid place-items-center p-5 py-10 gap-8">
-                <img  src={Image} alt=""  />
-         {/* <div className="md:w-[420px] lg:w-[420px] h-1 bg-[#B6B2B2] absolute lg:mb-28 md:mb-24  "></div>
+                <img src={Image} alt="" />
+                {/* <div className="md:w-[420px] lg:w-[420px] h-1 bg-[#B6B2B2] absolute lg:mb-28 md:mb-24  "></div>
                 <div className="md:w-[20px] lg:w-[40px] h-1 bg-green rounded-full absolute rotate-90 lg:-ml-[420px] lg:-mt-20 md:-mt-16 md:-ml-[420px]"></div>
                 <div className="md:w-[15px] lg:w-[15px] h-[15px] bg-green rounded-full absolute lg:-ml-[420px] lg:mb-28 md:mb-24 md:-ml-[420px] "></div>
                 <div className="md:w-[8px] lg:w-[8px] h-[8px] bg-[#B6B2B2] rounded-full absolute lg:-ml-[420px] lg:mb-28 md:mb-24 md:-ml-[420px]"></div>
@@ -46,18 +47,21 @@ const OfferingsCardReverse = ({ Image }) => {
                 <div className=" grid md:flex gap-3">
                   <div className="flex justify-center  flex-col items-center  text-center break-words text-sm bg-green shadow-md rounded-3xl p-2 md:py-4  " >
                     <div className="flex justify-center flex-col items-center leading-[16.62px]  text-center break-words  font-bold md:mb-7">
-                      <img src={quizifAI}  />
+                      <img src={quizifAI} />
                       <div className="flex justify-center leading-[18px] items-center text-[14px] md:w-[110px]  text-center break-words font-normal">
                         Your AI-powered Quiz & Exam Companion
                       </div>
+                      <a href={'https://quizifai.com/'} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-1">
+                        Know more <ExternalLink size={16} />
+                      </a>
                     </div>
                   </div>
                   <div className="flex justify-center  flex-col items-center  text-center text-sm bg-pink shadow-md rounded-3xl p-2 ">
                     <div className="flex justify-center leading-[16.62px] text-[14px] flex-col items-center text-center font-bold ">
                       TimeTable
                       <div className="flex justify-center leading-[18px]  text-[12px]  md:w-[110px] text-center p-2 font-normal ">
-                        AI Endorsed engine 
-                         Class Timetables, Lesson
+                        AI Endorsed engine
+                        Class Timetables, Lesson
                         Plans, and Employee schedules.
                       </div>
                     </div>
@@ -134,6 +138,11 @@ const OfferingsCardReverse = ({ Image }) => {
                   make informed choices quickly and efficiently.
                 </li>
               </ul>
+              <div>
+                <a href={'https://adhyayn.com/'} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-1">
+                  Know more <ExternalLink size={16} />
+                </a>
+              </div>
               {/* <h4 className="font-bold my-4">
                 AI intelligence plays a pivotal role in intelligently and
                 comprehensively automating day-to-day tasks of educational

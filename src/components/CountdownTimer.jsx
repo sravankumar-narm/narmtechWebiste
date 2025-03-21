@@ -68,7 +68,7 @@ const CountdownTimer = ({ endDate, currentPath }) => {
             Virtual Internship Program on <span className='text-[#252083]'><i>GenAI</i></span> Powered Web Applications
           </div>
           <b>Internship Applications Closed!</b><br />
-          The application window officially closed on <b>March 15th, 2025</b>.
+          Registrations are closed on <b>March 15th, 2025</b>.
         </div>
         {/* <div className="text-base font-bold">
           Virtual Internship Program on <br></br><span className='text-[#252083]'><i>GenAI</i></span> Powered Web Applications
