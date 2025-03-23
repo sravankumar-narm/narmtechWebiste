@@ -39,35 +39,35 @@ const stages = [
     },
   },
   {
-    name: 'Sprint 1', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 0', icon: '✔️', date: new Date('2025-03-24'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Sprint 2', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 1', icon: '✔️', date: new Date('2025-03-31'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Sprint 3', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 2', icon: '✔️', date: new Date('2025-04-07'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Sprint 4', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 3', icon: '✔️', date: new Date('2025-04-14'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
     },
   },
   {
-    name: 'Sprint 5', icon: '✔️', date: new Date('2025-04-21'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 4', icon: '✔️', date: new Date('2025-04-21'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-8px]",
       mainPadding: "",
       nowarp: "whitespace-nowrap",
@@ -81,7 +81,7 @@ const stages = [
   //   },
   // },
   {
-    name: 'Sprint 6', icon: '✔️', date: new Date('2025-04-28'), color: 'bg-[#ceffe7]', styles: {
+    name: 'Sprint 5', icon: '✔️', date: new Date('2025-04-28'), color: 'bg-[#ceffe7]', styles: {
       linePadding: "ml-[-13px] mr-[-18px]",
       mainPadding: "",
       nowarp: "",

@@ -725,7 +725,7 @@ const Intern = () => {
             <p className="mt-4 font-semibold">📅 Duration: 6 Sprint | <span className='text-[#0f5376]'>Limited Seats Only</span></p>
             <div className="mt-4">
               <div className='bg-[#d9d9ed] rounded-lg shadow-lg'>
-                <div className="font-semibold text-center pt-3">Internship Mile Stone</div>
+                <div className="font-semibold text-center pt-3">Internship Milestone</div>
                 {/* Responsive Progress Bar */}
                 <div className="flex flex-col items-center justify-between relative sm:flex-row">
                   <ProgressBar />
