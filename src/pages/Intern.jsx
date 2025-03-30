@@ -445,68 +445,7 @@ const Intern = () => {
     setIsRegistered(true);
   };
 
-  // Handle payment success
-  // const handlePaymentSuccess = async () => {
-  //   const options = {
-  //     key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
-  //     amount: 199 * 100, // Amount in paise (₹199)
-  //     currency: "INR",
-  //     name: "Internship Registration",
-  //     description: "Payment for Internship Program",
-  //     image: "https://narmtech.com/assets/logo-Dx_AJf1h.png", // Your logo URL
-  //     handler: function (response) {
-  //       toast.success("Payment successful!");
-  //       setIsPaymentSuccessful(true);
-
-  //       // Store payment status in localStorage
-  //       localStorage.setItem("paymentCompleted", "true");
-  //     },
-  //     prefill: {
-  //       name: formData.name,
-  //       email: formData.email,
-  //       contact: formData.mobile,
-  //     },
-  //     theme: {
-  //       color: "#007bff", // Customize Razorpay UI color
-  //     },
-  //   };
-
-  //   const razorpay = new window.Razorpay(options);
-  //   razorpay.open();
-  // };
-  // const handlePaymentSuccess = async () => {
-  //   if (!window.Razorpay) {
-  //     toast.error("Razorpay SDK failed to load. Please refresh the page.");
-  //     return;
-  //   }
-
-  //   const options = {
-  //     key: "rzp_test_YP62GL4fHAfeVI", // Replace with your Razorpay Key ID
-  //     amount: 199 * 100, // Convert ₹199 to paise
-  //     currency: "INR",
-  //     name: "Internship Registration",
-  //     description: "Payment for Internship Program",
-  //     image: "https://narmtech.com/assets/logo-Dx_AJf1h.png",
-  //     handler: function (response) {
-  //       toast.success("Payment successful!");
-  //       setIsPaymentSuccessful(true);
-  //       console.log("Payment status updated:", true); // Debugging log
-  //       // Store payment status to persist after refresh
-  //       localStorage.setItem("paymentCompleted", "true");
-  //     },
-  //     prefill: {
-  //       name: formData.name,
-  //       email: formData.email,
-  //       contact: formData.mobile,
-  //     },
-  //     theme: {
-  //       color: "#007bff",
-  //     },
-  //   };
-  //   console.log("Is Razorpay available?", window.Razorpay);
-  //   const razorpay = new window.Razorpay(options);
-  //   razorpay.open();
-  // };
+  
   const handlePaymentSuccess = async () => {
     if (!window.Razorpay) {
       toast.error("Razorpay SDK failed to load. Please refresh the page.");
