@@ -53,7 +53,7 @@ function App() {
 
   return (
     <>
-      <CountdownTimer endDate="2025-05-31T12:00:00" currentPath={location.pathname} />
+      {/* <CountdownTimer endDate="2025-05-31T12:00:00" currentPath={location.pathname} /> */}
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
@@ -66,8 +66,8 @@ function App() {
           <Route path="IT" element={<IT />} />
           <Route path="Edu" element={<Edu />} />
           <Route path="Agri" element={<Agri />} />
-          <Route path="internship" element={<Intern />} />
-          <Route path="internship/signup" element={<Signup />} />
+          {/* <Route path="internship" element={<Intern />} /> */}
+          {/* <Route path="internship/signup" element={<Signup />} /> */}
           <Route path="PrivatePolicy" element={<Privacy />} />
           <Route path="TermsandConditions" element={<Terms />} />
           <Route path="CancellationAndRefundPolicy" element={<Refund />} />

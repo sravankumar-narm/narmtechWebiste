@@ -9,7 +9,7 @@ export const navLinks = [
   { id: 1, text: "Home", url: "/" },
   { id: 2, text: "Offerings", url: "/Offerings" },
   { id: 3, text: "Consulting", url: "/Consulting" },
-  { id: 4, text: "Internship", url: "/internship" },
+  // { id: 4, text: "Internship", url: "/internship" },
   { id: 5, text: "About us", url: "/Aboutus" },
   { id: 6, text: "Our Team", url: "/Ourteam" },
   { id: 7, text: "Contact us", url: "/Contactus" },
