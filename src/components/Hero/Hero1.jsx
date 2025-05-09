@@ -35,11 +35,11 @@ const testimonialData = [
       "Our ADHYAYN empowers educational institutions through the integration of AI and LLM Model Technologies.",
     url: "https://adhyayn.com"
   },
-  {
-    id: 5,
-    title2: "GenAI Internship Program",
-    text: `An immersive internship program centered on advanced IT skills, emphasizing Generative AI (GenAI) and its application in addressing real-world challenges through the development of GenAI-powered solutions.`,
-  }
+  // {
+  //   id: 5,
+  //   title2: "GenAI Internship Program",
+  //   text: `An immersive internship program centered on advanced IT skills, emphasizing Generative AI (GenAI) and its application in addressing real-world challenges through the development of GenAI-powered solutions.`,
+  // }
 ];
 
 function SampleNextArrow(props) {
